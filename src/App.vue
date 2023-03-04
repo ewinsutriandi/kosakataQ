@@ -1,12 +1,20 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view />
+  <div id="app" class="flex flex-col h-screen justify-between">
+    <header-main />
+    <div class="min-h-800 relative flex flex-col bg-gray-20 py-6 sm:py-12">
+      <router-view :key="$route.fullPath" />
+    </div>
+    <footer-main />
   </div>
 </template>
+
+<script>
+import HeaderMain from "@/components/HeaderMain.vue";
+import FooterMain from "@/components/FooterMain.vue";
+export default {
+  components: { HeaderMain, FooterMain },
+};
+</script>
 
 <style>
 #app {
