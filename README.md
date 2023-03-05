@@ -1,29 +1,22 @@
-# neu-qq
+# kosakataQ
+Sebuah web app berupa game sederhana untuk memudahkan belajar arti ayat-ayat al-Quran. Porting dari versi python di [https://github.com/ewinsutriandi/quran-word-translation-game-python]  
+Demo dapat diakses pada alamat: [https://kosakataQ.web.app]
 
-## Project setup
+## Teknologi
+Vue (2.x) dan tailwind css.
+
+## Langkah untuk mencoba
+Pastikan nodejs terinstall di komputer kemudian jalankan langkah-langkah berikut
+### Clone project
+```
+git clone https://github.com/ewinsutriandi/kosakataQ
+```
+### Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
