@@ -65,6 +65,16 @@
       <span class="mb-2 text-sm text-center leading-7 text-gray-400">
         Permainan berakhir
       </span>
+      <span
+        class="mb-2 text-lg font-semibold text-center leading-7 text-blue-600"
+      >
+        <div v-if="playerWon">Anda Menang!</div>
+      </span>
+      <span
+        class="mb-2 text-lg font-semibold text-center leading-7 text-red-400"
+      >
+        <div v-if="!playerWon">Anda Gagal!</div>
+      </span>
       <p class="mb-2 text-xl text-center leading-7 text-blue-400">
         Skor {{ score }} dari {{ max_score }}
       </p>
@@ -90,6 +100,7 @@ export default {
       selected: {},
       gameStarted: false,
       gameEnded: false,
+      playerWon: false,
       surah_idx: 0,
       ayahs_words: {},
       surah_quiz: [],
@@ -144,11 +155,16 @@ export default {
       } else {
         console.log("Salah, jawaban benar:", quiz.answer);
         this.fail++;
+        if (this.fail == 3) {
+          this.gameEnded = true;
+          return;
+        }
       }
       if (this.cur_quiz_idx < this.surah_quiz.length - 1) {
         this.cur_quiz_idx++;
       } else {
         this.gameEnded = true;
+        this.playerWon = true;
       }
     },
     heartIndicatorType(index) {
