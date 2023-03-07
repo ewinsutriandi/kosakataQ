@@ -8,6 +8,16 @@ export default {
       return arr;
     },
     generate_quiz_fr_surah(surah_idx) {
+      let specialChar2Rmv = [
+        "\u{F500}",
+        "\u{F501}",
+        "\u{F502}",
+        "\u{F503}",
+        "\u{F504}",
+        "\u{F505}",
+        "\u{F506}",
+        "\u{F61E}",
+      ];
       let surah = this.$store.state.surahs[surah_idx];
       let surah_words = this.$store.getters.surah_words(surah_idx);
       // console.time("Generating quiz for" + surah.name);
@@ -23,7 +33,13 @@ export default {
           let word = words[wIdx];
           let quiz = {};
           quiz.ayah_text = curAyah.text;
-          quiz.word_to_translate = word.uthmani;
+          let the_word = word.uthmani;
+          // rmv unneeded special characters
+          for (let i = 0; i < specialChar2Rmv.length; i++) {
+            let the_c = specialChar2Rmv[i];
+            the_word = the_word.replace(the_c, "");
+          }
+          quiz.word_to_translate = the_word;
           quiz.answer = word.translation;
           // prepare choices
           quiz.choices = this.generate_quiz_choices(ayahIdx, words, word);
