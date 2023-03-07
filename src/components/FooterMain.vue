@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="p-6 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800"
+    class="p-6 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6"
   >
     <div class="flex justify-center">
       <a href="#" class="flex items-center py-2 px-2">
@@ -16,7 +16,7 @@
       >
     </div>
     <ul
-      class="flex flex-wrap mt-0 justify-center items-center mt-3 text-sm text-gray-400 dark:text-gray-400"
+      class="flex flex-wrap mt-0 justify-center items-center mt-3 text-sm text-gray-400"
     >
       <li>
         <a
