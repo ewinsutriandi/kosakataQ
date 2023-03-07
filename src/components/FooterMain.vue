@@ -18,7 +18,11 @@
       class="flex flex-wrap mt-0 justify-center items-center mt-3 text-sm text-gray-400 dark:text-gray-400"
     >
       <li>
-        <a href="#" class="mr-4 hover:underline md:mr-6">Source Code</a>
+        <a
+          href="https://github.com/ewinsutriandi/kosakataQ"
+          class="mr-4 hover:underline md:mr-6"
+          >Source Code</a
+        >
       </li>
       <li>
         <router-link to="/license" class="mr-4 hover:underline md:mr-6"

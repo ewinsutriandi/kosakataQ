@@ -32,12 +32,12 @@
       </span>
       <br />
       <span class="text-gray-500">Pada ayat:</span>
-      <h2 class="mt-4 mb-4 text-2xl text-center font-bold text-blue-400">
+      <h2 class="mt-4 mb-4 text-2xl text-center font-bold text-blue-400 ayah">
         {{ cur_quiz.ayah_text }}
       </h2>
       <span class="mb-2 text-gray-500">kata </span>
       <span
-        class="ml-2 mr-2 mt-4 mb-4 text-2xl text-center font-bold text-blue-400"
+        class="ml-2 mr-2 mt-4 mb-4 text-2xl text-center font-bold text-blue-400 ayah"
       >
         {{ cur_quiz.word_to_translate }}
       </span>
@@ -190,3 +190,12 @@ export default {
   },
 };
 </script>
+<style>
+@font-face {
+  font-family: "UthmanTN";
+  src: local("UthmanTN"), url(../assets/me_quran_Regular.ttf) format("truetype");
+}
+.ayah {
+  font-family: "UthmanTN", Helvetica, sans-serif;
+}
+</style>
