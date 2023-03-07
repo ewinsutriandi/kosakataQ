@@ -3,7 +3,7 @@
     class="p-6 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6"
   >
     <div class="flex justify-center">
-      <a href="#" class="flex items-center py-2 px-2">
+      <a href="#" class="flex items-center py-2 mx-2">
         <span class="text-blue-400 text-md">kosakata</span>
         <span class="font-semibold text-blue-500 text-md">Q</span>
       </a>
@@ -16,7 +16,7 @@
       >
     </div>
     <ul
-      class="flex flex-wrap mt-0 justify-center items-center mt-3 text-sm text-gray-400"
+      class="flex flex-wrap ml-1 mt-0 sm:ml-0 justify-center items-center mt-3 text-sm text-gray-400"
     >
       <li>
         <a
@@ -32,7 +32,7 @@
         >
       </li>
       <li>
-        <router-link to="/license" class="mr-4 hover:underline md:mr-6"
+        <router-link to="/license" class="hover:underline md:mr-6"
           >License</router-link
         >
       </li>
