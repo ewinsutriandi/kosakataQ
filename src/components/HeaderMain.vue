@@ -5,13 +5,13 @@
         <div class="flex-auto md:flex space-x-1">
           <!-- Area untuk nama/logo app -->
           <div class="flex justify-center">
-            <router-link to="/" class="flex items-center py-4 px-2">
+            <router-link to="/" class="flex items-center px-2">
               <span class="text-blue-400 text-2xl">kosakata</span>
               <span class="font-semibold text-blue-500 text-3xl">Q</span>
             </router-link>
           </div>
           <!-- Area untuk deskripsi app -->
-          <div class="hidden md:flex items-center py-2 px-2 mt-2">
+          <div class="md:flex items-center px-2 mt-2">
             <span class="text-gray-600 text-sm">
               Bermain dan belajar arti kata ayat-ayat al Qur'an
             </span>
