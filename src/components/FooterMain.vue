@@ -11,6 +11,7 @@
       <a
         href="https://play.alza.web.id"
         class="pt-4 hover:underline px-1 text-sm"
+        target="_blank"
         >Alza Interactive</a
       >
     </div>
@@ -21,7 +22,13 @@
         <a
           href="https://github.com/ewinsutriandi/kosakataQ"
           class="mr-4 hover:underline md:mr-6"
+          target="_blank"
           >Source Code</a
+        >
+      </li>
+      <li>
+        <router-link to="/credits" class="mr-4 hover:underline md:mr-6"
+          >Credits</router-link
         >
       </li>
       <li>
