@@ -27,6 +27,11 @@
     </div>
     <!-- Game On -->
     <div v-if="surah_quiz.length > 1 && game_on && !gameEnded">
+      <div class="flex justify-center mb-3">
+        <div class="flex">
+          <heart-indicator num="3" :fail="fail" :key="cur_quiz_idx" />
+        </div>
+      </div>
       <span class="mb-2 text-sm text-center leading-7 text-gray-400">
         Pilih jawaban yang benar
       </span>
@@ -41,7 +46,7 @@
       >
         {{ cur_quiz.word_to_translate }}
       </span>
-      <span class="mb-2 text-gray-500"> memiliki arti?</span>
+      <span class="mb-4 text-gray-500"> memiliki arti?</span>
 
       <div v-for="choice in cur_quiz.choices" :key="choice.translation">
         <button
@@ -51,7 +56,7 @@
           {{ choice.translation }}
         </button>
       </div>
-      <div class="mt-4 text-gray-400">
+      <div class="mt-6 text-gray-400">
         skor: {{ score }} | benar: {{ correct }} | salah: {{ fail }}
       </div>
     </div>
@@ -74,10 +79,11 @@
 </template>
 <script>
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
+import HeartIndicator from "@/components/HeartIndicator.vue";
 import generator from "@/mixin/generator.js";
 export default {
   name: "GameScreenView",
-  components: { LoadingIndicator },
+  components: { LoadingIndicator, HeartIndicator },
   mixins: [generator],
   data() {
     return {
@@ -144,6 +150,13 @@ export default {
       } else {
         this.gameEnded = true;
       }
+    },
+    heartIndicatorType(index) {
+      let lifeLeft = 3 - this.fail;
+      if (index <= lifeLeft) {
+        return "life";
+      }
+      return "";
     },
   },
   computed: {
