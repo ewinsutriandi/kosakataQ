@@ -32,9 +32,9 @@ export default {
   },
   methods: {
     color_code(index) {
-      console.log("col: num, fail", this.num, this.fail);
+      // console.log("col: num, fail", this.num, this.fail);
       let life = this.num - this.fail;
-      console.log("index,life", index, life);
+      // console.log("index,life", index, life);
       if (index <= life) {
         return "#830E07";
       }
@@ -46,7 +46,7 @@ export default {
       this.color = "#830E0800";
       this.fill = "#830E07";
     }
-    console.log("num, fail", this.num, this.fail);
+    // console.log("num, fail", this.num, this.fail);
   },
 };
 </script>
