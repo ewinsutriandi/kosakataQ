@@ -84,16 +84,20 @@
         class="text-sm text-blue-500 underline hover:text-gray-400"
         >ke halaman utama</router-link
       >
+      <div v-if="webShareApiSupported" class="mt-3">
+        <score-share :scoreData="scoreData" />
+      </div>
     </div>
   </div>
 </template>
 <script>
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import HeartIndicator from "@/components/HeartIndicator.vue";
+import ScoreShare from "@/components/ScoreShare.vue";
 import generator from "@/mixin/generator.js";
 export default {
   name: "GameScreenView",
-  components: { LoadingIndicator, HeartIndicator },
+  components: { LoadingIndicator, HeartIndicator, ScoreShare },
   mixins: [generator],
   data() {
     return {
@@ -191,17 +195,18 @@ export default {
       //console.log(this.surah_quiz, cur_quiz, this.cur_quiz_idx);
       return cur_quiz;
     },
-    j30() {
-      let surahs = this.$store.getters.surahs_j30_plus_fatiha;
-      let al_fatiha = surahs["1"];
-      al_fatiha.idx = 1;
-      let reordered_surahs = [al_fatiha];
-      for (let i = 114; i >= 68; i--) {
-        let surah = surahs[i.toString()];
-        surah.idx = i;
-        reordered_surahs.push(surah);
-      }
-      return reordered_surahs;
+    webShareApiSupported() {
+      return navigator.share;
+    },
+    scoreData() {
+      return {
+        surahIdx: this.surah_idx,
+        playerWon: this.playerWon,
+        score: this.score,
+        maxScore: this.max_score,
+        correct: this.correct,
+        fail: this.fail,
+      };
     },
   },
   mounted() {
