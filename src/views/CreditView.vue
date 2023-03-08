@@ -6,27 +6,27 @@
       Credits
     </h2>
     <span class="text-gray-800 mb-2">
-      <ul>
-        <li>
-          <b>Assets:</b> Most assets are taken from Radhi Fadhlillah repository
-          at
+      <ol>
+        <li class="mb-2">
+          <b>Assets:</b> Teks al-qur'an dan penggalan kata diambil dari
+          repository Radhi Fadhlillah pada
           <a
             href="https://github.com/tezcane/data-quran"
             target="_blank"
             class="text-blue-500"
             >https://github.com/tezcane/data-quran</a
-          >. Original source for each assets can be found there.
+          >. Sumber asli sebagian besar dari tanzil.net. Keterangan detail
+          mengenai asal masing-masing teks dapat dilihat di sana.
         </li>
         <li>
-          <b>Font:</b> Quranic verses and words are displayed using me_quran
-          font (recommended by
+          <b>Font:</b> Font yang digunakan untuk menampilkan ayat dan penggalan
+          kata adalah <b>me_quran</b> (rekomendasi dari
           <a href="https://tanzil.net" target="_blank" class="text-blue-500"
             >tanzil.net</a
-          >), provided by arabic fonts wikispaces, whose original website is no
-          longer available. Fortunately it still can be downloaded from
-          fontsgeek.
+          >), sumber asli dari arabic font wikispace (nonaktif), salinan diambil
+          dari <b>fontsgeek</b>.
         </li>
-      </ul>
+      </ol>
     </span>
   </div>
 </template>

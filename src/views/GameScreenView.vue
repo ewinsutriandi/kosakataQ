@@ -149,12 +149,13 @@ export default {
     answer(ans) {
       let quiz = this.surah_quiz[this.cur_quiz_idx];
       if (quiz.answer === ans) {
-        console.log("Benar");
+        // console.log("Benar");
         this.score += quiz.word_to_translate.length;
         this.correct++;
       } else {
-        console.log("Salah, jawaban benar:", quiz.answer);
+        // console.log("Salah, jawaban benar:", quiz.answer);
         this.fail++;
+        this.showIncorrectAnswerToast(quiz.word_to_translate, quiz.answer);
         if (this.fail == 3) {
           this.gameEnded = true;
           return;
@@ -166,6 +167,15 @@ export default {
         this.gameEnded = true;
         this.playerWon = true;
       }
+    },
+    showIncorrectAnswerToast(word, correct_answer) {
+      let message = `Arti dari kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
+      this.$toast.open({
+        message: message,
+        type: "error",
+        duration: 2500,
+        // all of other options may go here
+      });
     },
     heartIndicatorType(index) {
       let lifeLeft = 3 - this.fail;
