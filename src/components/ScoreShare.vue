@@ -31,14 +31,15 @@ export default {
   methods: {
     shareViaWebShare() {
       let surah = this.$store.getters.surahs_all[this.scoreData.surahIdx];
-      let text = `kosakataQ\n`;
-      text += `Arti kata pada surat ${surah.name} - ${surah.tr_id.nama}\n`;
+      let text = `Saya `;
       if (this.scoreData.playerWon) {
-        text += `SELESAI\n`;
+        text += `berhasil `;
       } else {
-        text += `TIDAK SELESAI\n`;
+        text += `gagal `;
       }
-      text += `Skor ${this.scoreData.score} dari ${this.scoreData.maxScore}\n`;
+      text += `Menyelesaikan game kosakataQ | `;
+      text += `Arti kata pada surat ${surah.name} - ${surah.tr_id.nama}\n\n`;
+      text += `Skor saya ${this.scoreData.score} dari ${this.scoreData.maxScore}\n`;
       text += `Jawaban benar ${this.scoreData.correct}, salah ${this.scoreData.fail}\n\n`;
       console.log(text);
       navigator.share({

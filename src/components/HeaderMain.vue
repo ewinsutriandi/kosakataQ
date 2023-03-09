@@ -2,7 +2,7 @@
   <nav class="bg-white shadow-sm">
     <div class="max-w-6xl mx-auto px-3">
       <div class="flex justify-between">
-        <div class="flex-auto md:flex space-x-1">
+        <div class="flex-auto md:flex space-x-1 ml-6">
           <!-- Area untuk nama/logo app -->
           <div class="flex justify-center">
             <router-link to="/" class="flex items-center px-2">
