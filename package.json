@@ -1,5 +1,5 @@
 {
-  "name": "neu-qq",
+  "name": "kosakataq",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,9 @@
     "autoprefixer": "^10",
     "core-js": "^3.8.3",
     "postcss": "^8",
+    "register-service-worker": "^1.7.2",
     "tailwindcss": "^3",
-    "vue": "^2.6.14",
+    "vue": "^2.7.14",
     "vue-router": "^3.5.1",
     "vue-tailwind": "^2.5.1",
     "vue-toast-notification": "^0.6.3",
@@ -23,6 +24,7 @@
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "^5.0.0",
     "@vue/cli-plugin-eslint": "^5.0.0",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "@vue/cli-service": "^5.0.0",
     "autoprefixer": "^10.4.13",
     "eslint": "^7.32.0",

@@ -11,6 +11,7 @@ import "./assets/tailwind.css";
 
 import VueTailwind from "vue-tailwind";
 import VueTailwindSettings from "./VueTailwindSettings.js";
+import "./registerServiceWorker";
 Vue.use(VueTailwind, VueTailwindSettings);
 Vue.config.productionTip = false;
 
