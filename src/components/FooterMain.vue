@@ -12,6 +12,7 @@
         href="https://play.alza.web.id"
         class="pt-4 hover:underline px-1 text-sm"
         target="_blank"
+        rel="noopener"
         >Alza Interactive</a
       >
     </div>
@@ -23,6 +24,7 @@
           href="https://github.com/ewinsutriandi/kosakataQ"
           class="mr-4 hover:underline md:mr-6"
           target="_blank"
+          rel="noopener"
           >Source Code</a
         >
       </li>

@@ -46,7 +46,7 @@
       >
         {{ cur_quiz.word_to_translate }}
       </span>
-      <span class="mb-4 text-gray-500"> memiliki arti?</span>
+      <span class="mb-6 text-gray-500"> memiliki arti?</span>
 
       <div v-for="choice in cur_quiz.choices" :key="choice.translation">
         <button
