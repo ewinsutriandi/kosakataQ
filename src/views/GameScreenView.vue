@@ -161,7 +161,7 @@ export default {
         this.fail++;
         this.showIncorrectAnswerToast(quiz.word_to_translate, quiz.answer);
         if (this.fail == 3) {
-          this.gameEnded = true;
+          this.endGame();
           return;
         }
       }
@@ -170,7 +170,20 @@ export default {
       } else {
         this.gameEnded = true;
         this.playerWon = true;
+        this.endGame();
       }
+    },
+    endGame() {
+      this.gameEnded = true;
+      let log = {
+        suraIdx: this.surah_idx,
+        playerWon: this.playerWon,
+        score: this.score,
+        correct: this.correct,
+        fail: this.fail,
+        timestamp: Date.now(),
+      };
+      this.$store.commit("add_game_log", log);
     },
     showIncorrectAnswerToast(word, correct_answer) {
       let message = `Arti dari kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;

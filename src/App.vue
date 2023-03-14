@@ -13,6 +13,9 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import FooterMain from "@/components/FooterMain.vue";
 export default {
   components: { HeaderMain, FooterMain },
+  beforeMount() {
+    this.$store.commit("initializeVars");
+  },
 };
 </script>
 

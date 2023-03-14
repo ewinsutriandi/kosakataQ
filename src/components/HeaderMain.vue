@@ -22,6 +22,7 @@
           <button
             @click="toggle_menu_vis"
             class="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white"
+            aria-label="menu"
           >
             <svg
               class="h-6 w-6 text-gray-600 group-hover:text-indigo-600"

@@ -23,6 +23,7 @@ export default new Vuex.Store({
       ayah_word_map: ayah_word_map,
       words: words,
       words_tr_id: words_id,
+      game_logs: [],
     };
   },
   getters: {
@@ -81,7 +82,17 @@ export default new Vuex.Store({
       return ayah_words;
     },
   },
-  mutations: {},
+  mutations: {
+    initializeVars(state) {
+      if (localStorage.getItem("game_logs")) {
+        state.game_logs = JSON.parse(localStorage.game_logs);
+      }
+    },
+    add_game_log(state, log) {
+      state.game_logs.push(log);
+      localStorage.setItem("game_logs", JSON.stringify(state.game_logs));
+    },
+  },
   actions: {},
   modules: {},
 });
