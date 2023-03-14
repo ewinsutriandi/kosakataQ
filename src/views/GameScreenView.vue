@@ -156,6 +156,7 @@ export default {
         // console.log("Benar");
         this.score += quiz.word_to_translate.length;
         this.correct++;
+        this.showCorrectAnswerToast(quiz.word_to_translate, quiz.answer);
       } else {
         // console.log("Salah, jawaban benar:", quiz.answer);
         this.fail++;
@@ -186,10 +187,19 @@ export default {
       this.$store.commit("add_game_log", log);
     },
     showIncorrectAnswerToast(word, correct_answer) {
-      let message = `Arti dari kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
+      let message = `Salah, arti dari kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
       this.$toast.open({
         message: message,
         type: "error",
+        duration: 2500,
+        // all of other options may go here
+      });
+    },
+    showCorrectAnswerToast(word, correct_answer) {
+      let message = `Benar, arti kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
+      this.$toast.open({
+        message: message,
+        type: "success",
         duration: 2500,
         // all of other options may go here
       });
