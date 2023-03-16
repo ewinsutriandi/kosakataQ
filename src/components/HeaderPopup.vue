@@ -96,6 +96,35 @@
         </router-link>
       </div>
     </div>
+    <div
+      class="group relative flex items-center gap-x-1 rounded-lg p-2 text-sm leading-3 hover:bg-gray-50"
+    >
+      <div
+        class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white"
+      >
+        <svg
+          class="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M3 3v18h18" />
+          <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+        </svg>
+      </div>
+      <div class="flex-auto">
+        <router-link
+          to="/stats/j30"
+          @click.native="menu_clicked"
+          class="block font-semibold text-gray-500"
+        >
+          Statistik
+          <span class="absolute inset-0"></span>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 <script>

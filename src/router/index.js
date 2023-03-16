@@ -6,6 +6,7 @@ import GameScreenView from "../views/GameScreenView.vue";
 import LicenseView from "../views/LicenseView.vue";
 import PlayingGuideView from "../views/PlayingGuideView.vue";
 import CreditView from "../views/CreditView.vue";
+import GameStatisticsView from "../views/GameStatisticsView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 
 Vue.use(VueRouter);
@@ -24,6 +25,11 @@ const routes = [
     path: "/play/:idx",
     name: "gamescreen",
     component: GameScreenView,
+  },
+  {
+    path: "/stats/:tipe",
+    name: "gamestats",
+    component: GameStatisticsView,
   },
   {
     path: "/license",

@@ -8,7 +8,13 @@
       Menyiapkan soal
     </div>
     <div v-if="!loading_quiz && $options.quiz_by_aya.length > 0 && !game_on">
-      <span class="mb-2 text-sm text-center leading-7 text-gray-400">
+      <div>
+        <h2 class="text-3xl">{{ selected.name }}</h2>
+        <h2>{{ selected.tr_id.nama }}</h2>
+        <span class="text-sm">Surat ke-{{ selected.idx }}</span> <br />
+        <span class="text-sm">{{ selected.nAyah }} ayat</span>
+      </div>
+      <span class="mt-6 mb-2 text-sm text-center leading-7 text-gray-400">
         Pilih tingkat kesulitan
       </span>
       <br />
@@ -48,7 +54,7 @@
       </span>
       <span class="mb-6 text-gray-500"> memiliki arti?</span>
 
-      <div v-for="choice in cur_quiz.choices" :key="choice.translation">
+      <div v-for="(choice, index) in cur_quiz.choices" :key="index">
         <button
           @click="answer(choice.translation)"
           class="h-9 px-1 m-2 pl-3 pr-3 w-full text-sm text-white transition-colors duration-150 bg-blue-400 rounded-lg focus:shadow-outline hover:bg-blue-600"
@@ -106,6 +112,7 @@ export default {
       gameEnded: false,
       playerWon: false,
       surah_idx: 0,
+      surah: null,
       ayahs_words: {},
       surah_quiz: [],
       cur_quiz_idx: 0,
@@ -180,6 +187,7 @@ export default {
         suraIdx: this.surah_idx,
         playerWon: this.playerWon,
         score: this.score,
+        maxScore: this.max_score,
         correct: this.correct,
         fail: this.fail,
         timestamp: Date.now(),
@@ -234,7 +242,7 @@ export default {
   },
   mounted() {
     this.surah_idx = this.$route.params.idx;
-    this.selected = this.$store.state.surahs[this.surah_idx];
+    this.selected = this.$store.getters.surahs_all[this.surah_idx];
     this.loading_quiz = true;
     setTimeout(() => {
       //console.log("loading quiz");
