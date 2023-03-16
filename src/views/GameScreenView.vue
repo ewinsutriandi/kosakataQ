@@ -11,6 +11,8 @@
       <div>
         <h2 class="text-3xl">{{ selected.name }}</h2>
         <h2>{{ selected.tr_id.nama }}</h2>
+        <span class="text-sm italic">({{ selected.tr_id.arti_nama }})</span>
+        <br />
         <span class="text-sm">Surat ke-{{ selected.idx }}</span> <br />
         <span class="text-sm">{{ selected.nAyah }} ayat</span>
       </div>

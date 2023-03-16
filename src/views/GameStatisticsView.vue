@@ -21,11 +21,11 @@
       <table class="w-full text-sm text-left text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" class="px-3 py-3">No.</th>
-            <th scope="col" class="px-3 py-3">Surat</th>
-            <th scope="col" class="px-3 py-3">Σ Berhasil</th>
-            <th scope="col" class="px-3 py-3">Σ Gagal</th>
-            <th scope="col" class="px-3 py-3">HiScore</th>
+            <th scope="col" class="px-2 py-2">No.</th>
+            <th scope="col" class="px-2 py-2">Surat</th>
+            <th scope="col" class="px-2 py-2">Σ Berhasil</th>
+            <th scope="col" class="px-2 py-2">Σ Gagal</th>
+            <th scope="col" class="px-2 py-2">HiScore</th>
           </tr>
         </thead>
         <tbody>
@@ -36,15 +36,15 @@
           >
             <th
               scope="row"
-              class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap"
+              class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap"
             >
               {{ index + 1 }}
             </th>
 
-            <td class="px-3 py-4">{{ surah.tr_id.nama }}</td>
-            <td class="px-3 py-4">{{ surah.stats.win }}</td>
-            <td class="px-3 py-4">{{ surah.stats.lose }}</td>
-            <td class="px-3 py-4">
+            <td class="px-2 py-2">{{ surah.tr_id.nama }}</td>
+            <td class="px-2 py-2">{{ surah.stats.win }}</td>
+            <td class="px-2 py-2">{{ surah.stats.lose }}</td>
+            <td class="px-2 py-2">
               {{ surah.stats.hiscore }} / {{ surah.stats.maxscore }}
             </td>
           </tr>
