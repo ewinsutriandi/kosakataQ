@@ -37,7 +37,7 @@ export default new Vuex.Store({
     },
     surahs_j30_plus_fatiha(state) {
       let surahs = {};
-      let j30start = 68;
+      let j30start = 78;
       let j30end = 114;
       surahs["1"] = state.surahs["1"];
       surahs["1"]["tr_id"] = surahs_translit_id["1"];

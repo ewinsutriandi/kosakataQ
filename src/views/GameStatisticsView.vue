@@ -97,7 +97,7 @@ export default {
       if (this.$route.params.tipe != "all") {
         // console.log("not all");
         this.gameStats.push(surah_stats[0]); // fatiha
-        for (let i = 114; i >= 68; i--) {
+        for (let i = 114; i >= 78; i--) {
           let st = surah_stats[i - 1];
           this.gameStats.push(st);
         }

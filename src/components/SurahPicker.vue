@@ -40,7 +40,7 @@ export default {
         let al_fatiha = surahs["1"];
         al_fatiha.idx = 1;
         let reordered_surahs = [al_fatiha];
-        for (let i = 114; i >= 68; i--) {
+        for (let i = 114; i >= 78; i--) {
           let surah = surahs[i.toString()];
           surah.idx = i;
           reordered_surahs.push(surah);
