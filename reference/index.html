@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al Qur'an - Mobile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <header class="main-header">
+            <h1>Al Qur’an</h1>
+            <p class="subtitle">Nature Distilled Edition 🌿</p>
+        </header>
+
+        <div class="search-container">
+            <div class="search-pill">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="surahSearch" placeholder="Search Surah...">
+            </div>
+            <div class="filter-bar">
+                <button class="filter-chip" id="btnJuz30">
+                    <span class="chip-icon">✨</span> Juz 30 & Fatihah
+                </button>
+            </div>
+        </div>
+
+        <main class="surah-list" id="surahList">
+            <button class="surah-card" data-surah="fatihah الفاتحة">
+                <div class="card-left">
+                    <span class="surah-index">01</span>
+                    <span class="english-name">Al-Fatihah</span>
+                </div>
+                <h2 class="arabic-name">الفاتحة</h2>
+            </button>
+
+            <button class="surah-card" data-surah="baqarah البقرة">
+                <div class="card-left">
+                    <span class="surah-index">02</span>
+                    <span class="english-name">Al-Baqarah</span>
+                </div>
+                <h2 class="arabic-name">البقرة</h2>
+            </button>
+
+            <button class="surah-card selected" data-surah="ali imran آل عمران">
+                <div class="card-left">
+                    <span class="surah-index">03</span>
+                    <span class="english-name">Ali 'Imran</span>
+                </div>
+                <h2 class="arabic-name">آل عمران</h2>
+            </button>
+        </main>
+    </div>
+    <nav class="bottom-nav">
+        <a href="#home" class="nav-item">
+            <span class="icon">🏠</span>
+            <span class="label">Home</span>
+        </a>
+        <a href="#surahs" class="nav-item active">
+            <span class="icon">📖</span>
+            <span class="label">Read</span>
+        </a>
+        <a href="#stats" class="nav-item">
+            <span class="icon">📈</span>
+            <span class="label">Stats</span>
+        </a>
+        <button id="menuTrigger" class="nav-item">
+            <span class="icon">🌿</span>
+            <span class="label">More</span>
+        </button>
+    </nav>
+
+    <div class="side-drawer" id="sideDrawer">
+        <div class="drawer-content">
+            <button id="closeDrawer">✕</button>
+            <div class="drawer-links">
+                <a href="#about">About the App</a>
+                <a href="#credits">Credits & Sources</a>
+                <a href="#settings">Settings</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

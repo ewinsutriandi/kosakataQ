@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center mb-3" v-if="num">
-    <div class="flex" v-for="index in parseInt(num)" :key="index">
+  <div class="heart-container" v-if="num">
+    <div class="heart-item" v-for="index in parseInt(num)" :key="index">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -20,6 +20,19 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.heart-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.heart-item {
+  display: flex;
+}
+</style>
 <script>
 export default {
   name: "HeartIndicator",

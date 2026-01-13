@@ -1,0 +1,53 @@
+:root {
+  /* Colors - Nature Distilled Palette */
+  --bg: #F9F7F2;
+  --card-white: #FFFFFF;
+  --text-primary: #3C4030;
+  --text-secondary: #8B8E80;
+  --sage: #8DA189;
+  --stone: #E2E2D5;
+
+  /* Mappings for app compatibility */
+  --color-bg: var(--bg);
+  --color-primary: var(--sage);
+  --color-primary-hover: #7A8E76;
+  /* Slightly darker sage */
+  --color-surface: var(--card-white);
+
+  --color-text: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+
+  --color-danger: #EF4444;
+  /* Keep for errors */
+  --color-success: #10B981;
+  /* Keep for success */
+
+  /* Typography */
+  --font-family-base: 'Plus Jakarta Sans', sans-serif;
+  --font-family-arabic: 'Amiri', serif;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* Border Radius */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 8px 24px rgba(141, 161, 137, 0.15);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  /* Glassmorphism */
+  --surface-glass: rgba(255, 255, 255, 0.85);
+  --surface-glass-border: rgba(255, 255, 255, 0.3);
+  --blur-amount: 12px;
+
+  /* Remove old gradient tokens if not needed, or update */
+  --bg-gradient: none;
+}

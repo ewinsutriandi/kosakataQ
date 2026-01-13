@@ -1,58 +1,110 @@
 <template>
-  <div
-    class="max-w-xl bg-white px-9 p-16 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-xl sm:px-11"
-  >
-    <h2 class="ml-3 mb-2 text-sm font-bold leading-7 text-gray-400 sm:truncate">
-      Statistik Permainan
-    </h2>
-    <div class="mt-3 mb-4">
-      <router-link
-        to="/stats/j30"
-        class="text-sm text-blue-500 underline hover:text-gray-400 mb-3 mx-2"
-        >Surat pendek</router-link
-      >
-      <router-link
-        to="/stats/all"
-        class="text-sm text-blue-500 underline hover:text-gray-400 mb-3 mx-2"
-        >Semua surat</router-link
-      >
-    </div>
-    <div class="relative overflow-x-auto">
-      <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" class="px-2 py-2">No.</th>
-            <th scope="col" class="px-2 py-2">Surat</th>
-            <th scope="col" class="px-2 py-2">Σ Berhasil</th>
-            <th scope="col" class="px-2 py-2">Σ Gagal</th>
-            <th scope="col" class="px-2 py-2">HiScore</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(surah, index) in gameStats"
-            :key="index"
-            class="bg-white border-b"
-          >
-            <th
-              scope="row"
-              class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap"
-            >
-              {{ index + 1 }}
-            </th>
-
-            <td class="px-2 py-2">{{ surah.tr_id.nama }}</td>
-            <td class="px-2 py-2">{{ surah.stats.win }}</td>
-            <td class="px-2 py-2">{{ surah.stats.lose }}</td>
-            <td class="px-2 py-2">
-              {{ surah.stats.hiscore }} / {{ surah.stats.maxscore }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="container stats-view">
+    <div class="card stats-card">
+      <h2 class="stats-title">Statistik Permainan</h2>
+      <div class="stats-filters">
+        <router-link to="/stats/j30" class="filter-link"
+          >Surat pendek</router-link
+        >
+        <router-link to="/stats/all" class="filter-link"
+          >Semua surat</router-link
+        >
+      </div>
+      <div class="stats-table-container">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">Surat</th>
+              <th scope="col">Σ Berhasil</th>
+              <th scope="col">Σ Gagal</th>
+              <th scope="col">HiScore</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(surah, index) in gameStats" :key="index">
+              <th scope="row">
+                {{ index + 1 }}
+              </th>
+              <td>{{ surah.tr_id.nama }}</td>
+              <td>{{ surah.stats.win }}</td>
+              <td>{{ surah.stats.lose }}</td>
+              <td>{{ surah.stats.hiscore }} / {{ surah.stats.maxscore }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.stats-view {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}
+
+.stats-card {
+  width: 100%;
+}
+
+.stats-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+.stats-filters {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.filter-link {
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.filter-link:hover {
+  color: var(--color-text-muted);
+}
+
+.stats-table-container {
+  overflow-x: auto;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.stats-table th,
+.stats-table td {
+  padding: var(--spacing-sm) var(--spacing-xs);
+  text-align: left;
+}
+
+.stats-table thead {
+  background-color: var(--color-bg);
+  text-transform: uppercase;
+  color: var(--color-text);
+  font-size: 0.75rem;
+}
+
+.stats-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.stats-table tbody tr:last-child {
+  border-bottom: none;
+}
+</style>
 <script>
 export default {
   name: "GameStatisticsView",

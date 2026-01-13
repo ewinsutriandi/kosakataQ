@@ -7,12 +7,9 @@ Vue.use(VueToast);
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "./assets/tailwind.css";
+import "@/assets/css/main.css";
 
-import VueTailwind from "vue-tailwind";
-import VueTailwindSettings from "./VueTailwindSettings.js";
 import "./registerServiceWorker";
-Vue.use(VueTailwind, VueTailwindSettings);
 Vue.config.productionTip = false;
 
 new Vue({

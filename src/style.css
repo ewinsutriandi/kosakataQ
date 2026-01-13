@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --bg: #F9F7F2;
+    --card-white: #FFFFFF;
+    --text-primary: #3C4030;
+    --text-secondary: #8B8E80;
+    --sage: #8DA189;
+    --stone: #E2E2D5;
+
+    /* Mapping to existing app variables for compatibility/transition */
+    --color-bg: var(--bg);
+    --color-primary: var(--sage);
+    --color-text: var(--text-primary);
+    --color-text-muted: var(--text-secondary);
+    --font-family-base: 'Plus Jakarta Sans', sans-serif;
+    --font-family-arabic: 'Amiri', serif;
+
+    /* Glassmorphism helpers */
+    --surface-glass: rgba(255, 255, 255, 0.85);
+    --surface-glass-border: rgba(255, 255, 255, 0.3);
+    --blur-amount: 12px;
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+    /* Spacing */
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 40px;
+    --radius-md: 20px;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: var(--font-family-base);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+}

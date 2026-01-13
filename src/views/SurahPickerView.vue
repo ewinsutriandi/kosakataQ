@@ -1,15 +1,48 @@
 <template>
-  <div
-    class="bg-white px-9 pt-8 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:rounded-xl sm:px-11"
-  >
-    <h2
-      class="ml-3 mb-2 text-sm text-left font-bold leading-7 text-gray-400 sm:truncate"
-    >
-      Pilih surat untuk memulai
-    </h2>
-    <surah-picker :tipe="this.$route.params.tipe" />
+  <div class="immersive-picker-view">
+    <header class="main-header">
+      <h1>Al Qur’an</h1>
+      <p class="subtitle">Nature Distilled Edition 🌿</p>
+    </header>
+    <div class="picker-container">
+      <surah-picker :tipe="this.$route.params.tipe" />
+    </div>
   </div>
 </template>
+<style scoped>
+.immersive-picker-view {
+  width: 100%;
+  min-height: 100%;
+  padding-bottom: var(--spacing-xl);
+}
+
+.main-header {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.main-header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
+}
+
+.picker-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+</style>
 <script>
 import SurahPicker from "@/components/SurahPicker.vue";
 

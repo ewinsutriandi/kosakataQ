@@ -1,18 +1,28 @@
 <template>
-  <div id="app" class="flex flex-col h-screen justify-between">
-    <header-main />
-    <div class="min-h-800 relative flex flex-col bg-gray-20 py-6 sm:py-12">
-      <router-view :key="$route.fullPath" />
-    </div>
-    <footer-main />
+  <div id="app" class="app-shell">
+    <navigation-overlay :is-open="isNavOpen" @close="isNavOpen = false" />
+
+    <main class="app-content">
+      <transition name="fade" mode="out-in">
+        <router-view :key="$route.fullPath" />
+      </transition>
+    </main>
+
+    <floating-dock @toggle-menu="isNavOpen = !isNavOpen" />
   </div>
 </template>
 
 <script>
-import HeaderMain from "@/components/HeaderMain.vue";
-import FooterMain from "@/components/FooterMain.vue";
+import NavigationOverlay from "@/components/NavigationOverlay.vue";
+import FloatingDock from "@/components/FloatingDock.vue";
+
 export default {
-  components: { HeaderMain, FooterMain },
+  components: { NavigationOverlay, FloatingDock },
+  data() {
+    return {
+      isNavOpen: false,
+    };
+  },
   beforeMount() {
     this.$store.commit("initializeVars");
   },
@@ -20,24 +30,39 @@ export default {
 </script>
 
 <style>
+/* Global Transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  min-height: 100vh;
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  position: relative;
+  overflow-x: hidden;
+  background-color: var(--color-bg);
 }
 
-nav {
-  padding: 30px;
+.app-shell {
+  display: flex;
+  flex-direction: column;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #aaa;
+.app-content {
+  flex: 1;
+  width: 100%;
+  padding-top: var(--spacing-lg);
+  padding-bottom: 120px; /* Space for floating dock */
+  position: relative;
+  z-index: 10;
+  max-width: 800px; /* Centered like reference */
+  margin: 0 auto;
 }
 </style>

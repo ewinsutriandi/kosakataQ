@@ -1,0 +1,271 @@
+/* Variables & Reset */
+:root {
+    --bg: #F9F7F2;
+    --card-white: #FFFFFF;
+    --text-primary: #3C4030;
+    --text-secondary: #8B8E80;
+    --sage: #8DA189;
+    --stone: #E2E2D5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-primary);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Header */
+.main-header {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.main-header h1 {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+/* Search Bar (Pill Shape) */
+.search-container {
+    position: sticky;
+    top: 20px;
+    z-index: 10;
+    margin-bottom: 30px;
+}
+
+.search-pill {
+    background: var(--card-white);
+    border: 1px solid var(--stone);
+    border-radius: 50px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+.search-pill:focus-within {
+    border-color: var(--sage);
+    box-shadow: 0 8px 24px rgba(141, 161, 137, 0.15);
+    transform: translateY(-2px);
+}
+
+#surahSearch {
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-left: 10px;
+    font-size: 1rem;
+    background: transparent;
+}
+
+/* Surah Cards */
+.surah-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Mobile: 1 column */
+    gap: 16px;
+}
+
+.surah-card {
+    background: var(--card-white);
+    border: 1px solid var(--stone);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+}
+
+.surah-card:active {
+    transform: scale(0.97);
+    /* Tactile "squish" on tap */
+}
+
+.card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.surah-index {
+    font-size: 0.75rem;
+    color: var(--sage);
+    font-weight: 700;
+}
+
+.english-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.arabic-name {
+    font-family: 'Amiri', serif;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+}
+
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 0 5px;
+}
+
+.filter-chip {
+    background: transparent;
+    border: 1px solid var(--stone);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-chip.active {
+    background-color: var(--sage);
+    border-color: var(--sage);
+    color: white;
+    box-shadow: 0 4px 12px rgba(141, 161, 137, 0.3);
+    transform: translateY(-1px);
+}
+
+.chip-icon {
+    font-size: 0.9rem;
+}
+
+.surah-card {
+    /* ... existing styles ... */
+    transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.4s ease,
+        display 0.4s allow-discrete;
+    /* New CSS feature for smooth hiding */
+}
+
+/* Add a hover effect to the chip even when not active */
+.filter-chip:hover {
+    background-color: #EFEFE8;
+    border-color: var(--sage);
+}
+
+/* Selected State */
+.surah-card.selected {
+    background: var(--sage);
+    border-color: var(--sage);
+}
+
+.surah-card.selected .english-name,
+.surah-card.selected .arabic-name,
+.surah-card.selected .surah-index {
+    color: white;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 24px;
+    /* Floats above the edge */
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    /* Glassmorphism */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+    gap: 4px;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+}
+
+.nav-item.active {
+    color: var(--sage);
+    transform: translateY(-2px);
+}
+
+.nav-item .icon {
+    font-size: 1.2rem;
+}
+
+.nav-item .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Side Drawer (About/Credits) */
+.side-drawer {
+    position: fixed;
+    inset: 0;
+    background: rgba(60, 64, 48, 0.4);
+    /* Dim background */
+    backdrop-filter: blur(8px);
+    display: none;
+    /* Hidden by default */
+    z-index: 200;
+}
+
+.drawer-content {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 280px;
+    background: var(--bg);
+    padding: 40px 30px;
+    border-radius: 40px 0 0 40px;
+}
+
+/* DESKTOP/TABLET GRID */
+@media (min-width: 600px) {
+    .surah-list {
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns on larger screens */
+    }
+}
