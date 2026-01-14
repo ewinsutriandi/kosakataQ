@@ -29,7 +29,7 @@
 
       <div class="drawer-footer">
         <p class="brand">kosakataQ</p>
-        <p class="copyright">Nature Distilled Edition</p>
+        <p class="copyright">version 2.0</p>
       </div>
     </div>
   </div>
