@@ -1,8 +1,8 @@
 <template>
   <div class="immersive-picker-view">
     <header class="main-header">
-      <h1>Al Qur’an</h1>
-      <p class="subtitle">Nature Distilled Edition 🌿</p>
+      <h1>kosakataQ</h1>
+      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
     </header>
     <div class="picker-container">
       <surah-picker :tipe="this.$route.params.tipe" />
@@ -23,8 +23,7 @@
 
 .main-header h1 {
   font-size: 1.5rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  letter-spacing: 1px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 5px;
