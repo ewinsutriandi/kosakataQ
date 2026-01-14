@@ -25,6 +25,7 @@ const routes = [
     path: "/play/:idx",
     name: "gamescreen",
     component: GameScreenView,
+    meta: { hideNavigation: true }
   },
   {
     path: "/stats/:tipe",

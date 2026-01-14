@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app-shell">
-    <navigation-overlay :is-open="isNavOpen" @close="isNavOpen = false" />
+    <navigation-overlay v-if="!$route.meta.hideNavigation" :is-open="isNavOpen" @close="isNavOpen = false" />
 
     <main class="app-content">
       <transition name="fade" mode="out-in">
@@ -8,7 +8,7 @@
       </transition>
     </main>
 
-    <floating-dock @toggle-menu="isNavOpen = !isNavOpen" />
+    <floating-dock v-if="!$route.meta.hideNavigation" @toggle-menu="isNavOpen = !isNavOpen" />
   </div>
 </template>
 

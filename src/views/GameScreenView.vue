@@ -43,15 +43,23 @@
     <div v-if="surah_quiz.length > 1 && game_on && !gameEnded" class="game-hud">
       <!-- Top HUD -->
       <header class="hud-top">
-        <div class="hud-left">
+        <button type="button" class="close-game-btn" @click="closeGame" aria-label="Exit Game">
+           ✕
+        </button>
+
+        <!-- Surah Title (Larger) -->
+        <div class="hud-row">
+          <h2 class="surah-tag-large">{{ selected.tr_id.nama }}</h2>
+        </div>
+
+        <!-- Life Indicator (Hearts) -->
+        <div class="hud-row">
           <heart-indicator num="3" :fail="fail" :key="cur_quiz_idx" />
         </div>
-        <div class="hud-center">
-          <span class="surah-tag">{{ selected.tr_id.nama }}</span>
-        </div>
-        <div class="hud-right">
-          <div class="score-pill">
-            <span class="label">Skor</span>
+
+        <!-- Score -->
+        <div class="hud-row">
+          <div class="score-simple">
             <span class="value">{{ score }}</span>
           </div>
         </div>
@@ -249,10 +257,6 @@
   color: white;
 }
 
-.btn-secondary {
-  /* Outline style */
-}
-
 /* HUD Styling */
 .game-hud {
   display: flex;
@@ -262,42 +266,59 @@
 
 .hud-top {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   padding: var(--spacing-md);
+  gap: 8px; /* Spacing between rows */
+  position: relative; /* For absolute positioning of close button */
 }
 
-.hud-left,
-.hud-right {
-  flex: 1;
-}
-
-.hud-right {
+.close-game-btn {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
-  justify-content: flex-end;
-}
-
-.surah-tag {
-  font-size: 0.875rem;
-  font-weight: 600;
-  opacity: 0.6;
-}
-
-.score-pill {
-  background: var(--surface-glass);
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  display: flex;
-  gap: 0.5rem;
   align-items: center;
-  box-shadow: var(--shadow-sm);
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 20;
 }
-.score-pill .label {
-  margin: 0;
+
+.close-game-btn:hover {
+  background: white;
+  color: var(--color-danger);
+  transform: scale(1.1);
 }
-.score-pill .value {
+
+.hud-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.surah-tag-large {
+  font-size: 1.5rem; /* Larger than before */
   font-weight: 800;
   color: var(--color-primary);
+  margin: 0;
+}
+
+.score-simple {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+.score-simple .value {
+  color: var(--color-text);
 }
 
 /* Game Main */
@@ -350,7 +371,7 @@
 /* Bottom Actions */
 .game-bottom {
   padding: var(--spacing-md);
-  padding-bottom: 0; /* floating dock handles space */
+  padding-bottom: 0;
 }
 
 .choices-grid {
@@ -425,12 +446,20 @@
     font-size: 1.8rem;
   }
 }
+
+/* Font Face - Moved from duplicate style block */
+@font-face {
+  font-family: "UthmanTN";
+  src: local("UthmanTN"), url(../assets/me_quran_Regular.ttf) format("truetype");
+}
 </style>
+
 <script>
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import HeartIndicator from "@/components/HeartIndicator.vue";
 import ScoreShare from "@/components/ScoreShare.vue";
 import generator from "@/mixin/generator.js";
+
 export default {
   name: "GameScreenView",
   components: { LoadingIndicator, HeartIndicator, ScoreShare },
@@ -550,183 +579,9 @@ export default {
       }
       return "";
     },
-  },
-  computed: {
-    cur_quiz() {
-      let cur_quiz = this.surah_quiz[this.cur_quiz_idx];
-      //console.log(this.surah_quiz, cur_quiz, this.cur_quiz_idx);
-      return cur_quiz;
-    },
-    webShareApiSupported() {
-      return navigator.share;
-    },
-    scoreData() {
-      return {
-        surahIdx: this.surah_idx,
-        playerWon: this.playerWon,
-        score: this.score,
-        maxScore: this.max_score,
-        correct: this.correct,
-        fail: this.fail,
-      };
-    },
-  },
-  mounted() {
-    this.surah_idx = this.$route.params.idx;
-    this.selected = this.$store.getters.surahs_all[this.surah_idx];
-    this.loading_quiz = true;
-    setTimeout(() => {
-      //console.log("loading quiz");
-      this.load_quiz();
-      this.loading_quiz = false;
-    }, 0);
-  },
-  beforeRouteLeave(to, from, next) {
-    let leave = true;
-    if (this.game_on && !this.gameEnded) {
-      const answer = window.confirm(
-        "Pindah halaman dan keluar dari permainan ini?"
-      );
-      if (!answer) {
-        leave = false;
-      }
-    }
-    // console.log(leave);
-    next(leave);
-  },
-};
-</script>
-<style>
-@font-face {
-  font-family: "UthmanTN";
-  src: local("UthmanTN"), url(../assets/me_quran_Regular.ttf) format("truetype");
-}
-.ayah {
-  font-family: "UthmanTN", Helvetica, sans-serif;
-}
-</style>
-<script>
-import LoadingIndicator from "@/components/LoadingIndicator.vue";
-import HeartIndicator from "@/components/HeartIndicator.vue";
-import ScoreShare from "@/components/ScoreShare.vue";
-import generator from "@/mixin/generator.js";
-export default {
-  name: "GameScreenView",
-  components: { LoadingIndicator, HeartIndicator, ScoreShare },
-  mixins: [generator],
-  data() {
-    return {
-      selected: {},
-      gameStarted: false,
-      gameEnded: false,
-      playerWon: false,
-      surah_idx: 0,
-      surah: null,
-      ayahs_words: {},
-      surah_quiz: [],
-      cur_quiz_idx: 0,
-      game_on: false,
-      score: 0,
-      max_score: 0,
-      correct: 0,
-      fail: 0,
-      loading_quiz: false,
-    };
-  },
-  quiz_by_aya: [],
-  methods: {
-    load_quiz() {
-      this.$options.quiz_by_aya = this.generate_quiz_fr_surah(this.surah_idx);
-      this.max_score = 0;
-      for (let key in Object.keys(this.$options.quiz_by_aya)) {
-        let aya_quiz = this.$options.quiz_by_aya[key];
-        for (let i = 0; i < aya_quiz.length; i++) {
-          let quiz = aya_quiz[i];
-          this.max_score += quiz.word_to_translate.length;
-        }
-      }
-    },
-    startNormal() {
-      let all_quiz = [];
-      for (let key in Object.keys(this.$options.quiz_by_aya)) {
-        let aya_quiz = this.$options.quiz_by_aya[key];
-        aya_quiz = this.randomize(aya_quiz);
-        all_quiz = all_quiz.concat(aya_quiz);
-      }
-      this.surah_quiz = all_quiz;
-      this.game_on = true;
-    },
-    startHard() {
-      let all_quiz = [];
-      for (let key in Object.keys(this.$options.quiz_by_aya)) {
-        let aya_quiz = this.$options.quiz_by_aya[key];
-        all_quiz = all_quiz.concat(aya_quiz);
-      }
-      all_quiz = this.randomize(all_quiz);
-      this.surah_quiz = all_quiz;
-      this.game_on = true;
-    },
-    answer(ans) {
-      let quiz = this.surah_quiz[this.cur_quiz_idx];
-      if (quiz.answer === ans) {
-        // console.log("Benar");
-        this.score += quiz.word_to_translate.length;
-        this.correct++;
-        this.showCorrectAnswerToast(quiz.word_to_translate, quiz.answer);
-      } else {
-        // console.log("Salah, jawaban benar:", quiz.answer);
-        this.fail++;
-        this.showIncorrectAnswerToast(quiz.word_to_translate, quiz.answer);
-        if (this.fail == 3) {
-          this.endGame();
-          return;
-        }
-      }
-      if (this.cur_quiz_idx < this.surah_quiz.length - 1) {
-        this.cur_quiz_idx++;
-      } else {
-        this.gameEnded = true;
-        this.playerWon = true;
-        this.endGame();
-      }
-    },
-    endGame() {
-      this.gameEnded = true;
-      let log = {
-        suraIdx: this.surah_idx,
-        playerWon: this.playerWon,
-        score: this.score,
-        maxScore: this.max_score,
-        correct: this.correct,
-        fail: this.fail,
-        timestamp: Date.now(),
-      };
-      this.$store.commit("add_game_log", log);
-    },
-    showIncorrectAnswerToast(word, correct_answer) {
-      let message = `Salah, arti dari kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
-      this.$toast.open({
-        message: message,
-        type: "error",
-        duration: 2500,
-        // all of other options may go here
-      });
-    },
-    showCorrectAnswerToast(word, correct_answer) {
-      let message = `Benar, arti kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
-      this.$toast.open({
-        message: message,
-        type: "success",
-        duration: 2500,
-        // all of other options may go here
-      });
-    },
-    heartIndicatorType(index) {
-      let lifeLeft = 3 - this.fail;
-      if (index <= lifeLeft) {
-        return "life";
-      }
-      return "";
+    closeGame() {
+      // Trying to navigate away will trigger the beforeRouteLeave guard
+      this.$router.push("/").catch(() => {});
     },
   },
   computed: {
@@ -774,6 +629,7 @@ export default {
   },
 };
 </script>
+
 <style>
 @font-face {
   font-family: "UthmanTN";

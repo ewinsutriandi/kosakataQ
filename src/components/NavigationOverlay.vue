@@ -74,14 +74,14 @@ export default {
 
 .drawer-content {
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
   height: 100%;
   width: 280px;
   background: var(--bg);
   padding: 40px 30px;
-  border-radius: 40px 0 0 40px;
-  transform: translateX(100%);
+  border-radius: 0 40px 40px 0;
+  transform: translateX(-100%);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
