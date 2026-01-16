@@ -1,14 +1,27 @@
 <template>
   <div class="container stats-view">
+    <header class="main-header">
+      <h1>kosakataQ</h1>
+      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
+    </header>
+
     <div class="card stats-card">
       <h2 class="stats-title">Statistik Permainan</h2>
       <div class="stats-filters">
-        <router-link to="/stats/j30" class="filter-link"
-          >Surat pendek</router-link
+        <router-link
+          to="/stats/j30"
+          class="filter-chip"
+          :class="{ active: $route.params.tipe !== 'all' }"
         >
-        <router-link to="/stats/all" class="filter-link"
-          >Semua surat</router-link
+          <span class="chip-icon">✨</span> Juz 30 & Fatihah
+        </router-link>
+        <router-link
+          to="/stats/all"
+          class="filter-chip"
+          :class="{ active: $route.params.tipe === 'all' }"
         >
+          <span class="chip-icon">📚</span> All Surahs
+        </router-link>
       </div>
       <div class="stats-table-container">
         <table class="stats-table">
@@ -40,37 +53,83 @@
 
 <style scoped>
 .stats-view {
-  padding-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
   padding-bottom: var(--spacing-xl);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header Styles (Consistent with SurahPicker) */
+.main-header {
+  text-align: center;
+  margin: 10px 0 30px 0;
+}
+
+.main-header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
 }
 
 .stats-card {
   width: 100%;
+  max-width: 100%;
 }
 
 .stats-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-lg);
 }
 
 .stats-filters {
   display: flex;
-  gap: var(--spacing-md);
+  gap: 10px;
   margin-bottom: var(--spacing-lg);
+  overflow-x: auto;
+  padding-bottom: 5px;
 }
 
-.filter-link {
-  font-size: 0.875rem;
-  color: var(--color-primary);
-  text-decoration: underline;
+/* Filter Chip Styles */
+.filter-chip {
+  background: transparent;
+  border: 1px solid var(--stone);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  text-decoration: none; /* Remove default link underline */
 }
 
-.filter-link:hover {
-  color: var(--color-text-muted);
+.filter-chip:hover {
+  background-color: #efefe8;
+  border-color: var(--sage);
+  color: var(--text-primary);
+}
+
+.filter-chip.active {
+  background-color: var(--sage);
+  border-color: var(--sage);
+  color: white;
+  box-shadow: 0 4px 12px rgba(141, 161, 137, 0.3);
+  transform: translateY(-1px);
 }
 
 .stats-table-container {
@@ -91,14 +150,19 @@
 }
 
 .stats-table thead {
-  background-color: var(--color-bg);
+  background-color: var(--bg); /* Use slight bg for header */
   text-transform: uppercase;
   color: var(--color-text);
   font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stats-table th {
+    border-radius: 4px; /* Soften header corners */
 }
 
 .stats-table tbody tr {
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--stone);
 }
 
 .stats-table tbody tr:last-child {
