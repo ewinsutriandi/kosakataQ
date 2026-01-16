@@ -133,6 +133,21 @@
         </div>
       </div>
     </div>
+
+
+    <!-- Exit Confirmation Modal -->
+    <transition name="fade">
+      <div v-if="showExitModal" class="modal-overlay">
+        <div class="glass-card modal-card">
+          <h3 class="modal-title">Jeda Permainan</h3>
+          <p class="modal-desc">Keluar sekarang akan menghapus progress permainan ini.</p>
+          <div class="actions-row">
+            <button @click="cancelExit" class="btn-glass">Lanjut Main</button>
+            <button @click="confirmExit" class="btn-glass btn-danger">Keluar</button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -452,6 +467,47 @@
   font-family: "UthmanTN";
   src: local("UthmanTN"), url(../assets/me_quran_Regular.ttf) format("truetype");
 }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(60, 64, 48, 0.4);
+  backdrop-filter: blur(var(--blur-amount));
+  padding: var(--spacing-md);
+}
+
+.modal-card {
+  max-width: 340px !important;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal-desc {
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+.btn-danger {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--color-danger);
+  border-color: rgba(220, 38, 38, 0.2);
+}
+
+.btn-danger:hover {
+  background: var(--color-danger);
+  color: white;
+}
 </style>
 
 <script>
@@ -481,6 +537,9 @@ export default {
       correct: 0,
       fail: 0,
       loading_quiz: false,
+      showExitModal: false,
+      confirmedExit: false,
+      pendingTarget: null,
     };
   },
   quiz_by_aya: [],
@@ -559,6 +618,7 @@ export default {
         message: message,
         type: "error",
         duration: 2500,
+        position: "top-right",
         // all of other options may go here
       });
     },
@@ -569,7 +629,7 @@ export default {
         type: "success",
         duration: 2500,
         // all of other options may go here
-        position: "top",
+        position: "top-right",
       });
     },
     heartIndicatorType(index) {
@@ -582,6 +642,19 @@ export default {
     closeGame() {
       // Trying to navigate away will trigger the beforeRouteLeave guard
       this.$router.push("/").catch(() => {});
+    },
+    confirmExit() {
+      this.confirmedExit = true;
+      this.showExitModal = false;
+      if (this.pendingTarget) {
+        this.$router.push(this.pendingTarget).catch(() => {});
+      } else {
+        this.$router.push("/").catch(() => {});
+      }
+    },
+    cancelExit() {
+      this.showExitModal = false;
+      this.pendingTarget = null;
     },
   },
   computed: {
@@ -615,17 +688,15 @@ export default {
     }, 0);
   },
   beforeRouteLeave(to, from, next) {
-    let leave = true;
-    if (this.game_on && !this.gameEnded) {
-      const answer = window.confirm(
-        "Pindah halaman dan keluar dari permainan ini?"
-      );
-      if (!answer) {
-        leave = false;
-      }
+    if (this.game_on && !this.gameEnded && !this.confirmedExit) {
+      // Cancel immediate navigation and show modal
+      this.pendingTarget = to;
+      this.showExitModal = true;
+      next(false);
+    } else {
+      // Allow navigation if game ended or exit confirmed
+      next();
     }
-    // console.log(leave);
-    next(leave);
   },
 };
 </script>

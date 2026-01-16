@@ -99,3 +99,36 @@ body {
     box-shadow: var(--shadow-md);
     padding: var(--spacing-lg);
 }
+
+/* Toast Customization */
+.v-toast__item {
+    font-family: var(--font-family-base) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-md) !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+    min-height: auto !important;
+}
+
+.v-toast__item .v-toast__text {
+    font-size: 1rem !important;
+    padding: 0 !important;
+}
+
+/* Success Toast - Darker Green for Contrast */
+.v-toast--success .v-toast__item {
+    background-color: #4F6F4B !important;
+    /* Darker shade of Sage for contrast */
+    color: white !important;
+}
+
+/* Error Toast - Soft Red */
+.v-toast--error .v-toast__item {
+    background-color: var(--color-danger) !important;
+    color: white !important;
+}
+
+.v-toast__icon {
+    display: none !important;
+    /* Hide default icons for cleaner look */
+}
