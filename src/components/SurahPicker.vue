@@ -119,7 +119,7 @@ export default {
           list.push(s1);
         }
 
-        for (let i = 78; i <= 114; i++) {
+        for (let i = 114; i >= 78; i--) {
           if (surahs[i.toString()]) {
             let s = surahs[i.toString()];
             s.idx = i;
