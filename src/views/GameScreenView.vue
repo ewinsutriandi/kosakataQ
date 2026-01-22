@@ -135,7 +135,32 @@
     </div>
 
 
+    <!-- Wrong Answer Modal -->
+    <transition name="fade">
+      <div v-if="showWrongModal" class="modal-overlay">
+        <div class="glass-card modal-card">
+          <h3 class="modal-title failure">Kurang Tepat</h3>
+          <div class="modal-desc">
+            <p style="margin-bottom: 0.5rem; color: var(--color-text-muted);">
+              Arti dari kata <b style="color: var(--color-text)">{{ wrongModalData.word }}</b>
+            </p>
+            <p style="color: var(--color-text-muted); font-size: 0.85rem;">pada ayat</p>
+            <p class="modal-ayah">{{ wrongModalData.ayahText }}</p>
+            <p style="margin-bottom: 0.5rem; color: var(--color-text-muted);">adalah</p>
+            <h4 style="color: var(--color-primary); font-size: 1.3rem; margin: 0;">
+              {{ wrongModalData.correctAnswer }}
+            </h4>
+          </div>
+          <div class="actions-row">
+            <button @click="closeWrongModal" class="btn-glass btn-primary">Lanjut</button>
+          </div>
+        </div>
+      </div>
+    </transition>
+
     <!-- Exit Confirmation Modal -->
+
+
     <transition name="fade">
       <div v-if="showExitModal" class="modal-overlay">
         <div class="glass-card modal-card">
@@ -509,6 +534,15 @@
   margin-bottom: var(--spacing-lg);
 }
 
+.modal-ayah {
+  font-family: "UthmanTN", serif;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: var(--spacing-sm) 0;
+  display: block;
+}
+
 .btn-danger {
   background: rgba(220, 38, 38, 0.1);
   color: var(--color-danger);
@@ -548,7 +582,11 @@ export default {
       correct: 0,
       fail: 0,
       loading_quiz: false,
-      showExitModal: false,
+      showWrongModal: false,
+      wrongModalData: {
+        word: "",
+        correctAnswer: "",
+      },
       confirmedExit: false,
       pendingTarget: null,
     };
@@ -589,19 +627,30 @@ export default {
     answer(ans) {
       let quiz = this.surah_quiz[this.cur_quiz_idx];
       if (quiz.answer === ans) {
-        // console.log("Benar");
         this.score += quiz.word_to_translate.length;
         this.correct++;
         this.showCorrectAnswerToast(quiz.word_to_translate, quiz.answer);
+        this.advanceGame();
       } else {
-        // console.log("Salah, jawaban benar:", quiz.answer);
         this.fail++;
-        this.showIncorrectAnswerToast(quiz.word_to_translate, quiz.answer);
-        if (this.fail == 3) {
-          this.endGame();
-          return;
-        }
+        // Show blocking modal instead of toast
+        this.wrongModalData = {
+          word: quiz.word_to_translate,
+          correctAnswer: quiz.answer,
+          ayahText: quiz.ayah_text,
+        };
+        this.showWrongModal = true;
+        // Game does NOT advance yet. Waits for modal close.
       }
+    },
+    advanceGame() {
+      // Check failure condition
+      if (this.fail >= 3) {
+        this.endGame();
+        return;
+      }
+
+      // Next question or win
       if (this.cur_quiz_idx < this.surah_quiz.length - 1) {
         this.cur_quiz_idx++;
       } else {
@@ -609,6 +658,10 @@ export default {
         this.playerWon = true;
         this.endGame();
       }
+    },
+    closeWrongModal() {
+      this.showWrongModal = false;
+      this.advanceGame();
     },
     endGame() {
       this.gameEnded = true;
@@ -624,13 +677,13 @@ export default {
       this.$store.commit("add_game_log", log);
     },
     showIncorrectAnswerToast(word, correct_answer) {
+      // Deprecated in favor of modal, keeping if needed for fallback
       let message = `Salah, arti dari kata <b> ${word} </b> adalah <b>${correct_answer}</b>`;
       this.$toast.open({
         message: message,
         type: "error",
         duration: 2500,
         position: "top-right",
-        // all of other options may go here
       });
     },
     showCorrectAnswerToast(word, correct_answer) {
@@ -639,7 +692,6 @@ export default {
         message: message,
         type: "success",
         duration: 2500,
-        // all of other options may go here
         position: "top-right",
       });
     },
