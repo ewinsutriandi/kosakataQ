@@ -55,7 +55,7 @@ body .v-toast__item .v-toast__text {
 /* Success Toast - Sage Accent */
 body .v-toast__item--success,
 body .v-toast--success .v-toast__item {
-  border-left: 6px solid #8DA189 !important; /* Sage */
+  border-left: 6px solid #5E6E56 !important; /* Sage */
 }
 
 /* Error Toast - Red Accent */
