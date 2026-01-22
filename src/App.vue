@@ -3,6 +3,7 @@
     <div v-if="isLoading" class="loading-overlay">
       <div class="loading-content">
         <header class="main-header mb-6">
+          <img src="/logo.png" alt="Logo" class="app-logo" />
           <h1>kosakataQ</h1>
           <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
         </header>
@@ -91,6 +92,15 @@ body .v-toast__icon {
 /* Header Styles in Loading Screen */
 .loading-content .main-header {
   margin-bottom: 2rem;
+}
+
+.app-logo {
+  width: 120px;
+  height: auto;
+  margin: 0 auto 1.5rem auto;
+  display: block;
+  border-radius: 24px; /* Scaled up radius */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .loading-content .main-header h1 {
