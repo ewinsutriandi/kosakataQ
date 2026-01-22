@@ -3,7 +3,7 @@
     <!-- Loading -->
     <div v-if="loading_quiz" class="loading-state">
       <loading-indicator />
-      <p class="animate-pulse">Menyiapkan suasana...</p>
+      <p class="animate-pulse">Menyiapkan permainan...</p>
     </div>
 
     <!-- Prepare Screen (Glass Card) -->
@@ -13,6 +13,7 @@
     >
       <div class="glass-card prepare-card">
         <div class="surah-header">
+          <span class="surah-number">Surah ke-{{ selected.idx }}</span>
           <h2 class="surah-title">{{ selected.name }}</h2>
           <div class="surah-subtitle">
             <h3 class="translit">{{ selected.tr_id.nama }}</h3>
@@ -21,12 +22,11 @@
         </div>
 
         <div class="meta-pills">
-          <span class="pill">{{ selected.idx }}</span>
           <span class="pill">{{ selected.nAyah }} Ayat</span>
         </div>
 
         <div class="difficulty-actions">
-          <p class="label">Mulai perjalanan</p>
+          <p class="label">Pilih tingkat kesulitan</p>
           <div class="actions-row">
             <button @click="startNormal" class="btn-glass btn-primary">
               Normal
@@ -79,7 +79,7 @@
               <span class="highlight-word">{{
                 cur_quiz.word_to_translate
               }}</span>
-              <span class="context-label">artinya...</span>
+              <span class="context-label">memiliki arti...</span>
             </div>
           </div>
         </transition>
@@ -192,11 +192,22 @@
 }
 
 /* Prepare Screen Styling */
+.surah-number {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
 .surah-title {
   font-family: var(--font-family-arabic);
   font-size: 3.5rem;
   color: var(--color-primary);
-  line-height: 1.2;
+  line-height: 1.1;
+  margin-bottom: var(--spacing-xs);
 }
 
 .surah-subtitle {
