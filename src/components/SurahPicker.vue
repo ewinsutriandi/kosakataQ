@@ -7,7 +7,7 @@
         <input
           type="text"
           v-model="searchQuery"
-          placeholder="Search Surah..."
+          placeholder="Cari Surat..."
           class="search-input"
         />
       </div>
@@ -18,14 +18,14 @@
           :class="{ active: tipe === 'j30' }"
           @click="toggleFilter('j30')"
         >
-          <span class="chip-icon">✨</span> Juz 30 & Fatihah
+          <span class="chip-icon">✨</span> Juz 30 & Al-Fatihah
         </button>
         <button
           class="filter-chip"
           :class="{ active: tipe === 'all' }"
           @click="toggleFilter('all')"
         >
-          <span class="chip-icon">📚</span> All Surahs
+          <span class="chip-icon">📚</span> Semua Surat
         </button>
       </div>
     </div>
@@ -51,7 +51,7 @@
     </div>
 
     <div v-else class="empty-state">
-      <p>No surah found matching "{{ searchQuery }}"</p>
+      <p>Tidak ada surat yang cocok dengan "{{ searchQuery }}"</p>
     </div>
   </div>
 </template>

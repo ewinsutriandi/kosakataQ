@@ -7,6 +7,35 @@
       </button>
 
       <div class="drawer-links">
+        <div class="primary-links">
+          <router-link
+            to="/picksurah/j30"
+            @click.native="$emit('close')"
+            class="drawer-link primary"
+            active-class="active"
+          >
+            <span class="icon">🏠</span> Beranda
+          </router-link>
+          <router-link
+            to="/picksurah/all"
+            @click.native="$emit('close')"
+            class="drawer-link primary"
+            active-class="active"
+          >
+            <span class="icon">📖</span> Baca
+          </router-link>
+          <router-link
+            to="/stats/j30"
+            @click.native="$emit('close')"
+            class="drawer-link primary"
+            active-class="active"
+          >
+            <span class="icon">📈</span> Statistik
+          </router-link>
+        </div>
+        
+        <div class="divider"></div>
+
         <router-link
           to="/playing-guide"
           @click.native="$emit('close')"
@@ -120,12 +149,35 @@ export default {
 }
 
 .drawer-link {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-family: var(--font-family-base);
   color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawer-link.primary {
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 8px 0;
+}
+
+.drawer-link.active {
+  color: var(--sage);
+}
+
+.icon {
+  font-size: 1.4rem;
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba(0,0,0,0.05);
+  margin: 10px 0;
 }
 
 .drawer-link:hover {

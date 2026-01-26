@@ -20,13 +20,25 @@
     <template v-else>
       <navigation-overlay v-if="!$route.meta.hideNavigation" :is-open="isNavOpen" @close="isNavOpen = false" />
 
+      <!-- Hamburger Button (Top Left) -->
+      <button
+        v-if="!$route.meta.hideNavigation"
+        class="hamburger-btn"
+        @click="isNavOpen = true"
+        aria-label="Menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
       <main class="app-content">
         <transition name="fade" mode="out-in">
           <router-view :key="$route.fullPath" />
         </transition>
       </main>
-
-      <floating-dock v-if="!$route.meta.hideNavigation" @toggle-menu="isNavOpen = !isNavOpen" />
     </template>
   </div>
 </template>
@@ -157,11 +169,10 @@ body .v-toast__icon {
 
 <script>
 import NavigationOverlay from "@/components/NavigationOverlay.vue";
-import FloatingDock from "@/components/FloatingDock.vue";
 import { mapState } from "vuex";
 
 export default {
-  components: { NavigationOverlay, FloatingDock },
+  components: { NavigationOverlay },
   data() {
     return {
       isNavOpen: false,
@@ -207,10 +218,41 @@ export default {
   flex: 1;
   width: 100%;
   padding-top: var(--spacing-lg);
-  padding-bottom: 120px; /* Space for floating dock */
+  padding-bottom: var(--spacing-xl); /* Removed bottom dock space */
   position: relative;
   z-index: 10;
-  max-width: 800px; /* Centered like reference */
+  max-width: 800px;
   margin: 0 auto;
+}
+
+.hamburger-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 190; /* Below overlay (200) but above content */
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--surface-glass-border);
+  color: var(--text-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger-btn:hover {
+  transform: scale(1.05);
+  background: white;
+  color: var(--sage);
+}
+
+.hamburger-btn:active {
+  transform: scale(0.95);
 }
 </style>
