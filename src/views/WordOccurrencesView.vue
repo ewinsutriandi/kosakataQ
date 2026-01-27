@@ -19,45 +19,26 @@
 
     <div class="picker-container">
       <div class="picker-wrapper">
-        <div class="surah-list" v-if="paginatedOccurrences.length > 0">
-          <div
-            v-for="(occ, index) in paginatedOccurrences"
-            :key="index"
-            class="surah-link"
-            @click="openModal(occ)"
-          >
-            <div class="surah-card compact">
-              <div class="card-left">
-                <span class="surah-index">#{{ (currentPage - 1) * pageSize + index + 1 }}</span>
-                <span class="location-text">{{ occ.surahName }}, Ayat {{ occ.ayah }}</span>
-              </div>
-              <span class="action-icon">📖</span>
+        <div class="surah-list" v-if="allGroupedOccurrences.length > 0">
+          <div v-for="group in allGroupedOccurrences" :key="group.surahId" class="surah-group">
+            <div class="surah-group-header">
+              <span class="header-surah-name">{{ group.surahName }}</span>
+              <span class="header-count">{{ group.items.length }} Kali</span>
+            </div>
+
+            <div class="ayah-inline-list">
+              <span 
+                v-for="(occ, idx) in group.items" 
+                :key="occ.index"
+                class="ayah-link-wrapper"
+              >
+                <button class="ayah-inline-link" @click="openModal(occ)">
+                  Ayat {{ occ.ayah }}
+                </button>
+                <span v-if="idx < group.items.length - 1" class="comma">, </span>
+              </span>
             </div>
           </div>
-        </div>
-
-        <div v-else class="empty-state">
-          <p v-if="loading">Memuat data kemunculan...</p>
-          <p v-else>Data kata tidak ditemukan</p>
-        </div>
-
-        <!-- Pagination Controls -->
-        <div class="pagination-container" v-if="totalPages > 1">
-          <button 
-            class="page-btn" 
-            :disabled="currentPage === 1" 
-            @click="currentPage--"
-          >
-            &laquo; Prev
-          </button>
-          <span class="page-indicator">Halaman {{ currentPage }} dari {{ totalPages }}</span>
-          <button 
-            class="page-btn" 
-            :disabled="currentPage === totalPages" 
-            @click="currentPage++"
-          >
-            Next &raquo;
-          </button>
         </div>
       </div>
     </div>
@@ -112,8 +93,6 @@ export default {
       ayahArabicMap: {},    // From ayah-uthmani.json
       ayahTransMap: {},     // From ayah-indonesia.json
       loading: true,
-      currentPage: 1,
-      pageSize: 60,
       showModal: false,
       modalData: {
         surahName: "",
@@ -126,19 +105,22 @@ export default {
     };
   },
   computed: {
-    totalPages() {
-      return Math.ceil(this.resolvedOccurrences.length / this.pageSize);
-    },
-    paginatedOccurrences() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.resolvedOccurrences.slice(start, end);
-    },
-    resolvedOccurrences() {
-      return this.occurrences.map(occ => ({
-        ...occ,
-        surahName: this.surahMap[occ.surah]?.nama || occ.surah
-      }));
+    allGroupedOccurrences() {
+      const groups = [];
+      this.occurrences.forEach((occ, index) => {
+        const surahName = this.surahMap[occ.surah]?.nama || occ.surah;
+        const lastGroup = groups[groups.length - 1];
+        if (lastGroup && lastGroup.surahId === occ.surah) {
+          lastGroup.items.push({ ...occ, surahName, globalIndex: index + 1 });
+        } else {
+          groups.push({
+            surahId: occ.surah,
+            surahName,
+            items: [{ ...occ, surahName, globalIndex: index + 1 }]
+          });
+        }
+      });
+      return groups;
     }
   },
   methods: {
@@ -350,21 +332,9 @@ export default {
 }
 
 .surah-list {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-}
-
-@media (min-width: 600px) {
-  .surah-list {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (min-width: 900px) {
-  .surah-list {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
 }
 
 .surah-card {
@@ -418,50 +388,77 @@ export default {
   opacity: 0.5;
 }
 
-.empty-state {
-  text-align: center;
-  color: var(--text-secondary);
-  padding: 40px 0;
+.surah-group {
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 20px 25px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;
 }
 
-/* Pagination Styles */
-.pagination-container {
+.surah-group-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  margin-top: 30px;
-  padding: 20px 0;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(43, 62, 48, 0.08);
 }
 
-.page-btn {
-  background: var(--card-white);
-  border: 1px solid var(--stone);
-  border-radius: 12px;
-  padding: 10px 20px;
+.header-surah-name {
+  font-weight: 800;
   color: var(--text-primary);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
 }
 
-.page-btn:hover:not(:disabled) {
-  border-color: var(--sage);
+.header-count {
+  font-size: 0.75rem;
   color: var(--sage);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
+  font-weight: 700;
+  background: rgba(43, 62, 48, 0.06);
+  padding: 4px 10px;
+  border-radius: 12px;
 }
 
-.page-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.page-indicator {
-  font-size: 0.9rem;
+.ayah-inline-list {
+  display: block;
+  line-height: 1.8;
   color: var(--text-secondary);
-  font-weight: 500;
+}
+
+.ayah-link-wrapper {
+  display: inline;
+}
+
+.ayah-inline-link {
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--sage);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(43, 62, 48, 0.2);
+  text-underline-offset: 3px;
+  transition: all 0.2s;
+}
+
+.ayah-inline-link:hover {
+  color: var(--text-primary);
+  text-decoration-color: var(--sage);
+}
+
+.comma {
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-right: 4px;
 }
 
 /* Modal Styles */
