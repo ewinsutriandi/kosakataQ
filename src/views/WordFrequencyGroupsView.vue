@@ -22,15 +22,26 @@
           </div>
 
           <div class="filter-bar">
+            <!-- Chips (Visible on Desktop/Tablet) -->
             <button
               v-for="filter in filters"
               :key="filter.id"
-              class="filter-chip"
+              class="filter-chip desktop-only"
               :class="{ active: activeFilterId === filter.id }"
               @click="activeFilterId = filter.id"
             >
-              <span class="chip-icon">{{ filter.icon }}</span> {{ filter.label }}
+              {{ filter.label }}
             </button>
+
+            <!-- Select Box (Visible on Mobile) -->
+            <div class="select-pill mobile-only">
+              <select v-model="activeFilterId" class="filter-select">
+                <option v-for="filter in filters" :key="filter.id" :value="filter.id">
+                  {{ filter.label }}
+                </option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
           </div>
           <p class="group-info" v-if="!loading">Menampilkan {{ filteredWords.length }} kata</p>
         </div>
@@ -91,12 +102,12 @@ export default {
       currentPage: 1,
       pageSize: 100,
       filters: [
-        { id: '100', label: 'Muncul >100x', min: 101, max: Infinity, icon: '🔥' },
-        { id: '50', label: 'Muncul 51-100x', min: 51, max: 100, icon: '✨' },
-        { id: '10', label: 'Muncul 11-50x', min: 11, max: 50, icon: '📚' },
-        { id: '5', label: 'Muncul 6-10x', min: 6, max: 10, icon: '🔍' },
-        { id: 'rare', label: 'Muncul <= 5x', min: 0, max: 5, icon: '❄️' },
-        { id: 'all', label: 'Semua', min: 0, max: Infinity, icon: '🌟' }
+        { id: '100', label: 'Muncul >100x', min: 101, max: Infinity },
+        { id: '50', label: 'Muncul 51-100x', min: 51, max: 100 },
+        { id: '10', label: 'Muncul 11-50x', min: 11, max: 50 },
+        { id: '5', label: 'Muncul 6-10x', min: 6, max: 10 },
+        { id: 'rare', label: 'Muncul <= 5x', min: 0, max: 5 },
+        { id: 'all', label: 'Semua', min: 0, max: Infinity }
       ]
     };
   },
@@ -270,6 +281,55 @@ export default {
   color: white;
   box-shadow: 0 4px 12px rgba(141, 161, 137, 0.3);
   transform: translateY(-1px);
+}
+
+/* Responsive Filter Styles */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .desktop-only {
+    display: none;
+  }
+  .mobile-only {
+    display: block;
+    width: 100%;
+  }
+}
+
+.select-pill {
+  position: relative;
+  background: var(--card-white);
+  border: 1px solid var(--stone);
+  border-radius: 50px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-right: 15px;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+}
+
+.select-arrow {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+  position: absolute;
+  right: 15px;
 }
 
 .group-info {
