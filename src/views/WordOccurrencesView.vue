@@ -24,6 +24,7 @@
             v-for="(occ, index) in paginatedOccurrences"
             :key="index"
             class="surah-link"
+            @click="openModal(occ)"
           >
             <div class="surah-card compact">
               <div class="card-left">
@@ -60,6 +61,40 @@
         </div>
       </div>
     </div>
+
+    <!-- Occurrence Detail Modal -->
+    <transition name="modal-fade">
+      <div class="modal-overlay" v-if="showModal" @click.self="closeModal">
+        <div class="modal-content">
+          <button class="modal-close" @click="closeModal">&times;</button>
+          
+          <div class="modal-header">
+            <h3>{{ modalData.surahName }}</h3>
+            <span class="modal-ayah-num">Ayat {{ modalData.ayah }}</span>
+          </div>
+
+          <div class="modal-body">
+            <!-- Word Specific Meaning -->
+            <div class="section word-meaning-section">
+              <div class="word-info">
+                <span class="arabic-word">{{ wordText }}</span>
+                <span class="word-translation">{{ modalData.wordMeaning }}</span>
+              </div>
+            </div>
+
+            <!-- Full Ayah Arabic -->
+            <div class="section arabic-section">
+              <p class="ayah-text-arabic">{{ modalData.arabicText }}</p>
+            </div>
+
+            <!-- Full Ayah Translation -->
+            <div class="section translation-section">
+              <p class="ayah-translation-id">{{ modalData.ayahTranslation }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -70,10 +105,22 @@ export default {
     return {
       wordText: "",
       occurrences: [],
-      surahMap: {},
+      surahMap: {},       // From surah-translit-id.json (transliterated names)
+      surahMeta: {},      // From surah.json (GAN mapping / start indices)
+      wordTranslations: {}, // From id-word-trans.json
+      ayahArabicMap: {},    // From ayah-uthmani.json
+      ayahTransMap: {},     // From ayah-indonesia.json
       loading: true,
       currentPage: 1,
-      pageSize: 60
+      pageSize: 60,
+      showModal: false,
+      modalData: {
+        surahName: "",
+        ayah: "",
+        wordMeaning: "",
+        arabicText: "",
+        ayahTranslation: ""
+      }
     };
   },
   computed: {
@@ -99,18 +146,44 @@ export default {
       this.loading = true;
       
       try {
-        // Fetch required data in parallel
-        const [freqRes, surahRes] = await Promise.all([
+        // Fetch all required data in parallel
+        const [
+          freqRes, 
+          surahTransRes, 
+          surahMetaRes, 
+          wordTransRes, 
+          ayahArabicRes, 
+          ayahTransRes
+        ] = await Promise.all([
           fetch('/data/word_frequency.json'),
-          fetch('/data/surah-translit-id.json')
+          fetch('/data/surah-translit-id.json'),
+          fetch('/data/surah.json'),
+          fetch('/data/id-word-trans.json'),
+          fetch('/data/ayah-uthmani.json'),
+          fetch('/data/ayah-trans-id-indonesian-tanzil.json')
         ]);
 
-        const [allWords, surahs] = await Promise.all([
+        const [
+          allWords, 
+          surahs, 
+          meta, 
+          wordTrans, 
+          arabic, 
+          translation
+        ] = await Promise.all([
           freqRes.json(),
-          surahRes.json()
+          surahTransRes.json(),
+          surahMetaRes.json(),
+          wordTransRes.json(),
+          ayahArabicRes.json(),
+          ayahTransRes.json()
         ]);
 
         this.surahMap = surahs;
+        this.surahMeta = meta;
+        this.wordTranslations = wordTrans;
+        this.ayahArabicMap = arabic;
+        this.ayahTransMap = translation;
         
         const wordData = allWords.find(w => w.text === targetWord);
         if (wordData) {
@@ -121,6 +194,32 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    openModal(occ) {
+      // 1. Get Surah/Ayah Basic Info
+      this.modalData.surahName = occ.surahName;
+      this.modalData.ayah = occ.ayah;
+
+      // 2. Get Word Meaning for this specific occurrence index
+      this.modalData.wordMeaning = this.wordTranslations[occ.index] || "Makna tidak ditemukan";
+
+      // 3. Calculate Global Ayah Number (GAN)
+      // GAN = Start Index of Surah + (Ayah Number - 1)
+      const surahStart = this.surahMeta[occ.surah]?.start;
+      if (surahStart) {
+        const gan = surahStart + (occ.ayah - 1);
+        
+        // 4. Retrieve Full Ayah Text and Translation using GAN
+        this.modalData.arabicText = this.ayahArabicMap[gan] || "";
+        this.modalData.ayahTranslation = this.ayahTransMap.translations?.[gan] || "";
+      }
+
+      this.showModal = true;
+      document.body.style.overflow = 'hidden'; // Prevent scroll
+    },
+    closeModal() {
+      this.showModal = false;
+      document.body.style.overflow = ''; // Restore scroll
     }
   },
   mounted() {
@@ -253,6 +352,15 @@ export default {
   align-items: center;
   text-align: left;
   font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.surah-card:hover {
+  border-color: var(--sage);
+  background: var(--sand);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .surah-card.compact {
@@ -328,6 +436,149 @@ export default {
   font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(43, 62, 48, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--card-white);
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  border-radius: 28px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modal-slide-up 0.3s ease-out;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: var(--sand);
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  color: var(--sage);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: var(--stone);
+  transform: rotate(90deg);
+}
+
+.modal-header {
+  padding: 30px 30px 20px;
+  border-bottom: 1px solid var(--stone);
+}
+
+.modal-header h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  color: var(--sage);
+  margin: 0;
+}
+
+.modal-ayah-num {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.modal-body {
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.word-meaning-section {
+  background: var(--sand);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid var(--stone);
+}
+
+.word-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arabic-word {
+  font-family: 'Amiri', serif;
+  font-size: 2.2rem;
+  color: var(--text-primary);
+  direction: rtl;
+}
+
+.word-translation {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--sage);
+  text-align: right;
+}
+
+.ayah-text-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 1.8rem;
+  line-height: 2;
+  color: var(--text-primary);
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+}
+
+.ayah-translation-id {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Animations */
+@keyframes modal-slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.3s;
+}
+.modal-fade-enter, .modal-fade-leave-to {
+  opacity: 0;
 }
 
 @media (max-width: 500px) {
