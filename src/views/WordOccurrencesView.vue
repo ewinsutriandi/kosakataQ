@@ -84,7 +84,7 @@
 
             <!-- Full Ayah Arabic -->
             <div class="section arabic-section">
-              <p class="ayah-text-arabic">{{ modalData.arabicText }}</p>
+              <p class="ayah-text-arabic" v-html="modalData.highlightedArabic"></p>
             </div>
 
             <!-- Full Ayah Translation -->
@@ -107,6 +107,7 @@ export default {
       occurrences: [],
       surahMap: {},       // From surah-translit-id.json (transliterated names)
       surahMeta: {},      // From surah.json (GAN mapping / start indices)
+      wordMap: {},       // From ayah-word-map.json (local index calculation)
       wordTranslations: {}, // From id-word-trans.json
       ayahArabicMap: {},    // From ayah-uthmani.json
       ayahTransMap: {},     // From ayah-indonesia.json
@@ -119,6 +120,7 @@ export default {
         ayah: "",
         wordMeaning: "",
         arabicText: "",
+        highlightedArabic: "",
         ayahTranslation: ""
       }
     };
@@ -147,26 +149,31 @@ export default {
       
       try {
         // Fetch all required data in parallel
-        const [
-          freqRes, 
-          surahTransRes, 
-          surahMetaRes, 
-          wordTransRes, 
-          ayahArabicRes, 
-          ayahTransRes
-        ] = await Promise.all([
+        const responses = await Promise.all([
           fetch('/data/word_frequency.json'),
           fetch('/data/surah-translit-id.json'),
           fetch('/data/surah.json'),
+          fetch('/data/ayah-word-map.json'),
           fetch('/data/id-word-trans.json'),
           fetch('/data/ayah-uthmani.json'),
           fetch('/data/ayah-trans-id-indonesian-tanzil.json')
         ]);
 
         const [
+          freqRes, 
+          surahTransRes, 
+          surahMetaRes, 
+          wordMapRes,
+          wordTransRes, 
+          ayahArabicRes, 
+          ayahTransRes
+        ] = responses;
+
+        const [
           allWords, 
           surahs, 
           meta, 
+          wordMapping,
           wordTrans, 
           arabic, 
           translation
@@ -174,6 +181,7 @@ export default {
           freqRes.json(),
           surahTransRes.json(),
           surahMetaRes.json(),
+          wordMapRes.json(),
           wordTransRes.json(),
           ayahArabicRes.json(),
           ayahTransRes.json()
@@ -181,6 +189,7 @@ export default {
 
         this.surahMap = surahs;
         this.surahMeta = meta;
+        this.wordMap = wordMapping;
         this.wordTranslations = wordTrans;
         this.ayahArabicMap = arabic;
         this.ayahTransMap = translation;
@@ -210,8 +219,25 @@ export default {
         const gan = surahStart + (occ.ayah - 1);
         
         // 4. Retrieve Full Ayah Text and Translation using GAN
-        this.modalData.arabicText = this.ayahArabicMap[gan] || "";
+        const fullText = this.ayahArabicMap[gan] || "";
+        this.modalData.arabicText = fullText;
         this.modalData.ayahTranslation = this.ayahTransMap.translations?.[gan] || "";
+
+        // 5. Highlight the word if we have the word map
+        const localRange = this.wordMap[gan];
+        if (localRange && fullText) {
+          const localIndex = occ.index - localRange.start;
+          const words = fullText.trim().split(/\s+/);
+          
+          if (words[localIndex]) {
+            words[localIndex] = `<span class="highlight-word">${words[localIndex]}</span>`;
+            this.modalData.highlightedArabic = words.join(" ");
+          } else {
+            this.modalData.highlightedArabic = fullText;
+          }
+        } else {
+          this.modalData.highlightedArabic = fullText;
+        }
       }
 
       this.showModal = true;
@@ -566,6 +592,15 @@ export default {
   color: var(--text-secondary);
   margin: 0;
   font-style: italic;
+}
+
+:deep(.highlight-word) {
+  color: var(--sage);
+  background: rgba(43, 62, 48, 0.08); /* Faint sage background */
+  padding: 0 4px;
+  border-radius: 6px;
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(43, 62, 48, 0.1);
 }
 
 /* Animations */
