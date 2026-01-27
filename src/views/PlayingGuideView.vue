@@ -1,11 +1,12 @@
 <template>
   <div class="container text-view">
+    <header class="main-header">
+      <h1>kosakataQ</h1>
+      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
+    </header>
+
     <div class="card text-card">
       <h2 class="section-title">Petunjuk Bermain</h2>
-      <div class="brand-header">
-        <span class="brand-text">kosakata</span>
-        <span class="brand-highlight">Q</span>
-      </div>
 
       <div class="guide-content">
         <p>
@@ -43,10 +44,31 @@
 
 <style scoped>
 .text-view {
-  padding-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
   padding-bottom: var(--spacing-xl);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header Styles */
+.main-header {
+  text-align: center;
+  margin: 10px 0 30px 0;
+}
+
+.main-header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
 }
 
 .text-card {
@@ -55,23 +77,10 @@
 }
 
 .section-title {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-xs);
-}
-
-.brand-header {
   font-size: 1.25rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.brand-text {
-  color: var(--color-primary);
-}
-.brand-highlight {
-  color: var(--color-secondary);
-  font-weight: 600;
-  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-lg);
 }
 
 .guide-content p {

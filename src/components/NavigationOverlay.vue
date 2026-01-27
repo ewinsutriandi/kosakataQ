@@ -14,7 +14,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            <span class="icon">🏠</span> Beranda
+            Daftar surat
           </router-link>
           <router-link
             to="/picksurah/all"
@@ -22,7 +22,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            <span class="icon">📖</span> Baca
+            Daftar kata
           </router-link>
           <router-link
             to="/stats/j30"
@@ -30,7 +30,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            <span class="icon">📈</span> Statistik
+            Statistik bermain
           </router-link>
         </div>
         

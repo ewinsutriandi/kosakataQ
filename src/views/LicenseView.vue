@@ -1,5 +1,10 @@
 <template>
   <div class="container text-view">
+    <header class="main-header">
+      <h1>kosakataQ</h1>
+      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
+    </header>
+
     <div class="card text-card">
       <h2 class="section-title">MIT License</h2>
       <div class="copyright">Copyright © 2023 Alza Interactive</div>
@@ -33,10 +38,31 @@
 
 <style scoped>
 .text-view {
-  padding-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
   padding-bottom: var(--spacing-xl);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header Styles */
+.main-header {
+  text-align: center;
+  margin: 10px 0 30px 0;
+}
+
+.main-header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
 }
 
 .text-card {
@@ -47,7 +73,7 @@
 .section-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   margin-bottom: var(--spacing-md);
 }
 
