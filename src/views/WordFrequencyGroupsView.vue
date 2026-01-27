@@ -53,7 +53,7 @@
             :key="word.text"
             class="surah-link"
           >
-            <div class="surah-card">
+            <div class="surah-card clickable" @click="$router.push(`/word-occurrences/${word.text}`)">
               <div class="card-left">
                 <span class="surah-index">{{ word.count }}x</span>
               </div>
@@ -382,6 +382,14 @@ export default {
   border-color: var(--sage);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+}
+
+.surah-card.clickable {
+  cursor: pointer;
+}
+
+.surah-card.clickable:active {
+  transform: scale(0.98);
 }
 
 .card-left {

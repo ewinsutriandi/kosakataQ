@@ -8,6 +8,7 @@ import PlayingGuideView from "../views/PlayingGuideView.vue";
 import CreditView from "../views/CreditView.vue";
 import GameStatisticsView from "../views/GameStatisticsView.vue";
 import WordFrequencyGroupsView from "../views/WordFrequencyGroupsView.vue";
+import WordOccurrencesView from "../views/WordOccurrencesView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 
 Vue.use(VueRouter);
@@ -37,6 +38,11 @@ const routes = [
     path: "/word-frequency",
     name: "wordfrequency",
     component: WordFrequencyGroupsView,
+  },
+  {
+    path: "/word-occurrences/:word",
+    name: "wordoccurrences",
+    component: WordOccurrencesView,
   },
   {
     path: "/license",
