@@ -46,7 +46,7 @@
           to="/credits"
           @click.native="$emit('close')"
           class="drawer-link"
-          >Credits & Sources</router-link
+          >Credits</router-link
         >
         <router-link
           to="/license"
@@ -59,6 +59,9 @@
       <div class="drawer-footer">
         <p class="brand">kosakataQ</p>
         <p class="copyright">version 2.0</p>
+        <br>
+        <p class="credits">by <a href="https://play.google.com/store/apps/developer?id=Alza+Interactive" target="_blank">Alza Interactive</a></p>
+        <p class="credits">source code <a href="https://github.com/ewinsutriandi/kosakataQ" target="_blank">github</a></p>
       </div>
     </div>
   </div>
@@ -196,5 +199,9 @@ export default {
 
 .copyright {
   font-size: 0.8rem;
+}
+
+.credits {
+  font-size: 0.6rem;
 }
 </style>
