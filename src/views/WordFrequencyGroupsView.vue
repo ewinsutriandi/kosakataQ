@@ -45,7 +45,6 @@
             <div class="surah-card">
               <div class="card-left">
                 <span class="surah-index">{{ word.count }}x</span>
-                <span class="english-name">Kosakata</span>
               </div>
               <h2 class="arabic-name">{{ word.text }}</h2>
             </div>
@@ -290,6 +289,12 @@ export default {
 @media (min-width: 600px) {
   .surah-list {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .surah-list {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
