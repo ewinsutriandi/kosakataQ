@@ -17,7 +17,7 @@
             Daftar surat
           </router-link>
           <router-link
-            to="/picksurah/all"
+            to="/word-frequency"
             @click.native="$emit('close')"
             class="drawer-link primary"
             active-class="active"

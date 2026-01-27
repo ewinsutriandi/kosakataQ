@@ -4,6 +4,7 @@
       <h1>kosakataQ</h1>
       <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
     </header>
+    <h2 class="view-title">Daftar Surat</h2>
     <div class="picker-container">
       <surah-picker :tipe="this.$route.params.tipe" />
     </div>

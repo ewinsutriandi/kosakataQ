@@ -20,6 +20,16 @@ body {
     text-align: center;
 }
 
+.view-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--sage);
+    margin: 10px 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .flex {
     display: flex;
 }
