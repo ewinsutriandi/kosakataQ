@@ -32,7 +32,7 @@ export default {
         for (let wIdx = 0; wIdx < words.length; wIdx++) {
           let word = words[wIdx];
           let quiz = {};
-          quiz.surahName = surah.name;
+          quiz.surahName = this.$store.state.surahs_translit_id[surah_idx].nama;
           quiz.ayah_text = curAyah.text;
           let the_word = word.uthmani;
           // rmv unneeded special characters
