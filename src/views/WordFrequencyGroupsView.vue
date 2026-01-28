@@ -6,6 +6,7 @@
     </header>
 
     <h2 class="view-title">Daftar Kata</h2>
+    <p class="view-description">Pilih grup frekuensi di bawah ini untuk melihat daftar kata dan mulai latihan.</p>
 
     <div class="picker-container">
       <div class="picker-wrapper">
@@ -189,6 +190,24 @@ export default {
 .main-header {
   text-align: center;
   margin: 30px 0;
+}
+
+.view-title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.view-description {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  line-height: 1.5;
+  padding: 0 var(--spacing-md);
 }
 
 .main-header h1 {
