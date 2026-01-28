@@ -13,21 +13,21 @@
           class="filter-chip"
           :class="{ active: $route.params.tipe === 'j30' }"
         >
-          <span class="chip-icon">✨</span> Juz 30 & Fatihah
+          Juz 30 & Fatihah
         </router-link>
         <router-link
           to="/stats/all"
           class="filter-chip"
           :class="{ active: $route.params.tipe === 'all' }"
         >
-          <span class="chip-icon">📚</span> Semua Surat
+          Semua Surat
         </router-link>
         <router-link
           to="/stats/tier"
           class="filter-chip"
           :class="{ active: $route.params.tipe === 'tier' }"
         >
-          <span class="chip-icon">📊</span> Kemunculan Kata
+          Kemunculan Kata
         </router-link>
       </div>
       <div class="stats-table-container">

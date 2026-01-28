@@ -18,14 +18,14 @@
           :class="{ active: tipe === 'j30' }"
           @click="toggleFilter('j30')"
         >
-          <span class="chip-icon">✨</span> Juz 30 & Al-Fatihah
+          Juz 30 & Al-Fatihah
         </button>
         <button
           class="filter-chip"
           :class="{ active: tipe === 'all' }"
           @click="toggleFilter('all')"
         >
-          <span class="chip-icon">📚</span> Semua Surat
+          Semua Surat
         </button>
       </div>
     </div>
