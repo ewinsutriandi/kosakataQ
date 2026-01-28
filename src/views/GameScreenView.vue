@@ -15,6 +15,7 @@
         <button type="button" class="close-game-btn" @click="closeGame" aria-label="Back to Source">
            ✕
         </button>
+        <h2 class="prepare-title">Latihan Soal</h2>
         <!-- Surah Info (Surah Mode) -->
         <div v-if="mode === 'surah'" class="surah-header">
           <span class="surah-number">Surah ke-{{ selected.idx }}</span>
@@ -27,11 +28,9 @@
 
         <!-- Tier Info (Tier Mode) -->
         <div v-else class="surah-header">
-          <span class="surah-number">Latihan Grup</span>
-          <h2 class="surah-title">✨</h2>
           <div class="surah-subtitle">
+            <p class="meaning" style="margin-bottom: 12px; display: block;">Kumpulan kata-kata yang paling sering muncul dalam Al-Qur'an.</p>
             <h3 class="translit">{{ tierLabel }}</h3>
-            <span class="meaning">Kumpulan kata-kata yang paling sering muncul dalam Al-Qur'an.</span>
           </div>
         </div>
 
@@ -39,7 +38,7 @@
           <span class="pill">{{ selected.nAyah }} Ayat</span>
         </div>
         <div v-else class="meta-pills">
-          <span class="pill">{{ surah_quiz.length }} Pertanyaan</span>
+          <span class="pill">{{ surah_quiz.length }} Kata</span>
         </div>
 
         <div class="difficulty-actions">
@@ -252,6 +251,21 @@
 }
 
 /* Prepare Screen Styling */
+.prepare-card {
+  max-width: 440px;
+  text-align: center;
+  padding: 40px var(--spacing-lg) var(--spacing-lg) !important;
+}
+
+.prepare-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--sage);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 .surah-number {
   font-size: 0.9rem;
   text-transform: uppercase;
