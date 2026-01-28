@@ -4,7 +4,7 @@
       <h1>kosakataQ</h1>
       <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
     </header>
-    <h2 class="view-title">Daftar Surat</h2>
+    <h2 class="view-title">Belajar Surat demi Surat</h2>
     <p class="view-description">Pilih surat di bawah ini untuk memulai latihan menghafal kosakata ayat-ayat Al-Qur'an.</p>
     <div class="picker-container">
       <surah-picker :tipe="this.$route.params.tipe" />
@@ -46,10 +46,17 @@
 
 .view-title {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 480px) {
+  .view-title {
+    font-size: 1rem;
+  }
 }
 
 .view-description {

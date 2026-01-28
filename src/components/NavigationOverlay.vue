@@ -14,7 +14,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            Daftar surat
+            Belajar Surat demi Surat
           </router-link>
           <router-link
             to="/word-frequency"
@@ -22,7 +22,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            Daftar kata
+            Belajar Berdasarkan Kemunculan
           </router-link>
           <router-link
             to="/stats/j30"

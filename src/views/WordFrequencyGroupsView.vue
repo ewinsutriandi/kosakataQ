@@ -5,7 +5,7 @@
       <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
     </header>
 
-    <h2 class="view-title">Daftar Kata</h2>
+    <h2 class="view-title">Belajar Berdasarkan Kemunculan</h2>
     <p class="view-description">Pilih grup frekuensi di bawah ini untuk melihat daftar kata dan mulai latihan.</p>
 
     <div class="picker-container">
@@ -194,10 +194,17 @@ export default {
 
 .view-title {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 480px) {
+  .view-title {
+    font-size: 1rem;
+  }
 }
 
 .view-description {
