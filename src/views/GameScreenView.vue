@@ -12,6 +12,9 @@
       class="center-container"
     >
       <div class="glass-card prepare-card">
+        <button type="button" class="close-game-btn" @click="closeGame" aria-label="Back to Source">
+           ✕
+        </button>
         <!-- Surah Info (Surah Mode) -->
         <div v-if="mode === 'surah'" class="surah-header">
           <span class="surah-number">Surah ke-{{ selected.idx }}</span>
@@ -40,7 +43,7 @@
         </div>
 
         <div class="difficulty-actions">
-          <p class="label">Pilih tingkat kesulitan</p>
+          <p v-if="mode === 'surah'" class="label">Pilih tingkat kesulitan</p>
           <div class="actions-row">
             <button v-if="mode === 'surah'" @click="startNormal" class="btn-glass btn-primary">
               Normal
@@ -896,8 +899,8 @@ export default {
       return "";
     },
     closeGame() {
-      // Trying to navigate away will trigger the beforeRouteLeave guard
-      this.$router.push("/").catch(() => {});
+      // Intelligently go back to where we started
+      this.backToSource();
     },
     confirmExit() {
       this.confirmedExit = true;
