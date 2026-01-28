@@ -186,6 +186,21 @@ export default {
         this.loading = false;
       }
     },
+    normalizeArabic(text) {
+      if (!text) return "";
+      return text
+        // 1. Remove common diacritics (Harakat)
+        .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "")
+        // 2. Normalize symbols/special chars to empty
+        .replace(/[۞۩۝]/g, "")
+        // 3. Normalize Alif variations
+        .replace(/[ٱإأآ]/g, "ا")
+        // 4. Normalize Yeh variations
+        .replace(/[یى]/g, "ي")
+        // 5. Normalize Kaf variations
+        .replace(/ک/g, "ك")
+        .trim();
+    },
     openModal(occ) {
       // 1. Get Surah/Ayah Basic Info
       this.modalData.surahName = occ.surahName;
@@ -208,12 +223,52 @@ export default {
         // 5. Highlight the word if we have the word map
         const localRange = this.wordMap[gan];
         if (localRange && fullText) {
-          const localIndex = occ.index - localRange.start;
-          const words = fullText.trim().split(/\s+/);
+          const targetIndex = occ.index - localRange.start;
+          const allTokens = fullText.trim().split(/\s+/);
           
-          if (words[localIndex]) {
-            words[localIndex] = `<span class="highlight-word">${words[localIndex]}</span>`;
-            this.modalData.highlightedArabic = words.join(" ");
+          // Identify only tokens that are actual words (not just symbols like ۞)
+          const wordTokens = allTokens.map((t, i) => ({ text: t, originalIndex: i }))
+            .filter(item => {
+              // A token is a word if it contains at least one Arabic character
+              // and is not just a stand-alone symbol
+              const normalized = this.normalizeArabic(item.text);
+              return normalized.length > 0;
+            });
+
+          let bestMatchIndex = -1;
+          const targetNormalized = this.normalizeArabic(this.wordText);
+
+          // Attempt 1: Check the position indicated by the index
+          if (wordTokens[targetIndex]) {
+            const candidate = this.normalizeArabic(wordTokens[targetIndex].text);
+            if (candidate === targetNormalized) {
+              bestMatchIndex = wordTokens[targetIndex].originalIndex;
+            }
+          }
+
+          // Attempt 2: "Shimmy" logic - look in the immediate neighborhood if not an exact match
+          if (bestMatchIndex === -1) {
+            for (let offset = -2; offset <= 2; offset++) {
+              const idx = targetIndex + offset;
+              if (wordTokens[idx]) {
+                const candidate = this.normalizeArabic(wordTokens[idx].text);
+                if (candidate === targetNormalized) {
+                  bestMatchIndex = wordTokens[idx].originalIndex;
+                  break;
+                }
+              }
+            }
+          }
+
+          // Fallback: If still no match, try to find the word anywhere in the ayah word tokens
+          if (bestMatchIndex === -1) {
+            const match = wordTokens.find(w => this.normalizeArabic(w.text) === targetNormalized);
+            if (match) bestMatchIndex = match.originalIndex;
+          }
+
+          if (bestMatchIndex !== -1) {
+            allTokens[bestMatchIndex] = `<span class="highlight-word">${allTokens[bestMatchIndex]}</span>`;
+            this.modalData.highlightedArabic = allTokens.join(" ");
           } else {
             this.modalData.highlightedArabic = fullText;
           }
