@@ -123,35 +123,44 @@
       </footer>
     </div>
 
-    <!-- Game Ended (Glass Card) -->
+    <!-- Game Ended (Glass Card Redesigned) -->
     <div v-if="gameEnded" class="center-container">
       <div class="glass-card result-card">
         <div class="result-header">
-          <h2 v-if="playerWon" class="result-title success">Selesai!</h2>
-          <h2 v-else class="result-title failure">Coba Lagi</h2>
+          <h2 class="result-title">{{ playerWon ? 'Selamat!' : 'Latihan Selesai' }}</h2>
+          <p class="result-subtitle">{{ playerWon ? 'Anda berhasil! Teruslah belajar.' : 'Jangan menyerah! Ayo coba lagi.' }}</p>
         </div>
 
         <div class="score-display">
-          <div class="big-score">{{ score }}</div>
-          <span class="max-score">dari {{ max_score }}</span>
+          <div class="score-main">
+            <span class="score-val">{{ score }}</span>
+            <span class="score-sep">/</span>
+            <span class="score-total">{{ max_score }}</span>
+          </div>
+          <span class="score-label">Skor Akhir</span>
         </div>
 
         <div class="stats-row">
-          <div class="stat-item">
-            <span class="label">Benar</span>
-            <span class="val success">{{ correct }}</span>
+          <div class="stat-pill success">
+            <span class="pill-label">Benar</span>
+            <span class="pill-val">{{ correct }}</span>
           </div>
-          <div class="stat-item">
-            <span class="label">Salah</span>
-            <span class="val failure">{{ fail }}</span>
+          <div class="stat-pill failure">
+            <span class="pill-label">Salah</span>
+            <span class="pill-val">{{ fail }}</span>
           </div>
         </div>
 
-        <router-link to="/" class="btn-glass btn-home">
-          Kembali ke Beranda
-        </router-link>
+        <div class="result-actions">
+          <button @click="retryGame" class="btn-glass btn-primary full-width">
+            Main Lagi
+          </button>
+          <button @click="backToSource" class="btn-glass full-width">
+            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : 'Kembali ke Daftar Surat' }}
+          </button>
+        </div>
 
-        <div v-if="webShareApiSupported" class="mt-6">
+        <div v-if="webShareApiSupported" class="share-section">
           <score-share :scoreData="scoreData" />
         </div>
       </div>
@@ -485,36 +494,152 @@
 .success {
   color: var(--color-success);
 }
-.failure {
-  color: var(--color-danger);
+.result-card {
+  max-width: 440px;
+  animation: scaleIn 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.result-icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2.2rem;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.result-icon-circle.success {
+  background: rgba(141, 161, 137, 0.1);
+  color: var(--sage);
+}
+
+.result-icon-circle.failure {
+  background: rgba(220, 38, 38, 0.05);
+  color: #DC2626;
+}
+
+.result-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.result-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
 }
 
 .score-display {
-  margin-bottom: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--stone);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 20px;
 }
-.big-score {
-  font-size: 4rem;
-  font-weight: 800;
-  color: var(--color-primary);
-  line-height: 1;
-}
-.stats-row {
+
+.score-main {
   display: flex;
+  align-items: baseline;
   justify-content: center;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
+  gap: 4px;
 }
-.stat-item {
-  display: flex;
-  flex-direction: column;
+
+.score-val {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--sage);
 }
-.stat-item .val {
-  font-size: 1.5rem;
+
+.score-sep {
+  font-size: 1.25rem;
+  color: var(--stone);
+  margin: 0 4px;
+}
+
+.score-total {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.score-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 2px;
   font-weight: 700;
 }
-.btn-home {
-  display: block;
-  text-decoration: none;
+
+.stats-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-pill {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid var(--stone);
+}
+
+.stat-pill.success {
+  border-left: 4px solid var(--sage);
+}
+
+.stat-pill.failure {
+  border-left: 4px solid #DC2626;
+}
+
+.pill-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pill-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.share-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--stone);
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.success {
+  color: var(--sage);
+}
+.failure {
+  color: #DC2626;
 }
 
 /* Transitions */
@@ -787,6 +912,29 @@ export default {
       this.showExitModal = false;
       this.pendingTarget = null;
     },
+    retryGame() {
+      this.cur_quiz_idx = 0;
+      this.score = 0;
+      this.correct = 0;
+      this.fail = 0;
+      this.playerWon = false;
+      this.gameEnded = false;
+      this.game_on = false;
+      
+      if (this.mode === 'tier') {
+        this.load_tier_quiz();
+      } else {
+        this.load_quiz();
+      }
+    },
+    backToSource() {
+      this.confirmedExit = true; // Avoid exit modal
+      if (this.mode === 'tier') {
+        this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
+      } else {
+        this.$router.push("/").catch(() => {});
+      }
+    },
   },
   computed: {
     cur_quiz() {
@@ -799,7 +947,9 @@ export default {
     },
     scoreData() {
       return {
+        mode: this.mode,
         surahIdx: this.surah_idx,
+        tierLabel: this.tierLabel,
         playerWon: this.playerWon,
         score: this.score,
         maxScore: this.max_score,

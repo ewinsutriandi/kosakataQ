@@ -29,8 +29,15 @@ export default {
     return {};
   },
   methods: {
-    shareViaWebShare() {
-      let surah = this.$store.getters.surahs_all[this.scoreData.surahIdx];
+    async shareViaWebShare() {
+      let titleSuffix = "";
+      if (this.scoreData.mode === 'tier' || !this.scoreData.surahIdx) {
+        titleSuffix = `Grup ${this.scoreData.tierLabel || ''}`;
+      } else {
+        let surah = this.$store.getters.surahs_all[this.scoreData.surahIdx];
+        titleSuffix = `surat ${surah.name} - ${surah.tr_id.nama}`;
+      }
+
       let text = `Saya `;
       if (this.scoreData.playerWon) {
         text += `berhasil `;
@@ -38,15 +45,20 @@ export default {
         text += `gagal `;
       }
       text += `Menyelesaikan game kosakataQ | `;
-      text += `Arti kata pada surat ${surah.name} - ${surah.tr_id.nama}\n\n`;
+      text += `Arti kata pada ${titleSuffix}\n\n`;
       text += `Skor saya ${this.scoreData.score} dari ${this.scoreData.maxScore}\n`;
       text += `Jawaban benar ${this.scoreData.correct}, salah ${this.scoreData.fail}\n\n`;
-      console.log(text);
-      navigator.share({
-        title: "kosakataQ",
-        text: text,
-        url: "https://kosakataQ.web.app",
-      });
+      
+      try {
+        await navigator.share({
+          title: "kosakataQ",
+          text: text,
+          url: "https://kosakataQ.web.app",
+        });
+      } catch (err) {
+        // User cancelled or share failed, handle gracefully
+        console.log("Share cancelled or failed:", err.message);
+      }
     },
   },
   mounted() {
