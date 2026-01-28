@@ -63,9 +63,19 @@
               </div>
             </div>
 
-            <!-- Full Ayah Arabic -->
+            <!-- Full Ayah Arabic (Word by Word) -->
             <div class="section arabic-section">
-              <p class="ayah-text-arabic" v-html="modalData.highlightedArabic"></p>
+              <div class="ayah-wbw-container">
+                <div 
+                  v-for="(word, idx) in modalData.ayahWords" 
+                  :key="idx" 
+                  class="word-block"
+                  :class="{ 'is-highlighted': word.isHighlighted }"
+                >
+                  <span class="arabic-token">{{ word.text }}</span>
+                  <span class="token-translation" v-if="word.translation">{{ word.translation }}</span>
+                </div>
+              </div>
             </div>
 
             <!-- Full Ayah Translation -->
@@ -98,8 +108,7 @@ export default {
         surahName: "",
         ayah: "",
         wordMeaning: "",
-        arabicText: "",
-        highlightedArabic: "",
+        ayahWords: [], // Array of { original, translated, isHighlighted }
         ayahTranslation: ""
       }
     };
@@ -220,60 +229,64 @@ export default {
         this.modalData.arabicText = fullText;
         this.modalData.ayahTranslation = this.ayahTransMap.translations?.[gan] || "";
 
-        // 5. Highlight the word if we have the word map
+        // 5. Build Word-by-Word List
         const localRange = this.wordMap[gan];
         if (localRange && fullText) {
-          const targetIndex = occ.index - localRange.start;
+          const targetLocalWordIndex = occ.index - localRange.start;
           const allTokens = fullText.trim().split(/\s+/);
-          
-          // Identify only tokens that are actual words (not just symbols like ۞)
-          const wordTokens = allTokens.map((t, i) => ({ text: t, originalIndex: i }))
-            .filter(item => {
-              // A token is a word if it contains at least one Arabic character
-              // and is not just a stand-alone symbol
-              const normalized = this.normalizeArabic(item.text);
-              return normalized.length > 0;
-            });
-
-          let bestMatchIndex = -1;
           const targetNormalized = this.normalizeArabic(this.wordText);
 
-          // Attempt 1: Check the position indicated by the index
-          if (wordTokens[targetIndex]) {
-            const candidate = this.normalizeArabic(wordTokens[targetIndex].text);
-            if (candidate === targetNormalized) {
-              bestMatchIndex = wordTokens[targetIndex].originalIndex;
+          // 5a. Identify word tokens for highlighting logic (same as previous fix)
+          const wordTokenIndices = [];
+          allTokens.forEach((t, i) => {
+            if (this.normalizeArabic(t).length > 0) {
+              wordTokenIndices.push(i);
+            }
+          });
+
+          // 5b. Determine bestMatchIndex (re-using the robust logic)
+          let bestMatchIndex = -1;
+          if (wordTokenIndices[targetLocalWordIndex] !== undefined) {
+            const originalIdx = wordTokenIndices[targetLocalWordIndex];
+            if (this.normalizeArabic(allTokens[originalIdx]) === targetNormalized) {
+              bestMatchIndex = originalIdx;
             }
           }
-
-          // Attempt 2: "Shimmy" logic - look in the immediate neighborhood if not an exact match
           if (bestMatchIndex === -1) {
             for (let offset = -2; offset <= 2; offset++) {
-              const idx = targetIndex + offset;
-              if (wordTokens[idx]) {
-                const candidate = this.normalizeArabic(wordTokens[idx].text);
-                if (candidate === targetNormalized) {
-                  bestMatchIndex = wordTokens[idx].originalIndex;
+              const idx = targetLocalWordIndex + offset;
+              if (wordTokenIndices[idx] !== undefined) {
+                const originalIdx = wordTokenIndices[idx];
+                if (this.normalizeArabic(allTokens[originalIdx]) === targetNormalized) {
+                  bestMatchIndex = originalIdx;
                   break;
                 }
               }
             }
           }
 
-          // Fallback: If still no match, try to find the word anywhere in the ayah word tokens
-          if (bestMatchIndex === -1) {
-            const match = wordTokens.find(w => this.normalizeArabic(w.text) === targetNormalized);
-            if (match) bestMatchIndex = match.originalIndex;
-          }
+          // 5c. Map tokens to objects with translations
+          let wordCounter = 0;
+          this.modalData.ayahWords = allTokens.map((token, originalIdx) => {
+            const isWord = this.normalizeArabic(token).length > 0;
+            let translation = "";
+            let isHighlighted = originalIdx === bestMatchIndex;
 
-          if (bestMatchIndex !== -1) {
-            allTokens[bestMatchIndex] = `<span class="highlight-word">${allTokens[bestMatchIndex]}</span>`;
-            this.modalData.highlightedArabic = allTokens.join(" ");
-          } else {
-            this.modalData.highlightedArabic = fullText;
-          }
+            if (isWord) {
+              const globalWordIndex = localRange.start + wordCounter;
+              translation = this.wordTranslations[globalWordIndex] || "";
+              wordCounter++;
+            }
+
+            return {
+              text: token,
+              translation: translation,
+              isHighlighted: isHighlighted
+            };
+          });
         } else {
-          this.modalData.highlightedArabic = fullText;
+          // Fallback if no word map
+          this.modalData.ayahWords = fullText.split(/\s+/).map(t => ({ text: t, translation: "", isHighlighted: false }));
         }
       }
 
@@ -628,14 +641,50 @@ export default {
   text-align: right;
 }
 
-.ayah-text-arabic {
+.ayah-wbw-container {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 25px;
+  column-gap: 15px;
+  direction: rtl;
+  justify-content: flex-start;
+  padding: 10px 0;
+}
+
+.word-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.arabic-token {
   font-family: 'Amiri', serif;
   font-size: 1.8rem;
-  line-height: 2;
+  line-height: 1.4;
   color: var(--text-primary);
-  direction: rtl;
-  text-align: right;
-  margin: 0;
+  text-align: center;
+}
+
+.token-translation {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+  max-width: 80px;
+  line-height: 1.2;
+}
+
+.word-block.is-highlighted .arabic-token {
+  color: var(--sage);
+  font-weight: 700;
+}
+
+.word-block.is-highlighted {
+  background: rgba(43, 62, 48, 0.05);
+  padding: 5px 8px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(43, 62, 48, 0.08);
 }
 
 .ayah-translation-id {
