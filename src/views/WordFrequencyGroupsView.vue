@@ -43,6 +43,11 @@
               <span class="select-arrow">▼</span>
             </div>
           </div>
+          <div class="filter-actions" v-if="activeFilterId !== 'all'">
+            <button class="btn-play-tier" @click="playTier">
+               ▶ Mainkan Grup {{ activeFilterLabel }}
+            </button>
+          </div>
           <p class="group-info" v-if="!loading">Menampilkan {{ filteredWords.length }} kata</p>
         </div>
 
@@ -53,7 +58,7 @@
             :key="word.text"
             class="surah-link"
           >
-            <div class="surah-card clickable" @click="$router.push(`/word-occurrences/${word.text}`)">
+            <div class="surah-card clickable" @click="$router.push({ path: `/word-occurrences/${word.text}`, query: { group: activeFilterId } })">
               <div class="card-left">
                 <span class="surah-index">{{ word.count }}x</span>
               </div>
@@ -102,11 +107,11 @@ export default {
       currentPage: 1,
       pageSize: 100,
       filters: [
-        { id: '100', label: 'Muncul >100x', min: 101, max: Infinity },
-        { id: '50', label: 'Muncul 51-100x', min: 51, max: 100 },
-        { id: '10', label: 'Muncul 11-50x', min: 11, max: 50 },
-        { id: '5', label: 'Muncul 6-10x', min: 6, max: 10 },
-        { id: 'rare', label: 'Muncul <= 5x', min: 0, max: 5 },
+        { id: '100', label: 'Kata yang muncul > 100x', min: 101, max: Infinity },
+        { id: '50', label: 'Kata yang muncul 51-100x', min: 51, max: 100 },
+        { id: '10', label: 'Kata yang muncul 11-50x', min: 11, max: 50 },
+        { id: '5', label: 'Kata yang muncul 6-10x', min: 6, max: 10 },
+        { id: 'rare', label: 'Kata yang muncul <= 5x', min: 0, max: 5 },
         { id: 'all', label: 'Semua', min: 0, max: Infinity }
       ]
     };
@@ -128,6 +133,10 @@ export default {
       }
 
       return results;
+    },
+    activeFilterLabel() {
+      const activeFilter = this.filters.find(f => f.id === this.activeFilterId);
+      return activeFilter ? activeFilter.label : '';
     },
     totalPages() {
       return Math.ceil(this.filteredWords.length / this.pageSize);
@@ -156,6 +165,11 @@ export default {
         console.error("Error fetching word frequency:", error);
       } finally {
         this.loading = false;
+      }
+    },
+    playTier() {
+      if (this.activeFilterId) {
+        this.$router.push(`/play/tier/${this.activeFilterId}`);
       }
     }
   },
@@ -332,11 +346,45 @@ export default {
   right: 15px;
 }
 
+.filter-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-play-tier {
+  background: var(--sage);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(141, 161, 137, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-play-tier:hover {
+  background: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-play-tier:active {
+  transform: translateY(0);
+}
+
 .group-info {
   font-size: 0.75rem;
   color: var(--text-secondary);
-  margin-top: 10px;
+  margin-top: 15px;
   font-style: italic;
+  text-align: center;
 }
 
 /* List & Cards */

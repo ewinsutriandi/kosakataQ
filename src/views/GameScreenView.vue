@@ -8,11 +8,12 @@
 
     <!-- Prepare Screen (Glass Card) -->
     <div
-      v-if="!loading_quiz && $options.quiz_by_aya.length > 0 && !game_on"
+      v-if="!loading_quiz && !game_on && ((mode === 'surah' && $options.quiz_by_aya.length > 0) || (mode === 'tier' && surah_quiz.length > 0))"
       class="center-container"
     >
       <div class="glass-card prepare-card">
-        <div class="surah-header">
+        <!-- Surah Info (Surah Mode) -->
+        <div v-if="mode === 'surah'" class="surah-header">
           <span class="surah-number">Surah ke-{{ selected.idx }}</span>
           <h2 class="surah-title">{{ selected.name }}</h2>
           <div class="surah-subtitle">
@@ -21,18 +22,34 @@
           </div>
         </div>
 
-        <div class="meta-pills">
+        <!-- Tier Info (Tier Mode) -->
+        <div v-else class="surah-header">
+          <span class="surah-number">Latihan Grup</span>
+          <h2 class="surah-title">✨</h2>
+          <div class="surah-subtitle">
+            <h3 class="translit">{{ tierLabel }}</h3>
+            <span class="meaning">Kumpulan kata-kata yang paling sering muncul dalam Al-Qur'an.</span>
+          </div>
+        </div>
+
+        <div v-if="mode === 'surah'" class="meta-pills">
           <span class="pill">{{ selected.nAyah }} Ayat</span>
+        </div>
+        <div v-else class="meta-pills">
+          <span class="pill">{{ surah_quiz.length }} Pertanyaan</span>
         </div>
 
         <div class="difficulty-actions">
           <p class="label">Pilih tingkat kesulitan</p>
           <div class="actions-row">
-            <button @click="startNormal" class="btn-glass btn-primary">
+            <button v-if="mode === 'surah'" @click="startNormal" class="btn-glass btn-primary">
               Normal
             </button>
-            <button @click="startHard" class="btn-glass btn-secondary">
+            <button v-if="mode === 'surah'" @click="startHard" class="btn-glass btn-secondary">
               Menantang
+            </button>
+            <button v-if="mode === 'tier'" @click="startTier" class="btn-glass btn-primary">
+              Mulai Latihan
             </button>
           </div>
         </div>
@@ -40,16 +57,17 @@
     </div>
 
     <!-- Game HUD (Full Screen) -->
-    <div v-if="surah_quiz.length > 1 && game_on && !gameEnded" class="game-hud">
+    <div v-if="surah_quiz.length > 0 && game_on && !gameEnded" class="game-hud">
       <!-- Top HUD -->
       <header class="hud-top">
         <button type="button" class="close-game-btn" @click="closeGame" aria-label="Exit Game">
            ✕
         </button>
 
-        <!-- Surah Title (Larger) -->
+        <!-- Header Info -->
         <div class="hud-row">
-          <h2 class="surah-tag-large">{{ selected.tr_id.nama }}</h2>
+          <h2 v-if="mode === 'surah'" class="surah-tag-large">{{ selected.tr_id.nama }}</h2>
+          <h2 v-else class="surah-tag-large">{{ tierLabel }}</h2>
         </div>
 
         <!-- Life Indicator (Hearts) -->
@@ -73,6 +91,11 @@
             <h2 class="ayah-text">
               {{ cur_quiz.ayah_text }}
             </h2>
+            <div class="verse-meta" v-if="cur_quiz">
+              <span class="surah-label">
+                {{ cur_quiz.surahName }} : {{ mode === 'surah' ? (cur_quiz_idx + 1) : cur_quiz.ayahIdx }}
+              </span>
+            </div>
 
             <div class="query-box">
               <span class="context-label">Kata</span>
@@ -387,12 +410,31 @@
   max-width: 600px;
 }
 
+.verse-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--spacing-md);
+}
+
+.surah-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sage);
+  background: rgba(141, 161, 137, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(141, 161, 137, 0.2);
+}
+
 .ayah-text {
   font-family: "UthmanTN", serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
+  font-weight: 500;
   line-height: 1.8;
   color: var(--color-text);
-  margin: var(--spacing-lg) 0;
+  margin: var(--spacing-lg) 0 8px 0;
 }
 
 .query-box {
@@ -589,10 +631,27 @@ export default {
       },
       confirmedExit: false,
       pendingTarget: null,
+      showExitModal: false,
+      mode: 'surah', // 'surah' or 'tier'
+      tierId: null,
+      tierLabel: '',
     };
   },
   quiz_by_aya: [],
   methods: {
+    async load_tier_quiz() {
+      this.loading_quiz = true;
+      const quiz = await this.generate_quiz_fr_tier(this.tierId);
+      this.surah_quiz = quiz; // random by default
+      if (quiz.length > 0) {
+        this.tierLabel = quiz[0].tierLabel;
+      }
+      this.max_score = 0;
+      for (let q of quiz) {
+        this.max_score += q.word_to_translate.length;
+      }
+      this.loading_quiz = false;
+    },
     load_quiz() {
       this.$options.quiz_by_aya = this.generate_quiz_fr_surah(this.surah_idx);
       this.max_score = 0;
@@ -612,6 +671,9 @@ export default {
         all_quiz = all_quiz.concat(aya_quiz);
       }
       this.surah_quiz = all_quiz;
+      this.game_on = true;
+    },
+    startTier() {
       this.game_on = true;
     },
     startHard() {
@@ -666,7 +728,7 @@ export default {
     endGame() {
       this.gameEnded = true;
       let log = {
-        suraIdx: this.surah_idx,
+        mode: this.mode,
         playerWon: this.playerWon,
         score: this.score,
         maxScore: this.max_score,
@@ -674,6 +736,12 @@ export default {
         fail: this.fail,
         timestamp: Date.now(),
       };
+      if (this.mode === 'surah') {
+        log.suraIdx = this.surah_idx;
+      } else {
+        log.tierId = this.tierId;
+        log.tierLabel = this.tierLabel;
+      }
       this.$store.commit("add_game_log", log);
     },
     showIncorrectAnswerToast(word, correct_answer) {
@@ -741,14 +809,21 @@ export default {
     },
   },
   mounted() {
-    this.surah_idx = this.$route.params.idx;
-    this.selected = this.$store.getters.surahs_all[this.surah_idx];
-    this.loading_quiz = true;
-    setTimeout(() => {
-      //console.log("loading quiz");
-      this.load_quiz();
-      this.loading_quiz = false;
-    }, 0);
+    if (this.$route.params.tierId) {
+      this.mode = 'tier';
+      this.tierId = this.$route.params.tierId;
+      this.load_tier_quiz();
+    } else {
+      this.mode = 'surah';
+      this.surah_idx = this.$route.params.idx;
+      this.selected = this.$store.getters.surahs_all[this.surah_idx];
+      this.loading_quiz = true;
+      setTimeout(() => {
+        //console.log("loading quiz");
+        this.load_quiz();
+        this.loading_quiz = false;
+      }, 0);
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.game_on && !this.gameEnded && !this.confirmedExit) {

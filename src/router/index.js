@@ -30,6 +30,12 @@ const routes = [
     meta: { hideNavigation: true }
   },
   {
+    path: "/play/tier/:tierId",
+    name: "gamescreen-tier",
+    component: GameScreenView,
+    meta: { hideNavigation: true }
+  },
+  {
     path: "/stats/:tipe",
     name: "gamestats",
     component: GameStatisticsView,

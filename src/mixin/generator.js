@@ -32,6 +32,7 @@ export default {
         for (let wIdx = 0; wIdx < words.length; wIdx++) {
           let word = words[wIdx];
           let quiz = {};
+          quiz.surahName = surah.name;
           quiz.ayah_text = curAyah.text;
           let the_word = word.uthmani;
           // rmv unneeded special characters
@@ -96,5 +97,70 @@ export default {
       }
       return this.randomize(choices);
     },
+    async generate_quiz_fr_tier(tierId) {
+      const filters = {
+        '100': { min: 101, max: Infinity, label: 'Kata yang muncul > 100x' },
+        '50': { min: 51, max: 100, label: 'Kata yang muncul 51-100x' },
+        '10': { min: 11, max: 50, label: 'Kata yang muncul 11-50x' },
+        '5': { min: 6, max: 10, label: 'Kata yang muncul 6-10x' },
+        'rare': { min: 0, max: 5, label: 'Kata yang muncul <= 5x' },
+        'all': { min: 0, max: Infinity, label: 'Semua' }
+      };
+
+      const filter = filters[tierId] || filters['all'];
+
+      try {
+        const response = await fetch('/data/word_frequency.json');
+        const allWords = await response.json();
+
+        let filteredWords = allWords.filter(w => w.count >= filter.min && w.count <= filter.max);
+        filteredWords = this.randomize(filteredWords);
+
+        // Use all words in the filtered tier for this session
+        const sessionWords = filteredWords;
+
+        let tierQuizL = [];
+        for (let word of sessionWords) {
+          // Select one random occurrence
+          const occ = word.occurrences[Math.floor(Math.random() * word.occurrences.length)];
+
+          // Get full ayah info for context
+          // We need to calculate GAN for fetching ayah text
+          const surahMeta = this.$store.state.surahs[occ.surah];
+          const surahName = this.$store.state.surahs_translit_id[occ.surah].nama;
+          const gan = surahMeta.start + (occ.ayah - 1);
+
+          const ayahText = this.$store.state.ayah_uthmani[gan];
+          const ayahWords = this.$store.getters.ayah_words(gan);
+          const targetWord = ayahWords[occ.index - this.$store.state.ayah_word_map[gan].start];
+
+          if (!targetWord) continue;
+
+          let quiz = {};
+          quiz.ayah_text = ayahText;
+          quiz.word_to_translate = word.text; // Use the word from frequency map
+          quiz.answer = targetWord.translation;
+          quiz.tierLabel = filter.label;
+          quiz.surahIdx = occ.surah;
+          quiz.surahName = surahName;
+          quiz.ayahIdx = occ.ayah;
+
+          // Generate choices using existing logic but adapting to the occurrence context
+          quiz.choices = this.generate_quiz_choices_tier(gan, ayahWords, targetWord);
+          tierQuizL.push(quiz);
+        }
+
+        return tierQuizL;
+      } catch (error) {
+        console.error("Error generating tier quiz:", error);
+        return [];
+      }
+    },
+    generate_quiz_choices_tier(gan, words, word) {
+      // Re-use the existing logic but pass GAN instead of ayahIdx
+      // We need to ensure ayahIdx is a string if the original expects it, 
+      // but let's check generate_quiz_choices usage of ayahIdx
+      return this.generate_quiz_choices(gan, words, word);
+    }
   },
 };
