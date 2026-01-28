@@ -9,6 +9,14 @@
       <div class="drawer-links">
         <div class="primary-links">
           <router-link
+            to="/"
+            @click.native="$emit('close')"
+            class="drawer-link primary"
+            active-class="active"
+          >
+            Beranda
+          </router-link>
+          <router-link
             to="/picksurah/j30"
             @click.native="$emit('close')"
             class="drawer-link primary"
@@ -164,7 +172,7 @@ export default {
 }
 
 .drawer-link.primary {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   padding: 8px 0;
 }

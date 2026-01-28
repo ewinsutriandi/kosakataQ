@@ -1,9 +1,6 @@
 <template>
   <div class="container stats-view">
-    <header class="main-header">
-      <h1>kosakataQ</h1>
-      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
-    </header>
+    <router-link to="/" class="brand-mark">kosakataQ</router-link>
 
     <div class="card stats-card">
       <h2 class="stats-title">Statistik Permainan</h2>
@@ -72,24 +69,23 @@
   align-items: center;
 }
 
+
 /* Header Styles (Consistent with SurahPicker) */
-.main-header {
+.brand-mark {
   text-align: center;
-  margin: 10px 0 30px 0;
-}
-
-.main-header h1 {
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-secondary);
-  margin-top: 5px;
+  letter-spacing: 1px;
+  margin: 20px 0 30px 0;
+  opacity: 0.6;
+  text-decoration: none;
+  display: block;
+  transition: opacity 0.2s;
+}
+
+.brand-mark:hover {
+  opacity: 0.8;
 }
 
 .stats-card {

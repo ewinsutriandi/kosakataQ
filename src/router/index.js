@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-//import HomeView from "../views/HomeView.vue";
+import HomeView from "../views/HomeView.vue";
 import SurahPickerView from "../views/SurahPickerView.vue";
 import GameScreenView from "../views/GameScreenView.vue";
 import LicenseView from "../views/LicenseView.vue";
@@ -16,7 +16,9 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/picksurah/j30",
+    name: "home",
+    component: HomeView,
+    meta: { hideNavigation: true }
   },
   {
     path: "/picksurah/:tipe",

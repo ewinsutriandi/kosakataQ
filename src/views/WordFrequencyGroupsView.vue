@@ -1,9 +1,6 @@
 <template>
   <div class="immersive-picker-view">
-    <header class="main-header">
-      <h1>kosakataQ</h1>
-      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
-    </header>
+    <router-link to="/" class="brand-mark">kosakataQ</router-link>
 
     <h2 class="view-title">Belajar Berdasarkan Kemunculan</h2>
     <p class="view-description">Pilih grup frekuensi di bawah ini untuk melihat daftar kata dan mulai latihan.</p>
@@ -187,9 +184,21 @@ export default {
   padding-bottom: var(--spacing-xl);
 }
 
-.main-header {
+.brand-mark {
   text-align: center;
-  margin: 30px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  margin: 20px 0 30px 0;
+  opacity: 0.6;
+  text-decoration: none;
+  display: block;
+  transition: opacity 0.2s;
+}
+
+.brand-mark:hover {
+  opacity: 0.8;
 }
 
 .view-title {
@@ -215,20 +224,6 @@ export default {
   margin: 0 auto 20px auto;
   line-height: 1.5;
   padding: 0 var(--spacing-md);
-}
-
-.main-header h1 {
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-top: 5px;
 }
 
 .picker-container {
