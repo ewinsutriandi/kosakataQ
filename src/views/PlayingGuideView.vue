@@ -6,33 +6,41 @@
 
       <div class="guide-content">
         <p>
-          Mulai dengan memilih salah satu surat pada Al-Quran. Anda dapat
-          melihat daftar surat pendek maupun lengkap dengan memilih pada menu.
-        </p>
-        <p>
-          Komputer akan menyiapkan soal pilihan ganda dari surat yang anda
-          pilih. Setelahnya, anda diminta memilih mode permainan.
+          Selamat datang di <strong>kosakataQ</strong>. Aplikasi ini menyediakan dua cara menyenangkan untuk mempelajari kosakata Al-Qur'an:
         </p>
 
+        <h3 class="guide-subtitle">1. Kosakata surat</h3>
+        <p>
+          Bermain dan belajar arti kata yang muncul pada surat tertentu. Cocok untuk Anda yang sedang menghafal surat per surat.
+        </p>
         <ul class="guide-list">
+          <li>Pilih surat yang ingin dipelajari dari daftar.</li>
           <li>
-            <strong>Mode normal:</strong> Urutan ayat tidak diacak, kata yang
-            ditanyakan diambil secara acak namun sesuai urutan ayat pada surat.
+            <strong>Mode normal:</strong> Urutan ayat runut, kata yang ditanyakan diambil acak sesuai urutan ayat.
           </li>
           <li>
-            <strong>Mode menantang:</strong> Urutan ayat diacak, kata yang
-            ditanyakan akan secara acak dari seluruh ayat pada surat.
+            <strong>Mode menantang:</strong> Urutan ayat diacak, kata yang ditanyakan diambil acak dari seluruh surat.
           </li>
         </ul>
 
+        <h3 class="guide-subtitle">2. Kemunculan kata</h3>
         <p>
-          Saat bermain, anda akan disajikan sebuah ayat al-quran, dan salah satu
-          kata dari ayat tersebut. Pilihlah arti kata yang benar. Skor akan
-          bertambah jika anda menjawab benar. Pertambahan skor sesuai jumlah
-          huruf pada kata yang ditanyakan.
+          Bermain dan belajar arti kata berdasarkan seberapa sering kata tersebut muncul dalam Al-Qur'an.
+        </p>
+        <ul class="guide-list">
+          <li>Gunakan filter untuk memilih kelompok kata (contoh: Kata yang muncul > 100x).</li>
+          <li>Klik "Latihan soal" untuk memulai sesi permainan pada kelompok kata tersebut.</li>
+        </ul>
+
+        <h3 class="guide-subtitle">Cara Bermain</h3>
+        <p>
+          Dalam permainan, Anda akan disajikan potongan ayat Al-Qur'an dengan satu kata yang ditandai. Tugas Anda adalah memilih arti yang tepat untuk kata tersebut.
+        </p>
+        <p>
+          Skor akan bertambah jika Anda menjawab benar, dengan poin sesuai jumlah huruf pada kata yang ditanyakan.
         </p>
 
-        <p class="guide-footer">SELAMAT BERMAIN</p>
+        <p class="guide-footer">SELAMAT BERLAJAR & BERMAIN</p>
       </div>
     </div>
   </div>
@@ -57,6 +65,14 @@
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: var(--spacing-lg);
+}
+
+.guide-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sage);
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
 }
 
 .guide-content p {
