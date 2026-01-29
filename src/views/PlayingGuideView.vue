@@ -19,7 +19,7 @@
             <strong>Mode normal:</strong> Urutan ayat runut, kata yang ditanyakan diambil acak sesuai urutan ayat.
           </li>
           <li>
-            <strong>Mode menantang:</strong> Urutan ayat diacak, kata yang ditanyakan diambil acak dari seluruh surat.
+            <strong>Mode menantang:</strong> Urutan ayat diacak, kata yang ditanyakan diambil acak dari seluruh isi surat.
           </li>
         </ul>
 
