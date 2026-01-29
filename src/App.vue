@@ -18,6 +18,7 @@
     </div>
     
     <template v-else>
+      <welcome-modal />
       <navigation-overlay v-if="!$route.meta.hideNavigation" :is-open="isNavOpen" @close="isNavOpen = false" />
 
       <!-- Hamburger Button (Top Left) -->
@@ -198,10 +199,11 @@ body .v-toast__icon {
 
 <script>
 import NavigationOverlay from "@/components/NavigationOverlay.vue";
+import WelcomeModal from "@/components/WelcomeModal.vue";
 import { mapState } from "vuex";
 
 export default {
-  components: { NavigationOverlay },
+  components: { NavigationOverlay, WelcomeModal },
   data() {
     return {
       isNavOpen: false,
