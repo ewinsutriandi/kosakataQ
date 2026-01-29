@@ -214,6 +214,11 @@ export default {
     this.$store.commit("initializeVars");
     this.$store.dispatch("initData");
   },
+  watch: {
+    $route() {
+      this.isNavOpen = false;
+    },
+  },
 };
 </script>
 
