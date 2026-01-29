@@ -63,11 +63,12 @@
   font-family: var(--font-family-base);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-decoration: none;
   z-index: 100;
   letter-spacing: 1px;
   transition: opacity 0.2s;
+  opacity: 0.6;
 }
 
 .global-brand-mark:hover {
