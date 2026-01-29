@@ -1,14 +1,8 @@
 <template>
   <div class="immersive-picker-view">
-    <header class="main-header">
-      <div class="header-content">
-        <button class="back-btn" @click="$router.push('/word-frequency')">
-          ← Kembali
-        </button>
-        <h1>kosakataQ</h1>
-      </div>
-      <p class="subtitle">Bermain dan belajar arti kata ayat-ayat al Qur'an</p>
-    </header>
+    <button class="back-floating-btn" @click="$router.push('/word-frequency')">
+      ← Kembali
+    </button>
 
     <h2 class="view-title">
       Kemunculan kata <span class="arabic-highlight">{{ wordText }}</span>
@@ -386,6 +380,30 @@ export default {
   margin-left: 10px;
   color: var(--text-primary);
   vertical-align: middle;
+}
+
+/* Floating Back Button */
+.back-floating-btn {
+  position: fixed;
+  top: 24px;
+  right: 20px;
+  z-index: 150;
+  background: var(--surface-glass);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--stone);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-floating-btn:hover {
+  background: white;
+  color: var(--sage);
+  transform: translateX(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .picker-container {

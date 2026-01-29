@@ -1,6 +1,5 @@
 <template>
   <div class="immersive-picker-view">
-    <router-link to="/" class="brand-mark">kosakataQ</router-link>
     <h2 class="view-title">Belajar Surat demi Surat</h2>
     <p class="view-description">Pilih surat di bawah ini untuk memulai latihan menghafal kosakata ayat-ayat Al-Qur'an.</p>
     <div class="picker-container">
@@ -13,23 +12,6 @@
   width: 100%;
   min-height: 100%;
   padding-bottom: var(--spacing-xl);
-}
-
-.brand-mark {
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 1px;
-  margin: 20px 0 30px 0;
-  opacity: 0.6;
-  text-decoration: none;
-  display: block;
-  transition: opacity 0.2s;
-}
-
-.brand-mark:hover {
-  opacity: 0.8;
 }
 
 .picker-container {

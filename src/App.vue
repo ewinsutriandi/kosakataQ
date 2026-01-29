@@ -34,6 +34,15 @@
         </svg>
       </button>
 
+      <!-- Global Wordmark -->
+      <router-link
+        v-if="!$route.meta.hideNavigation"
+        to="/"
+        class="global-brand-mark"
+      >
+        kosakataQ
+      </router-link>
+
       <main class="app-content">
         <transition name="fade" mode="out-in">
           <router-view :key="$route.fullPath" />
@@ -44,6 +53,26 @@
 </template>
 
 <style>
+/* Global Wordmark Styles */
+.global-brand-mark {
+  position: fixed;
+  top: 32px; /* Aligned with hamburger center (20px top + 22px half-height = 42px center) */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-family-base);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+  z-index: 100;
+  letter-spacing: 1px;
+  transition: opacity 0.2s;
+}
+
+.global-brand-mark:hover {
+  opacity: 0.7;
+}
+
 /* Global Toast Overrides - White with Accents */
 body .v-toast__item {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
@@ -217,7 +246,7 @@ export default {
 .app-content {
   flex: 1;
   width: 100%;
-  padding-top: var(--spacing-lg);
+  padding-top: 50px;
   padding-bottom: var(--spacing-xl); /* Removed bottom dock space */
   position: relative;
   z-index: 10;

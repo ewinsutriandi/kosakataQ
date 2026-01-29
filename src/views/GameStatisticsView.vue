@@ -1,6 +1,5 @@
 <template>
   <div class="container stats-view">
-    <router-link to="/" class="brand-mark">kosakataQ</router-link>
 
     <div class="card stats-card">
       <h2 class="stats-title">Statistik Permainan</h2>
@@ -67,25 +66,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-
-/* Header Styles (Consistent with SurahPicker) */
-.brand-mark {
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 1px;
-  margin: 20px 0 30px 0;
-  opacity: 0.6;
-  text-decoration: none;
-  display: block;
-  transition: opacity 0.2s;
-}
-
-.brand-mark:hover {
-  opacity: 0.8;
 }
 
 .stats-card {
