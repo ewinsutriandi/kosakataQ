@@ -56,7 +56,7 @@
 <style>
 /* Global Wordmark Styles */
 .global-brand-mark {
-  position: fixed;
+  position: absolute;
   top: 32px; /* Aligned with hamburger center (20px top + 22px half-height = 42px center) */
   left: 50%;
   transform: translate(-50%, -50%);
