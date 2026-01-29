@@ -9,13 +9,13 @@
 
     <div class="mode-cards">
       <router-link to="/picksurah/j30" class="mode-card">
-        <h2 class="card-title">Belajar Surat demi Surat</h2>
-        <p class="card-description">Pilih surat untuk latihan menghafal kosakata ayat-ayat Al-Qur'an</p>
+        <h2 class="card-title">Kosakata surat</h2>
+        <p class="card-description">Bermain dan belajar arti kata yang muncul pada surat tertentu</p>
       </router-link>
 
       <router-link to="/word-frequency" class="mode-card">
-        <h2 class="card-title">Belajar Berdasarkan Kemunculan</h2>
-        <p class="card-description">Latihan kata-kata yang paling sering muncul dalam Al-Qur'an</p>
+        <h2 class="card-title">Kemunculan kata</h2>
+        <p class="card-description">Bermain dan belajar arti kata yang ada berdasarkan kemunculannya</p>
       </router-link>
     </div>
 

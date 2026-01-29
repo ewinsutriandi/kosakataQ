@@ -22,7 +22,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            Belajar Surat demi Surat
+            Kosakata surat
           </router-link>
           <router-link
             to="/word-frequency"
@@ -30,7 +30,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            Belajar Berdasarkan Kemunculan
+            Kemunculan kata
           </router-link>
           <router-link
             to="/stats/j30"

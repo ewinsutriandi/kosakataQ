@@ -23,7 +23,7 @@
           class="filter-chip"
           :class="{ active: $route.params.tipe === 'tier' }"
         >
-          Kemunculan Kata
+          Kemunculan kata
         </router-link>
       </div>
       <div class="stats-table-container">

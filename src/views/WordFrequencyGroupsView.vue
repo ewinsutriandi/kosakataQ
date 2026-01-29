@@ -1,8 +1,8 @@
 <template>
   <div class="immersive-picker-view">
 
-    <h2 class="view-title">Belajar Berdasarkan Kemunculan</h2>
-    <p class="view-description">Pilih grup frekuensi di bawah ini untuk melihat daftar kata dan mulai latihan.</p>
+    <h2 class="view-title">Kemunculan kata</h2>
+    <p class="view-description">Bermain dan belajar arti kata yang ada berdasarkan kemunculannya</p>
 
     <div class="picker-container">
       <div class="picker-wrapper">

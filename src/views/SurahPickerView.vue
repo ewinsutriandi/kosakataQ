@@ -1,7 +1,7 @@
 <template>
   <div class="immersive-picker-view">
-    <h2 class="view-title">Belajar Surat demi Surat</h2>
-    <p class="view-description">Pilih surat di bawah ini untuk memulai latihan menghafal kosakata ayat-ayat Al-Qur'an.</p>
+    <h2 class="view-title">Kosakata surat</h2>
+    <p class="view-description">Bermain dan belajar arti kata yang muncul pada surat tertentu</p>
     <div class="picker-container">
       <surah-picker :tipe="this.$route.params.tipe" />
     </div>
