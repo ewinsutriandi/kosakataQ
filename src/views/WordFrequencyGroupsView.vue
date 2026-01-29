@@ -6,32 +6,11 @@
 
     <div class="picker-container">
       <div class="picker-wrapper">
-        <!-- Search & Filter Section -->
-        <div class="search-container">
-          <div class="search-pill">
-            <span class="search-icon">🔍</span>
-            <input
-              type="text"
-              v-model="searchQuery"
-              placeholder="Cari Kata..."
-              class="search-input"
-            />
-          </div>
-
-          <div class="filter-bar">
-            <!-- Chips (Visible on Desktop/Tablet) -->
-            <button
-              v-for="filter in filters"
-              :key="filter.id"
-              class="filter-chip desktop-only"
-              :class="{ active: activeFilterId === filter.id }"
-              @click="activeFilterId = filter.id"
-            >
-              {{ filter.label }}
-            </button>
-
-            <!-- Select Box (Visible on Mobile) -->
-            <div class="select-pill mobile-only">
+        <!-- Filter & Actions Section -->
+        <div class="filter-container">
+          <div class="filter-row">
+            <!-- Select Box (Universal) -->
+            <div class="select-pill">
               <select v-model="activeFilterId" class="filter-select">
                 <option v-for="filter in filters" :key="filter.id" :value="filter.id">
                   {{ filter.label }}
@@ -39,13 +18,14 @@
               </select>
               <span class="select-arrow">▼</span>
             </div>
-          </div>
-          <div class="filter-actions" v-if="activeFilterId !== 'all'">
-            <button class="btn-play-tier" @click="playTier">
-               ▶ Mainkan Grup {{ activeFilterLabel }}
+
+            <!-- Play Button -->
+            <button class="btn-play-tier" @click="playTier" v-if="activeFilterId !== 'all'">
+               ▶ Latihan soal
             </button>
           </div>
-          <p class="group-info" v-if="!loading">Menampilkan {{ filteredWords.length }} kata</p>
+          
+          <p class="group-info" v-if="!loading">Terdapat {{ filteredWords.length }} kata yang sesuai dengan kriteria ini</p>
         </div>
 
         <!-- Word List -->
@@ -98,7 +78,6 @@ export default {
   data() {
     return {
       allWords: [],
-      searchQuery: "",
       activeFilterId: "100",
       loading: true,
       currentPage: 1,
@@ -123,17 +102,7 @@ export default {
         results = results.filter(w => w.count >= activeFilter.min && w.count <= activeFilter.max);
       }
 
-      // Apply search filter
-      if (this.searchQuery.trim()) {
-        const query = this.searchQuery.toLowerCase();
-        results = results.filter(w => w.text.includes(query));
-      }
-
       return results;
-    },
-    activeFilterLabel() {
-      const activeFilter = this.filters.find(f => f.id === this.activeFilterId);
-      return activeFilter ? activeFilter.label : '';
     },
     totalPages() {
       return Math.ceil(this.filteredWords.length / this.pageSize);
@@ -146,9 +115,6 @@ export default {
   },
   watch: {
     activeFilterId() {
-      this.currentPage = 1;
-    },
-    searchQuery() {
       this.currentPage = 1;
     }
   },
@@ -219,8 +185,8 @@ export default {
   padding-bottom: 2rem;
 }
 
-/* Search Container - adapted from SurahPicker */
-.search-container {
+/* Filter & Actions Container */
+.filter-container {
   position: sticky;
   top: 0;
   z-index: 20;
@@ -229,90 +195,12 @@ export default {
   margin-bottom: 10px;
 }
 
-.search-pill {
-  background: var(--card-white);
-  border: 1px solid var(--stone);
-  border-radius: 50px;
-  padding: 12px 20px;
+.filter-row {
   display: flex;
+  gap: 12px;
   align-items: center;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-}
-
-.search-pill:focus-within {
-  border-color: var(--sage);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.search-icon {
-  margin-right: 12px;
-  font-size: 1.1rem;
-}
-
-.search-input {
-  border: none;
-  outline: none;
-  width: 100%;
-  font-size: 1rem;
-  font-family: var(--font-family-base);
-  color: var(--text-primary);
-  background: transparent;
-}
-
-/* Filter Bar */
-.filter-bar {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-  overflow-x: auto;
-  padding-bottom: 5px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.filter-chip {
-  background: transparent;
-  border: 1px solid var(--stone);
-  border-radius: 50px;
-  padding: 8px 16px;
-  font-size: 0.85rem;
-  font-family: inherit;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.filter-chip:hover {
-  background-color: #efefe8;
-  border-color: var(--sage);
-}
-
-.filter-chip.active {
-  background-color: var(--sage);
-  border-color: var(--sage);
-  color: white;
-  box-shadow: 0 4px 12px rgba(141, 161, 137, 0.3);
-  transform: translateY(-1px);
-}
-
-/* Responsive Filter Styles */
-.mobile-only {
-  display: none;
-}
-
-@media (max-width: 500px) {
-  .desktop-only {
-    display: none;
-  }
-  .mobile-only {
-    display: block;
-    width: 100%;
-  }
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .select-pill {
@@ -325,6 +213,7 @@ export default {
   align-items: center;
   padding-right: 15px;
   box-shadow: var(--shadow-sm);
+  flex: 1;
 }
 
 .filter-select {
@@ -349,10 +238,22 @@ export default {
   right: 15px;
 }
 
-.filter-actions {
-  margin-top: 20px;
+.btn-play-tier {
+  background: var(--sage);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(141, 161, 137, 0.4);
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
 }
 
 .btn-play-tier {
