@@ -400,7 +400,7 @@ export default {
 .surah-card {
   width: 100%;
   background: var(--card-white);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--warm-stone);
   border-radius: 20px;
   padding: 20px;
   display: flex;

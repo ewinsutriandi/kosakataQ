@@ -258,7 +258,7 @@ export default {
   padding-bottom: var(--spacing-xl); /* Removed bottom dock space */
   position: relative;
   z-index: 10;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 

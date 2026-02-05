@@ -1,8 +1,8 @@
 <template>
-  <div class="container stats-view">
+  <div class="immersive-picker-view">
 
     <div class="card stats-card">
-      <h2 class="stats-title">Statistik Permainan</h2>
+      <h2 class="view-title">Statistik Permainan</h2>
       <div class="stats-filters">
         <router-link
           to="/stats/j30"
@@ -67,7 +67,88 @@
 </template>
 
 <style scoped>
-/* (Existing styles remain unchanged) */
+.stats-card {
+  width: 100%;
+  max-width: 800px;
+  animation: slide-up 0.4s ease-out;
+  margin: 0 var(--spacing-md);
+}
+
+.stats-filters {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px; /* Added margin to separate from title */
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-chip {
+  padding: 8px 16px;
+  border-radius: 50px;
+  background: var(--warm-stone);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.filter-chip:hover {
+  background: white;
+  color: var(--coffee);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-chip.active {
+  background: var(--coffee);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.stats-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.stats-table th {
+  text-align: left;
+  padding: 16px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  border-bottom: 2px solid var(--warm-stone);
+}
+
+.stats-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--warm-stone);
+  color: var(--text-primary);
+}
+
+.stats-table tr:last-child td {
+  border-bottom: none;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .stats-table th, .stats-table td {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+}
 </style>
 
 <script>

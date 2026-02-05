@@ -160,7 +160,7 @@ export default {
 
 .search-pill {
   background: var(--card-white);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--warm-stone);
   border-radius: 50px;
   padding: 12px 20px;
   display: flex;
@@ -201,7 +201,7 @@ export default {
 
 .filter-chip {
   background: transparent;
-  border: 1px solid var(--stone);
+  border: 1px solid var(--warm-stone);
   border-radius: 50px;
   padding: 8px 16px;
   font-size: 0.85rem;
@@ -241,6 +241,12 @@ export default {
   }
 }
 
+@media (min-width: 960px) {
+  .surah-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
 .surah-link {
   text-decoration: none;
   color: inherit;
@@ -250,7 +256,7 @@ export default {
 .surah-card {
   width: 100%;
   background: var(--card-white);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--warm-stone);
   border-radius: 20px;
   padding: 20px;
   display: flex;

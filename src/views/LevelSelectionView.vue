@@ -150,7 +150,7 @@ export default {
 
 .page-btn {
   background: white;
-  border: 1px solid var(--stone);
+  border: 1px solid var(--warm-stone);
   padding: 8px 20px;
   border-radius: 20px;
   color: var(--text-secondary);

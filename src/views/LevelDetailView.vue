@@ -100,13 +100,25 @@ export default {
 }
 
 .picker-container {
-  max-width: 600px;
+  max-width: 1200px;
 }
 
 .word-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--spacing-sm);
+}
+
+@media (min-width: 768px) {
+  .word-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1100px) {
+  .word-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .word-item {
@@ -160,7 +172,7 @@ export default {
 }
 
 .chevron {
-  color: var(--stone);
+  color: var(--warm-stone);
   font-size: 1.5rem;
   line-height: 1;
 }

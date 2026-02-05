@@ -11,16 +11,16 @@
         <div class="feature-item">
           <div class="feature-icon">📖</div>
           <div class="feature-text">
-            <h3>Kosakata surat</h3>
-            <p>Bermain dan belajar arti kata yang muncul pada surat tertentu.</p>
+            <h3>Mode surat</h3>
+            <p>Bermain dan belajar arti kata yang muncul pada tiap surat.</p>
           </div>
         </div>
 
         <div class="feature-item">
           <div class="feature-icon">📊</div>
           <div class="feature-text">
-            <h3>Kemunculan kata</h3>
-            <p>Bermain dan belajar arti kata berdasarkan seberapa sering kata itu muncul.</p>
+            <h3>Mode level</h3>
+            <p>Bermain dan belajar bertahap level demi level.</p>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default {
   width: 100%;
   max-width: 480px;
   background: var(--card-white);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--warm-stone);
   border-radius: 30px;
   padding: 40px 30px;
   box-shadow: var(--shadow-xl);
