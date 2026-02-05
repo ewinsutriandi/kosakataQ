@@ -79,10 +79,17 @@
           <heart-indicator num="3" :fail="fail" :key="cur_quiz_idx" />
         </div>
 
-        <!-- Score -->
+        <!-- Progress & Score Chips -->
         <div class="hud-row">
-          <div class="score-simple">
-            <span class="value">{{ score }}</span>
+          <div class="hud-stats-container">
+            <div class="stat-chip progress-chip">
+              <span class="chip-label">Soal #</span>
+              <span class="chip-value">{{ cur_quiz_idx + 1 }}<span class="divider">/</span>{{ surah_quiz.length }}</span>
+            </div>
+            <div class="stat-chip score-chip">
+              <span class="chip-label">Skor</span>
+              <span class="chip-value">{{ score }}</span>
+            </div>
           </div>
         </div>
       </header>
@@ -419,6 +426,58 @@
 }
 .score-simple .value {
   color: var(--color-text);
+}
+
+/* HUD Stats Redesign (Chips) */
+.hud-stats-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.stat-chip {
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--surface-glass-border);
+  padding: 6px 16px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.chip-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.chip-value {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.chip-value .divider {
+  margin: 0 2px;
+  color: var(--coffee);
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+.score-chip {
+  border-left: 3px solid var(--coffee);
+}
+
+.progress-chip {
+  border-left: 3px solid var(--text-secondary);
 }
 
 /* Game Main */
