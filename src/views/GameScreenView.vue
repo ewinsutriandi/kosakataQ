@@ -1042,7 +1042,7 @@ export default {
       } else if (this.mode === 'level') {
         this.$router.push({ path: `/level/${this.levelId}` }).catch(() => {});
       } else {
-        this.$router.push("/").catch(() => {});
+        this.$router.push("/picksurah/j30").catch(() => {});
       }
     },
     normalizeArabic(text) {
