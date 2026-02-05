@@ -70,7 +70,7 @@
 .guide-subtitle {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--sage);
+  color: var(--coffee);
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-sm);
 }

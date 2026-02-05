@@ -5,14 +5,14 @@
 :root {
     --bg: #F9F7F2;
     --card-white: #FFFFFF;
-    --text-primary: #3C4030;
-    --text-secondary: #8B8E80;
-    --sage: #5E6E56;
-    --stone: #E2E2D5;
+    --text-primary: #3E2723;
+    --text-secondary: #795548;
+    --coffee: #6D4C41;
+    --warm-stone: #E7E0D8;
 
     /* Mapping to existing app variables for compatibility/transition */
     --color-bg: var(--bg);
-    --color-primary: var(--sage);
+    --color-primary: var(--coffee);
     --color-text: var(--text-primary);
     --color-text-muted: var(--text-secondary);
     --font-family-base: 'Plus Jakarta Sans', sans-serif;

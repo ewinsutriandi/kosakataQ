@@ -55,7 +55,7 @@
 }
 
 .nav-item.active {
-  color: var(--sage);
+  color: var(--coffee);
   transform: translateY(-2px);
 }
 

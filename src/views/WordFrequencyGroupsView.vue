@@ -239,7 +239,7 @@ export default {
 }
 
 .btn-play-tier {
-  background: var(--sage);
+  background: var(--coffee);
   border: none;
   padding: 12px 24px;
   border-radius: 50px;
@@ -249,7 +249,7 @@ export default {
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  box-shadow: 0 4px 15px rgba(141, 161, 137, 0.4);
+  box-shadow: 0 4px 15px rgba(109, 76, 65, 0.4);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -257,7 +257,7 @@ export default {
 }
 
 .btn-play-tier {
-  background: var(--sage);
+  background: var(--coffee);
   border: none;
   padding: 12px 24px;
   border-radius: 50px;
@@ -267,7 +267,7 @@ export default {
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  box-shadow: 0 4px 15px rgba(141, 161, 137, 0.4);
+  box-shadow: 0 4px 15px rgba(109, 76, 65, 0.4);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -331,7 +331,7 @@ export default {
 }
 
 .surah-card:hover {
-  border-color: var(--sage);
+  border-color: var(--coffee);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -352,7 +352,7 @@ export default {
 
 .surah-index {
   font-size: 0.75rem;
-  color: var(--sage);
+  color: var(--coffee);
   font-weight: 700;
 }
 
@@ -399,8 +399,8 @@ export default {
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: var(--sage);
-  color: var(--sage);
+  border-color: var(--coffee);
+  color: var(--coffee);
   box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
 }

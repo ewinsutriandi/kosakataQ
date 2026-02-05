@@ -2,16 +2,16 @@
   /* Colors - Nature Distilled Palette */
   --bg: #F9F7F2;
   --card-white: #FFFFFF;
-  --text-primary: #3C4030;
-  --text-secondary: #8B8E80;
-  --sage: #5E6E56;
-  --stone: #E2E2D5;
+  --text-primary: #3E2723;
+  --text-secondary: #795548;
+  --coffee: #6D4C41;
+  --warm-stone: #E7E0D8;
 
   /* Mappings for app compatibility */
   --color-bg: var(--bg);
-  --color-primary: var(--sage);
-  --color-primary-hover: #7A8E76;
-  /* Slightly darker sage */
+  --color-primary: var(--coffee);
+  --color-primary-hover: #5D4037;
+  /* Slightly darker coffee */
   --color-surface: var(--card-white);
 
   --color-text: var(--text-primary);
@@ -40,7 +40,7 @@
 
   /* Shadows */
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 8px 24px rgba(141, 161, 137, 0.15);
+  --shadow-md: 0 8px 24px rgba(109, 76, 65, 0.15);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
 
   /* Glassmorphism */

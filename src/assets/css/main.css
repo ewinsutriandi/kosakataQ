@@ -24,7 +24,7 @@ body {
     text-align: center;
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--sage);
+    color: var(--coffee);
     margin: 10px 0 20px 0;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -127,8 +127,8 @@ body {
 
 /* Success Toast - Darker Green for Contrast */
 .v-toast--success .v-toast__item {
-    background-color: #4F6F4B !important;
-    /* Darker shade of Sage for contrast */
+    background-color: #6D4C41 !important;
+    /* Darker shade of Coffee for contrast */
     color: white !important;
 }
 

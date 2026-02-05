@@ -178,7 +178,7 @@ export default {
 }
 
 .drawer-link.active {
-  color: var(--sage);
+  color: var(--coffee);
 }
 
 .icon {
@@ -192,7 +192,7 @@ export default {
 }
 
 .drawer-link:hover {
-  color: var(--sage);
+  color: var(--coffee);
 }
 
 .drawer-footer {

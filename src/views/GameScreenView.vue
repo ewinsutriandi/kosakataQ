@@ -260,7 +260,7 @@
 .prepare-title {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--sage);
+  color: var(--coffee);
   margin-bottom: 24px;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -447,11 +447,11 @@
 .surah-label {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--sage);
-  background: rgba(141, 161, 137, 0.1);
+  color: var(--coffee);
+  background: rgba(109, 76, 65, 0.1);
   padding: 4px 10px;
   border-radius: 20px;
-  border: 1px solid rgba(141, 161, 137, 0.2);
+  border: 1px solid rgba(109, 76, 65, 0.2);
 }
 
 .ayah-text {
@@ -529,8 +529,8 @@
 }
 
 .result-icon-circle.success {
-  background: rgba(141, 161, 137, 0.1);
-  color: var(--sage);
+  background: rgba(109, 76, 65, 0.1);
+  color: var(--coffee);
 }
 
 .result-icon-circle.failure {
@@ -569,7 +569,7 @@
 .score-val {
   font-size: 3rem;
   font-weight: 800;
-  color: var(--sage);
+  color: var(--coffee);
 }
 
 .score-sep {
@@ -611,7 +611,7 @@
 }
 
 .stat-pill.success {
-  border-left: 4px solid var(--sage);
+  border-left: 4px solid var(--coffee);
 }
 
 .stat-pill.failure {
@@ -653,7 +653,7 @@
 }
 
 .success {
-  color: var(--sage);
+  color: var(--coffee);
 }
 .failure {
   color: #DC2626;

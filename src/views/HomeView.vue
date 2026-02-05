@@ -115,7 +115,7 @@ export default {
 .mode-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-color: var(--sage);
+  border-color: var(--coffee);
 }
 
 .mode-card:active {
@@ -155,8 +155,8 @@ export default {
 }
 
 .secondary-link:hover {
-  color: var(--sage);
-  background: rgba(141, 161, 137, 0.1);
+  color: var(--coffee);
+  background: rgba(109, 76, 65, 0.1);
 }
 
 @media (max-width: 600px) {

@@ -170,7 +170,7 @@ export default {
 }
 
 .search-pill:focus-within {
-  border-color: var(--sage);
+  border-color: var(--coffee);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -217,14 +217,14 @@ export default {
 
 .filter-chip:hover {
   background-color: #efefe8;
-  border-color: var(--sage);
+  border-color: var(--coffee);
 }
 
 .filter-chip.active {
-  background-color: var(--sage);
-  border-color: var(--sage);
+  background-color: var(--coffee);
+  border-color: var(--coffee);
   color: white;
-  box-shadow: 0 4px 12px rgba(141, 161, 137, 0.3);
+  box-shadow: 0 4px 12px rgba(109, 76, 65, 0.3);
   transform: translateY(-1px);
 }
 
@@ -263,7 +263,7 @@ export default {
 }
 
 .surah-card:hover {
-  border-color: var(--sage);
+  border-color: var(--coffee);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -280,7 +280,7 @@ export default {
 
 .surah-index {
   font-size: 0.75rem;
-  color: var(--sage);
+  color: var(--coffee);
   font-weight: 700;
 }
 

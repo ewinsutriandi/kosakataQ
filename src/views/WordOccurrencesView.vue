@@ -334,8 +334,8 @@ export default {
 }
 
 .back-btn:hover {
-  border-color: var(--sage);
-  color: var(--sage);
+  border-color: var(--coffee);
+  color: var(--coffee);
   background: white;
 }
 
@@ -367,7 +367,7 @@ export default {
   text-align: center;
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--sage);
+  color: var(--coffee);
   margin: 10px 0 20px 0;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -401,7 +401,7 @@ export default {
 
 .back-floating-btn:hover {
   background: white;
-  color: var(--sage);
+  color: var(--coffee);
   transform: translateX(-2px);
   box-shadow: var(--shadow-sm);
 }
@@ -439,7 +439,7 @@ export default {
 }
 
 .surah-card:hover {
-  border-color: var(--sage);
+  border-color: var(--coffee);
   background: var(--sand);
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
@@ -458,7 +458,7 @@ export default {
 
 .surah-index {
   font-size: 0.7rem;
-  color: var(--sage);
+  color: var(--coffee);
   font-weight: 700;
   margin-bottom: -2px;
 }
@@ -502,7 +502,7 @@ export default {
 
 .header-count {
   font-size: 0.75rem;
-  color: var(--sage);
+  color: var(--coffee);
   font-weight: 700;
   background: rgba(43, 62, 48, 0.06);
   padding: 4px 10px;
@@ -528,7 +528,7 @@ export default {
   font-family: inherit;
   font-size: 0.9rem;
   font-weight: 400;
-  color: var(--sage);
+  color: var(--coffee);
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: rgba(43, 62, 48, 0.2);
@@ -538,7 +538,7 @@ export default {
 
 .ayah-inline-link:hover {
   color: var(--text-primary);
-  text-decoration-color: var(--sage);
+  text-decoration-color: var(--coffee);
 }
 
 .comma {
@@ -587,7 +587,7 @@ export default {
   border: none;
   border-radius: 50%;
   font-size: 24px;
-  color: var(--sage);
+  color: var(--coffee);
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -609,7 +609,7 @@ export default {
 .modal-header h3 {
   font-family: 'Outfit', sans-serif;
   font-size: 1.5rem;
-  color: var(--sage);
+  color: var(--coffee);
   margin: 0;
 }
 
@@ -655,7 +655,7 @@ export default {
 .word-translation {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--sage);
+  color: var(--coffee);
   text-align: right;
 }
 
@@ -694,7 +694,7 @@ export default {
 }
 
 .word-block.is-highlighted .arabic-token {
-  color: var(--sage);
+  color: var(--coffee);
   font-weight: 700;
 }
 
@@ -714,8 +714,8 @@ export default {
 }
 
 :deep(.highlight-word) {
-  color: var(--sage);
-  background: rgba(43, 62, 48, 0.08); /* Faint sage background */
+  color: var(--coffee);
+  background: rgba(62, 39, 35, 0.08); /* Faint brown background */
   padding: 0 4px;
   border-radius: 6px;
   font-weight: 700;

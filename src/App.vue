@@ -96,10 +96,10 @@ body .v-toast__item .v-toast__text {
   color: var(--text-primary) !important;
 }
 
-/* Success Toast - Sage Accent */
+/* Success Toast - Coffee Accent */
 body .v-toast__item--success,
 body .v-toast--success .v-toast__item {
-  border-left: 6px solid #5E6E56 !important; /* Sage */
+  border-left: 6px solid #6D4C41 !important; /* Coffee Brown */
 }
 
 /* Error Toast - Red Accent */
@@ -286,7 +286,7 @@ export default {
 .hamburger-btn:hover {
   transform: scale(1.05);
   background: white;
-  color: var(--sage);
+  color: var(--coffee);
 }
 
 .hamburger-btn:active {

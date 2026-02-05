@@ -1,8 +1,15 @@
 module.exports = {
+  publicPath: '/',
+  outputDir: 'dist',
   transpileDependencies: true,
   pwa: {
     name: "kosakataQ",
     themeColor: "#3F83F8",
+    workboxOptions: {
+      skipWaiting: true,
+      clientsClaim: true,
+      cleanupOutdatedCaches: true,
+    },
     icons: {
       faviconSVG: "img/icons/android-launchericon-152-152.svg",
       favicon16: "img/icons/android-launchericon-16-16.png",

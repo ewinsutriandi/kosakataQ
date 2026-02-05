@@ -167,7 +167,7 @@ export default {
 }
 
 .btn-start {
-  background: var(--sage);
+  background: var(--coffee);
   color: white;
   border: none;
   font-size: 1.1rem;
@@ -176,7 +176,7 @@ export default {
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(94, 110, 86, 0.3);
+  box-shadow: 0 4px 12px rgba(109, 76, 65, 0.3);
   font-family: inherit;
   width: 100%;
 }

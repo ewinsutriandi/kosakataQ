@@ -108,15 +108,15 @@
 
 .filter-chip:hover {
   background-color: #efefe8;
-  border-color: var(--sage);
+  border-color: var(--coffee);
   color: var(--text-primary);
 }
 
 .filter-chip.active {
-  background-color: var(--sage);
-  border-color: var(--sage);
+  background-color: var(--coffee);
+  border-color: var(--coffee);
   color: white;
-  box-shadow: 0 4px 12px rgba(141, 161, 137, 0.3);
+  box-shadow: 0 4px 12px rgba(109, 76, 65, 0.3);
   transform: translateY(-1px);
 }
 
