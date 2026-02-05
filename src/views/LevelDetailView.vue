@@ -39,17 +39,29 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "LevelDetailView",
   data() {
     return {
       words: [],
       loading: true,
-      levelId: this.$route.params.levelId
+      levelId: parseInt(this.$route.params.levelId)
     };
+  },
+  computed: {
+    ...mapGetters(['isLevelUnlocked']),
+    isLocked() {
+      return !this.isLevelUnlocked(this.levelId);
+    }
   },
   methods: {
     async fetchLevelWords() {
+      if (this.isLocked) {
+        this.$router.push('/levels');
+        return;
+      }
       try {
         const response = await fetch('/data/word_frequency.json');
         const allWords = await response.json();

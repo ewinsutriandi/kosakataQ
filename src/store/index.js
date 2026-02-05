@@ -107,6 +107,19 @@ export default new Vuex.Store({
       }
       return ayah_words;
     },
+    wonLevelIds(state) {
+      const won = new Set();
+      state.game_logs.forEach(log => {
+        if (log.mode === 'level' && log.playerWon && log.levelId) {
+          won.add(log.levelId);
+        }
+      });
+      return won;
+    },
+    isLevelUnlocked: (state, getters) => (levelId) => {
+      if (levelId === 1) return true;
+      return getters.wonLevelIds.has(levelId - 1);
+    },
   },
   mutations: {
     SET_DATA(state, { key, data }) {

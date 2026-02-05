@@ -10,14 +10,26 @@
 
     <div v-else class="picker-container">
       <div class="levels-grid">
-        <router-link 
+        <div 
           v-for="level in paginatedLevels" 
           :key="level" 
-          :to="'/level/' + level"
-          class="level-card"
+          class="level-card-wrapper"
         >
-          <span class="level-number">{{ level }}</span>
-        </router-link>
+          <router-link 
+            v-if="isLevelUnlocked(level)"
+            :to="'/level/' + level"
+            class="level-card"
+            :class="{ 'is-won': isLevelWon(level) }"
+          >
+            <span class="level-number">{{ level }}</span>
+            <div v-if="isLevelWon(level)" class="completion-badge">✓</div>
+          </router-link>
+          
+          <div v-else class="level-card is-locked">
+            <span class="level-number">{{ level }}</span>
+            <div class="lock-icon">🔒</div>
+          </div>
+        </div>
       </div>
 
       <div class="pagination" v-if="totalPages > 1">
@@ -42,6 +54,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "LevelSelectionView",
   data() {
@@ -54,6 +68,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['wonLevelIds', 'isLevelUnlocked']),
     totalLevels() {
       return Math.ceil(this.totalWords / this.wordsPerLevel);
     },
@@ -71,6 +86,9 @@ export default {
     }
   },
   methods: {
+    isLevelWon(levelId) {
+      return this.wonLevelIds.has(levelId);
+    },
     async fetchWordFrequency() {
       try {
         const response = await fetch('/data/word_frequency.json');
@@ -124,10 +142,50 @@ export default {
   box-shadow: var(--shadow-sm);
 }
 
-.level-card:hover {
+.level-card:hover:not(.is-locked) {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
   border-color: var(--coffee);
+}
+
+.level-card.is-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.05);
+  filter: grayscale(1);
+}
+
+.level-card.is-won {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.level-card.is-won:hover {
+  border-color: #4CAF50;
+}
+
+.lock-icon {
+  position: absolute;
+  font-size: 0.8rem;
+  bottom: 8px;
+  right: 8px;
+  opacity: 0.6;
+}
+
+.completion-badge {
+  position: absolute;
+  font-size: 0.7rem;
+  top: 6px;
+  right: 8px;
+  background: #4CAF50;
+  color: white;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
 }
 
 .level-number {
