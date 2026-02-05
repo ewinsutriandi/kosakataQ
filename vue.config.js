@@ -4,7 +4,7 @@ module.exports = {
   transpileDependencies: true,
   pwa: {
     name: "kosakataQ",
-    themeColor: "#3F83F8",
+    themeColor: "#6D4C41",
     workboxOptions: {
       skipWaiting: true,
       clientsClaim: true,
