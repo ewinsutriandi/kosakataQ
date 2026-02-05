@@ -9,27 +9,27 @@
           Selamat datang di <strong>kosakataQ</strong>. Aplikasi ini menyediakan dua cara menyenangkan untuk mempelajari kosakata Al-Qur'an:
         </p>
 
-        <h3 class="guide-subtitle">1. Kosakata surat</h3>
+        <h3 class="guide-subtitle">1. Mode surat</h3>
         <p>
-          Bermain dan belajar arti kata yang muncul pada surat tertentu. Cocok untuk Anda yang sedang menghafal surat per surat.
+          Bermain dan belajar arti kata yang muncul pada tiap surat. Cocok untuk Anda yang sedang menghafal surat per surat.
         </p>
         <ul class="guide-list">
-          <li>Pilih surat yang ingin dipelajari dari daftar.</li>
+          <li>Pilih surat yang ingin dipelajari dari daftar (Juz 30 & Fatiha atau Seluruh Surat).</li>
           <li>
-            <strong>Mode normal:</strong> Urutan ayat runut, kata yang ditanyakan diambil acak sesuai urutan ayat.
+            <strong>Mode normal:</strong> Ayat ditampilkan secara terurut untuk membantu pemahaman konteks.
           </li>
           <li>
-            <strong>Mode menantang:</strong> Urutan ayat diacak, kata yang ditanyakan diambil acak dari seluruh isi surat.
+            <strong>Mode menantang:</strong> Ayat ditampilkan secara acak untuk menguji penguasaan kosakata sesungguhnya.
           </li>
         </ul>
 
-        <h3 class="guide-subtitle">2. Kemunculan kata</h3>
+        <h3 class="guide-subtitle">2. Mode level</h3>
         <p>
-          Bermain dan belajar arti kata berdasarkan seberapa sering kata tersebut muncul dalam Al-Qur'an.
+          Bermain dan belajar arti kata secara bertahap level demi level. Setiap level berisi 50 kata yang diurutkan berdasarkan tingkat kemunculannya dalam Al-Qur'an.
         </p>
         <ul class="guide-list">
-          <li>Gunakan filter untuk memilih kelompok kata (contoh: Kata yang muncul > 100x).</li>
-          <li>Klik "Latihan soal" untuk memulai sesi permainan pada kelompok kata tersebut.</li>
+          <li>Pilih level yang ingin dipelajari dari daftar yang tersedia.</li>
+          <li>Tinjau daftar kata sebelum memulai latihan untuk mempermudah belajar.</li>
         </ul>
 
         <h3 class="guide-subtitle">Cara Bermain</h3>

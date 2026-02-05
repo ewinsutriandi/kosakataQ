@@ -53,6 +53,22 @@ const routes = [
     component: WordOccurrencesView,
   },
   {
+    path: "/levels",
+    name: "levels",
+    component: () => import("../views/LevelSelectionView.vue"),
+  },
+  {
+    path: "/level/:levelId",
+    name: "level-detail",
+    component: () => import("../views/LevelDetailView.vue"),
+  },
+  {
+    path: "/play/level/:levelId",
+    name: "gamescreen-level",
+    component: GameScreenView,
+    meta: { hideNavigation: true }
+  },
+  {
     path: "/license",
     name: "license",
     component: LicenseView,

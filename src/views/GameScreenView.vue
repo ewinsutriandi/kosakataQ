@@ -26,11 +26,12 @@
           </div>
         </div>
 
-        <!-- Tier Info (Tier Mode) -->
+        <!-- Tier/Level Info -->
         <div v-else class="surah-header">
           <div class="surah-subtitle">
-            <p class="meaning" style="margin-bottom: 12px; display: block;">Kumpulan kata-kata yang paling sering muncul dalam Al-Qur'an.</p>
-            <h3 class="translit">{{ tierLabel }}</h3>
+            <p v-if="mode === 'tier'" class="meaning" style="margin-bottom: 12px; display: block;">Kumpulan kata-kata yang paling sering muncul dalam Al-Qur'an.</p>
+            <p v-else class="meaning" style="margin-bottom: 12px; display: block;">Belajar bertahap dengan kelompok 50 kata berdasarkan frekuensi.</p>
+            <h3 class="translit">{{ mode === 'tier' ? tierLabel : levelLabel }}</h3>
           </div>
         </div>
 
@@ -38,7 +39,7 @@
           <span class="pill">{{ selected.nAyah }} Ayat</span>
         </div>
         <div v-else class="meta-pills">
-          <span class="pill">{{ surah_quiz.length }} Kata</span>
+          <span class="pill">{{ surah_quiz.length || 50 }} Kata</span>
         </div>
 
         <div class="difficulty-actions">
@@ -50,7 +51,7 @@
             <button v-if="mode === 'surah'" @click="startHard" class="btn-glass btn-secondary">
               Menantang
             </button>
-            <button v-if="mode === 'tier'" @click="startTier" class="btn-glass btn-primary">
+            <button v-if="mode === 'tier' || mode === 'level'" @click="mode === 'tier' ? startTier() : startLevel()" class="btn-glass btn-primary">
               Mulai Latihan
             </button>
           </div>
@@ -69,7 +70,8 @@
         <!-- Header Info -->
         <div class="hud-row">
           <h2 v-if="mode === 'surah'" class="surah-tag-large">{{ selected.tr_id.nama }}</h2>
-          <h2 v-else class="surah-tag-large">{{ tierLabel }}</h2>
+          <h2 v-else-if="mode === 'tier'" class="surah-tag-large">{{ tierLabel }}</h2>
+          <h2 v-else class="surah-tag-large">{{ levelLabel }}</h2>
         </div>
 
         <!-- Life Indicator (Hearts) -->
@@ -158,7 +160,7 @@
             Main Lagi
           </button>
           <button @click="backToSource" class="btn-glass full-width">
-            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : 'Kembali ke Daftar Surat' }}
+            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : (mode === 'level' ? 'Kembali ke Level' : 'Kembali ke Daftar Surat') }}
           </button>
         </div>
 
@@ -774,9 +776,11 @@ export default {
       confirmedExit: false,
       pendingTarget: null,
       showExitModal: false,
-      mode: 'surah', // 'surah' or 'tier'
+      mode: 'surah', // 'surah', 'tier', or 'level'
       tierId: null,
       tierLabel: '',
+      levelId: null,
+      levelLabel: '',
     };
   },
   quiz_by_aya: [],
@@ -787,6 +791,19 @@ export default {
       this.surah_quiz = quiz; // random by default
       if (quiz.length > 0) {
         this.tierLabel = quiz[0].tierLabel;
+      }
+      this.max_score = 0;
+      for (let q of quiz) {
+        this.max_score += q.word_to_translate.length;
+      }
+      this.loading_quiz = false;
+    },
+    async load_level_quiz() {
+      this.loading_quiz = true;
+      const quiz = await this.generate_quiz_fr_level(this.levelId);
+      this.surah_quiz = quiz;
+      if (quiz.length > 0) {
+        this.levelLabel = quiz[0].levelLabel;
       }
       this.max_score = 0;
       for (let q of quiz) {
@@ -816,6 +833,9 @@ export default {
       this.game_on = true;
     },
     startTier() {
+      this.game_on = true;
+    },
+    startLevel() {
       this.game_on = true;
     },
     startHard() {
@@ -880,9 +900,12 @@ export default {
       };
       if (this.mode === 'surah') {
         log.suraIdx = this.surah_idx;
-      } else {
+      } else if (this.mode === 'tier') {
         log.tierId = this.tierId;
         log.tierLabel = this.tierLabel;
+      } else if (this.mode === 'level') {
+        log.levelId = this.levelId;
+        log.levelLabel = this.levelLabel;
       }
       this.$store.commit("add_game_log", log);
     },
@@ -940,6 +963,8 @@ export default {
       
       if (this.mode === 'tier') {
         this.load_tier_quiz();
+      } else if (this.mode === 'level') {
+        this.load_level_quiz();
       } else {
         this.load_quiz();
       }
@@ -948,6 +973,8 @@ export default {
       this.confirmedExit = true; // Avoid exit modal
       if (this.mode === 'tier') {
         this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
+      } else if (this.mode === 'level') {
+        this.$router.push({ path: `/level/${this.levelId}` }).catch(() => {});
       } else {
         this.$router.push("/").catch(() => {});
       }
@@ -967,6 +994,7 @@ export default {
         mode: this.mode,
         surahIdx: this.surah_idx,
         tierLabel: this.tierLabel,
+        levelLabel: this.levelLabel,
         playerWon: this.playerWon,
         score: this.score,
         maxScore: this.max_score,
@@ -980,6 +1008,10 @@ export default {
       this.mode = 'tier';
       this.tierId = this.$route.params.tierId;
       this.load_tier_quiz();
+    } else if (this.$route.params.levelId) {
+      this.mode = 'level';
+      this.levelId = parseInt(this.$route.params.levelId);
+      this.load_level_quiz();
     } else {
       this.mode = 'surah';
       this.surah_idx = this.$route.params.idx;

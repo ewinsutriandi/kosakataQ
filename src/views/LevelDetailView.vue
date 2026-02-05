@@ -1,0 +1,178 @@
+<template>
+  <div class="immersive-picker-view">
+    <button class="back-floating-btn" @click="$router.push('/levels')">
+      ← Kembali
+    </button>
+    
+    <h2 class="view-title">Level {{ levelId }}</h2>
+    <p class="view-description">{{ words.length }} Kosakata Terpilih</p>
+
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Memuat detail level...</p>
+    </div>
+
+    <div v-else class="picker-container">
+      <div class="level-info-header">
+        <button @click="startLevel" class="start-play-btn">
+          Mulai Latihan
+        </button>
+      </div>
+
+      <div class="word-list">
+        <div 
+          v-for="(word, index) in words" 
+          :key="index" 
+          class="word-item"
+          @click="$router.push('/word-occurrences/' + word.text)"
+        >
+          <div class="word-rank">#{{ (levelId - 1) * 50 + index + 1 }}</div>
+          <div class="word-content">
+            <span class="arabic-text-small">{{ word.text }}</span>
+            <span class="occurrence-badge">{{ word.count }}x muncul</span>
+          </div>
+          <div class="chevron">›</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "LevelDetailView",
+  data() {
+    return {
+      words: [],
+      loading: true,
+      levelId: this.$route.params.levelId
+    };
+  },
+  methods: {
+    async fetchLevelWords() {
+      try {
+        const response = await fetch('/data/word_frequency.json');
+        const allWords = await response.json();
+        const start = (this.levelId - 1) * 50;
+        const end = start + 50;
+        this.words = allWords.slice(start, end);
+      } catch (error) {
+        console.error("Error fetching level words:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    startLevel() {
+      this.$router.push(`/play/level/${this.levelId}`);
+    }
+  },
+  mounted() {
+    this.fetchLevelWords();
+  }
+};
+</script>
+
+<style scoped>
+.level-info-header {
+  text-align: center;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-play-btn {
+  background: var(--coffee);
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(109, 76, 65, 0.3);
+}
+
+.start-play-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(109, 76, 65, 0.4);
+}
+
+.picker-container {
+  max-width: 600px;
+}
+
+.word-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.word-item {
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.word-item:hover {
+  border-color: var(--coffee);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+.word-rank {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  width: 40px;
+  opacity: 0.6;
+}
+
+.word-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 15px;
+}
+
+.arabic-text-small {
+  font-family: 'Amiri', serif;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.occurrence-badge {
+  font-size: 0.75rem;
+  color: var(--sage);
+  background: rgba(43, 62, 48, 0.05);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.chevron {
+  color: var(--stone);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .view-title {
+    font-size: 1.5rem;
+  }
+  
+  .start-play-btn {
+    padding: 10px 30px;
+    font-size: 1rem;
+  }
+}
+</style>

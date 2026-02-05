@@ -1,6 +1,6 @@
 <template>
   <div class="immersive-picker-view">
-    <button class="back-floating-btn" @click="$router.push('/word-frequency')">
+    <button class="back-floating-btn" @click="$router.back()">
       ← Kembali
     </button>
 
@@ -382,35 +382,9 @@ export default {
   vertical-align: middle;
 }
 
-/* Floating Back Button */
-.back-floating-btn {
-  position: fixed;
-  top: 24px;
-  right: 20px;
-  z-index: 150;
-  background: var(--surface-glass);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--stone);
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.back-floating-btn:hover {
-  background: white;
-  color: var(--coffee);
-  transform: translateX(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
+/* Page-specific styles */
 .picker-container {
-  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
 }
 
 .picker-wrapper {

@@ -22,15 +22,15 @@
             class="drawer-link primary"
             active-class="active"
           >
-            Kosakata surat
+            Mode surat
           </router-link>
           <router-link
-            to="/word-frequency"
+            to="/levels"
             @click.native="$emit('close')"
             class="drawer-link primary"
             active-class="active"
           >
-            Kemunculan kata
+            Mode level
           </router-link>
           <router-link
             to="/stats/j30"
@@ -38,7 +38,7 @@
             class="drawer-link primary"
             active-class="active"
           >
-            Statistik bermain
+            Statistik
           </router-link>
         </div>
         

@@ -143,42 +143,9 @@ export default {
 </script>
 
 <style scoped>
-.immersive-picker-view {
-  width: 100%;
-  min-height: 100%;
-  padding-bottom: var(--spacing-xl);
-}
-
-.view-title {
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-  letter-spacing: 0.3px;
-}
-
-@media (max-width: 480px) {
-  .view-title {
-    font-size: 1rem;
-  }
-}
-
-.view-description {
-  text-align: center;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto 20px auto;
-  line-height: 1.5;
-  padding: 0 var(--spacing-md);
-}
-
+/* Page-specific styles */
 .picker-container {
-  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
 }
 
 .picker-wrapper {
@@ -236,24 +203,6 @@ export default {
   pointer-events: none;
   position: absolute;
   right: 15px;
-}
-
-.btn-play-tier {
-  background: var(--coffee);
-  border: none;
-  padding: 12px 24px;
-  border-radius: 50px;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: inherit;
-  box-shadow: 0 4px 15px rgba(109, 76, 65, 0.4);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
 }
 
 .btn-play-tier {

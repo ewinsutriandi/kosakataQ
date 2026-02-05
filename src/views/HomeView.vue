@@ -9,13 +9,20 @@
 
     <div class="mode-cards">
       <router-link to="/picksurah/j30" class="mode-card">
-        <h2 class="card-title">Kosakata surat</h2>
-        <p class="card-description">Belajar arti kata per ayat pada surat</p>
+        <h2 class="card-title">Mode Surat</h2>
+        <p class="card-description">Belajar arti kata pada tiap surat</p>
       </router-link>
 
+      <!--
       <router-link to="/word-frequency" class="mode-card">
         <h2 class="card-title">Kemunculan kata</h2>
         <p class="card-description">Belajar arti kata bertahap berdasarkan kemunculan</p>
+      </router-link>
+      -->
+
+      <router-link to="/levels" class="mode-card">
+        <h2 class="card-title">Mode Level</h2>
+        <p class="card-description">Belajar bertahap 50 kata per level</p>
       </router-link>
     </div>
 
@@ -37,14 +44,15 @@ export default {
 <style scoped>
 .home-view {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 120px); /* Adjusting for app shell top/bottom offsets */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: var(--spacing-md);
   max-width: 800px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 .home-header {
   text-align: center;
@@ -69,9 +77,12 @@ export default {
 }
 
 .subtitle {
+  text-align: center;
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.5;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .version {

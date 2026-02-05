@@ -22,13 +22,72 @@ body {
 
 .view-title {
     text-align: center;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--coffee);
-    margin: 10px 0 20px 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
 }
+
+.view-description {
+    display: block !important;
+    text-align: center !important;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 64px auto !important;
+    line-height: 1.6;
+    padding: 0 var(--spacing-md);
+}
+
+.immersive-picker-view {
+    width: 100%;
+    min-height: calc(100vh - 150px);
+    /* Accounting for app shell offsets and internal padding */
+    padding-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+.back-floating-btn {
+    position: fixed;
+    top: 24px;
+    right: 20px;
+    z-index: 1500;
+    background: var(--surface-glass);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--surface-glass-border);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.back-floating-btn:hover {
+    background: white;
+    color: var(--coffee);
+    border-color: var(--coffee);
+    transform: translateX(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 600px) {
+    .back-floating-btn {
+        top: 16px;
+        right: 16px;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+}
+
 
 .flex {
     display: flex;

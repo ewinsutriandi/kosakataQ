@@ -156,10 +156,49 @@ export default {
         return [];
       }
     },
+    async generate_quiz_fr_level(levelId) {
+      try {
+        const response = await fetch('/data/word_frequency.json');
+        const allWords = await response.json();
+        const startIdx = (levelId - 1) * 50;
+        const endIdx = startIdx + 50;
+        const sessionWords = allWords.slice(startIdx, endIdx);
+
+        let levelQuizL = [];
+        for (let word of sessionWords) {
+          // Select one random occurrence
+          const occ = word.occurrences[Math.floor(Math.random() * word.occurrences.length)];
+
+          const surahMeta = this.$store.state.surahs[occ.surah];
+          const surahName = this.$store.state.surahs_translit_id[occ.surah].nama;
+          const gan = surahMeta.start + (occ.ayah - 1);
+
+          const ayahText = this.$store.state.ayah_uthmani[gan];
+          const ayahWords = this.$store.getters.ayah_words(gan);
+          const targetWord = ayahWords[occ.index - this.$store.state.ayah_word_map[gan].start];
+
+          if (!targetWord) continue;
+
+          let quiz = {};
+          quiz.ayah_text = ayahText;
+          quiz.word_to_translate = word.text;
+          quiz.answer = targetWord.translation;
+          quiz.levelLabel = `Level ${levelId}`;
+          quiz.surahIdx = occ.surah;
+          quiz.surahName = surahName;
+          quiz.ayahIdx = occ.ayah;
+
+          quiz.choices = this.generate_quiz_choices(gan, ayahWords, targetWord);
+          levelQuizL.push(quiz);
+        }
+
+        return this.randomize(levelQuizL);
+      } catch (error) {
+        console.error("Error generating level quiz:", error);
+        return [];
+      }
+    },
     generate_quiz_choices_tier(gan, words, word) {
-      // Re-use the existing logic but pass GAN instead of ayahIdx
-      // We need to ensure ayahIdx is a string if the original expects it, 
-      // but let's check generate_quiz_choices usage of ayahIdx
       return this.generate_quiz_choices(gan, words, word);
     }
   },
