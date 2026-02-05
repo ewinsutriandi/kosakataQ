@@ -8,7 +8,7 @@
 
     <!-- Prepare Screen (Glass Card) -->
     <div
-      v-if="!loading_quiz && !game_on && ((mode === 'surah' && $options.quiz_by_aya.length > 0) || (mode === 'tier' && surah_quiz.length > 0))"
+      v-if="!loading_quiz && !game_on && ((mode === 'surah' && $options.quiz_by_aya.length > 0) || ((mode === 'tier' || mode === 'level') && surah_quiz.length > 0))"
       class="center-container"
     >
       <div class="glass-card prepare-card">
