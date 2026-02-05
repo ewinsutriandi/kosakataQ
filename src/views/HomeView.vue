@@ -10,12 +10,12 @@
     <div class="mode-cards">
       <router-link to="/picksurah/j30" class="mode-card">
         <h2 class="card-title">Kosakata surat</h2>
-        <p class="card-description">Bermain dan belajar arti kata yang muncul pada surat tertentu</p>
+        <p class="card-description">Belajar arti kata per ayat pada surat</p>
       </router-link>
 
       <router-link to="/word-frequency" class="mode-card">
         <h2 class="card-title">Kemunculan kata</h2>
-        <p class="card-description">Bermain dan belajar arti kata yang ada berdasarkan kemunculannya</p>
+        <p class="card-description">Belajar arti kata bertahap berdasarkan kemunculan</p>
       </router-link>
     </div>
 
