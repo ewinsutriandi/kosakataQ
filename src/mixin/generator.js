@@ -32,6 +32,8 @@ export default {
         for (let wIdx = 0; wIdx < words.length; wIdx++) {
           let word = words[wIdx];
           let quiz = {};
+          quiz.surahIdx = surah_idx;
+          quiz.ayahIdx = curAidx + 1; // 1-based index within surah
           quiz.surahName = this.$store.state.surahs_translit_id[surah_idx].nama;
           quiz.ayah_text = curAyah.text;
           let the_word = word.uthmani;
@@ -42,6 +44,7 @@ export default {
           }
           quiz.word_to_translate = the_word;
           quiz.answer = word.translation;
+          quiz.wordIndex = word.index;
           // prepare choices
           quiz.choices = this.generate_quiz_choices(ayahIdx, words, word);
           ayahQuizL.push(quiz);
@@ -139,6 +142,7 @@ export default {
           let quiz = {};
           quiz.ayah_text = ayahText;
           quiz.word_to_translate = word.text; // Use the word from frequency map
+          quiz.wordIndex = occ.index;
           quiz.answer = targetWord.translation;
           quiz.tierLabel = filter.label;
           quiz.surahIdx = occ.surah;
@@ -182,6 +186,7 @@ export default {
           let quiz = {};
           quiz.ayah_text = ayahText;
           quiz.word_to_translate = word.text;
+          quiz.wordIndex = occ.index;
           quiz.answer = targetWord.translation;
           quiz.levelLabel = `Level ${levelId}`;
           quiz.surahIdx = occ.surah;

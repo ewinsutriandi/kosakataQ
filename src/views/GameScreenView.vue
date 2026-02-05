@@ -92,12 +92,10 @@
         <transition name="fade-up" mode="out-in">
           <div :key="cur_quiz_idx" class="question-container">
             <span class="context-label">Pada ayat berikut:</span>
-            <h2 class="ayah-text">
-              {{ cur_quiz.ayah_text }}
-            </h2>
+            <h2 class="ayah-text" v-html="highlightAyahText(cur_quiz)"></h2>
             <div class="verse-meta" v-if="cur_quiz">
               <span class="surah-label">
-                {{ cur_quiz.surahName }} : {{ mode === 'surah' ? (cur_quiz_idx + 1) : cur_quiz.ayahIdx }}
+                {{ cur_quiz.surahName }} : {{ cur_quiz.ayahIdx }}
               </span>
             </div>
 
@@ -463,6 +461,15 @@
   line-height: 1.8;
   color: var(--color-text);
   margin: var(--spacing-lg) 0 8px 0;
+}
+
+:deep(.verse-highlight) {
+  color: var(--coffee);
+  background: rgba(109, 76, 65, 0.12);
+  padding: 0 4px;
+  border-radius: 8px;
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(109, 76, 65, 0.1);
 }
 
 .query-box {
@@ -978,6 +985,75 @@ export default {
       } else {
         this.$router.push("/").catch(() => {});
       }
+    },
+    normalizeArabic(text) {
+      if (!text) return "";
+      return text
+        .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "")
+        .replace(/[۞۩۝]/g, "")
+        .replace(/[ٱإأآ]/g, "ا")
+        .replace(/[یى]/g, "ي")
+        .replace(/ک/g, "ك")
+        .trim();
+    },
+    highlightAyahText(quiz) {
+      if (!quiz || !quiz.ayah_text || quiz.wordIndex === undefined) return quiz?.ayah_text || "";
+
+      const surahIdx = quiz.surahIdx;
+      const ayahNum = quiz.ayahIdx; // 1-based index within surah
+      
+      const surahMeta = this.$store.state.surahs[surahIdx];
+      if (!surahMeta) return quiz.ayah_text;
+
+      const gan = surahMeta.start + (ayahNum - 1);
+      const localRange = this.$store.state.ayah_word_map[gan];
+      if (!localRange) return quiz.ayah_text;
+
+      const targetLocalWordIndex = quiz.wordIndex - localRange.start;
+      const allTokens = quiz.ayah_text.trim().split(/\s+/);
+      const targetNormalized = this.normalizeArabic(quiz.word_to_translate);
+
+      // Identify word tokens for highlighting logic
+      const wordTokenIndices = [];
+      allTokens.forEach((t, i) => {
+        if (this.normalizeArabic(t).length > 0) {
+          wordTokenIndices.push(i);
+        }
+      });
+
+      // Determine bestMatchIndex (Shimmy-proof logic)
+      let bestMatchIndex = -1;
+      if (wordTokenIndices[targetLocalWordIndex] !== undefined) {
+        const originalIdx = wordTokenIndices[targetLocalWordIndex];
+        if (this.normalizeArabic(allTokens[originalIdx]) === targetNormalized) {
+          bestMatchIndex = originalIdx;
+        }
+      }
+      
+      if (bestMatchIndex === -1) {
+        for (let offset = -2; offset <= 2; offset++) {
+          const idx = targetLocalWordIndex + offset;
+          if (wordTokenIndices[idx] !== undefined) {
+            const originalIdx = wordTokenIndices[idx];
+            if (this.normalizeArabic(allTokens[originalIdx]) === targetNormalized) {
+              bestMatchIndex = originalIdx;
+              break;
+            }
+          }
+        }
+      }
+
+      // Reconstruct HTML
+      if (bestMatchIndex !== -1) {
+        return allTokens.map((token, idx) => {
+          if (idx === bestMatchIndex) {
+            return `<span class="verse-highlight">${token}</span>`;
+          }
+          return token;
+        }).join(" ");
+      }
+
+      return quiz.ayah_text;
     },
   },
   computed: {

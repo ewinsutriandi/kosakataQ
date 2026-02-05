@@ -100,6 +100,7 @@ export default new Vuex.Store({
       for (let w_idx = word_map.start; w_idx <= word_map.end; w_idx++) {
         let word = state.words[w_idx];
         if (word) {
+          word = { ...word, index: w_idx }; // Include global index
           word.translation = state.words_tr_id[w_idx];
           ayah_words.push(word);
         }
