@@ -5,6 +5,8 @@ module.exports = {
   pwa: {
     name: "kosakataQ",
     themeColor: "#6D4C41",
+    msTileColor: "#6D4C41",
+    appleMobileWebAppStatusBarStyle: 'black-translucent',
     workboxOptions: {
       skipWaiting: true,
       clientsClaim: true,

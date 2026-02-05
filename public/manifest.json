@@ -1,7 +1,7 @@
 {
   "name": "kosakataQ",
   "short_name": "kosakataQ",
-  "theme_color": "#3F83F8",
+  "theme_color": "#6D4C41",
   "icons": [
     {
       "src": "./img/icons/android-launchericon-192-192.png",
@@ -28,5 +28,5 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#3F83F8"
+  "background_color": "#6D4C41"
 }
