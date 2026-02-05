@@ -116,6 +116,16 @@ export default new Vuex.Store({
       });
       return won;
     },
+    wonSurahIds(state) {
+      const won = new Set();
+      state.game_logs.forEach(log => {
+        const sIdx = log.surahIdx || log.suraIdx;
+        if (log.mode === 'surah' && log.playerWon && sIdx) {
+          won.add(parseInt(sIdx));
+        }
+      });
+      return won;
+    },
     isLevelUnlocked: (state, getters) => (levelId) => {
       if (levelId === 1) return true;
       return getters.wonLevelIds.has(levelId - 1);

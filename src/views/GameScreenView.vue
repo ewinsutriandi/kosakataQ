@@ -967,7 +967,7 @@ export default {
         timestamp: Date.now(),
       };
       if (this.mode === 'surah') {
-        log.suraIdx = this.surah_idx;
+        log.surahIdx = this.surah_idx;
       } else if (this.mode === 'tier') {
         log.tierId = this.tierId;
         log.tierLabel = this.tierLabel;

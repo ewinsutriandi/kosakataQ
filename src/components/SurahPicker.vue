@@ -32,20 +32,23 @@
 
     <!-- Surah List -->
     <div class="surah-list" v-if="filteredList.length > 0">
-      <router-link
+        <router-link
         v-for="surah in filteredList"
         :key="surah.idx"
         :to="'/play/' + surah.idx"
         class="surah-link"
       >
-        <button class="surah-card">
+        <button class="surah-card" :class="{ 'is-won': isSurahWon(surah.idx) }">
           <div class="card-left">
             <span class="surah-index">{{ formatIndex(surah.idx) }}</span>
             <span class="english-name">{{
               surah.tr_id ? surah.tr_id.nama : surah.name
             }}</span>
           </div>
-          <h2 class="arabic-name">{{ surah.name }}</h2>
+          <div class="card-right">
+            <h2 class="arabic-name">{{ surah.name }}</h2>
+            <div v-if="isSurahWon(surah.idx)" class="completion-badge">✓</div>
+          </div>
         </button>
       </router-link>
     </div>
@@ -57,6 +60,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "SurahPicker",
   props: ["tipe"],
@@ -67,6 +72,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['wonSurahIds']),
     filteredList() {
       if (!this.searchQuery) return this.surah_list;
 
@@ -85,6 +91,9 @@ export default {
     },
   },
   methods: {
+    isSurahWon(idx) {
+      return this.wonSurahIds.has(idx);
+    },
     formatIndex(idx) {
       return idx.toString().padStart(2, "0");
     },
@@ -282,6 +291,37 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.card-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.surah-card.is-won {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.surah-card.is-won:hover {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.08);
+}
+
+.completion-badge {
+  background: #4CAF50;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .surah-index {
