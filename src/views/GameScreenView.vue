@@ -771,6 +771,8 @@
 
 .modal-card {
   max-width: 340px !important;
+  max-height: 90vh;
+  overflow-y: auto;
   text-align: center;
 }
 
