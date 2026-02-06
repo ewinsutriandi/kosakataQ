@@ -19,19 +19,21 @@
           Semua Surat
         </router-link>
         <router-link
-          to="/stats/tier"
-          class="filter-chip"
-          :class="{ active: $route.params.tipe === 'tier' }"
-        >
-          Mode Tier (Arsip)
-        </router-link>
-        <router-link
           to="/stats/level"
           class="filter-chip"
           :class="{ active: $route.params.tipe === 'level' }"
         >
           Mode Level
         </router-link>
+        <!--
+        <router-link
+          to="/stats/tier"
+          class="filter-chip"
+          :class="{ active: $route.params.tipe === 'tier' }"
+        >
+          Mode Tier (Arsip)
+        </router-link>
+        -->
       </div>
       <div class="stats-table-container">
         <table class="stats-table">
@@ -188,9 +190,10 @@ export default {
 
       // Process logs
       logs.forEach(log => {
-        if (log.mode !== 'surah' || !log.suraIdx) return;
+        const sIdx = log.surahIdx || log.suraIdx;
+        if (log.mode !== 'surah' || !sIdx) return;
         
-        let surah = surah_stats[log.suraIdx - 1];
+        let surah = surah_stats[sIdx - 1];
         if (!surah) return;
 
         if (log.playerWon) surah.stats.win++;
