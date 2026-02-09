@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap would go here if one existed
+# Sitemap: https://kosakataQ.web.app/sitemap.xml

@@ -100,4 +100,41 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  const baseTitle = "kosakataQ";
+  let pageTitle = "";
+
+  switch (to.name) {
+    case 'home':
+      pageTitle = "Belajar Arti Kata Al-Qur'an";
+      break;
+    case 'picksurah':
+      pageTitle = "Pilih Surat";
+      break;
+    case 'surah-detail':
+      pageTitle = `Detail Surat ${to.params.idx}`;
+      break;
+    case 'levels':
+      pageTitle = "Mode Level";
+      break;
+    case 'level-detail':
+      pageTitle = `Level ${to.params.levelId}`;
+      break;
+    case 'gamestats':
+      pageTitle = "Statistik Permainan";
+      break;
+    case 'wordfrequency':
+      pageTitle = "Frekuensi Kata";
+      break;
+    case 'playing guide':
+      pageTitle = "Panduan Bermain";
+      break;
+    default:
+      pageTitle = to.name ? to.name.charAt(0).toUpperCase() + to.name.slice(1) : "";
+  }
+
+  document.title = pageTitle ? `${pageTitle} | ${baseTitle}` : baseTitle;
+  next();
+});
+
 export default router;
