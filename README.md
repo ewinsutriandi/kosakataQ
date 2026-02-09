@@ -12,7 +12,7 @@ Sebuah web app untuk membantu mempelajari arti kata (kosakata) dalam ayat al-Qur
 - **Frontend**: Vue.js 2
 - **State Management**: Vuex
 - **Data Persistence**: LocalForage (IndexedDB) & LocalStorage
-- **Styling**: Vanilla CSS (Custom Glassmorphism Design System)
+- **Styling**: Vanilla CSS 
 
 ## Persiapan
 Pastikan Node.js terinstal di komputer Anda, lalu jalankan langkah-langkah berikut:

@@ -31,7 +31,9 @@ export default {
   methods: {
     async shareViaWebShare() {
       let titleSuffix = "";
-      if (this.scoreData.mode === 'tier' || !this.scoreData.surahIdx) {
+      if (this.scoreData.mode === 'level') {
+        titleSuffix = this.scoreData.levelLabel || `Level ${this.scoreData.levelId || ''}`;
+      } else if (this.scoreData.mode === 'tier') {
         titleSuffix = `Grup ${this.scoreData.tierLabel || ''}`;
       } else {
         let surah = this.$store.getters.surahs_all[this.scoreData.surahIdx];

@@ -205,8 +205,8 @@
     <transition name="fade">
       <div v-if="showExitModal" class="modal-overlay">
         <div class="glass-card modal-card">
-          <h3 class="modal-title">Jeda Permainan</h3>
-          <p class="modal-desc">Keluar sekarang akan menghapus progress permainan ini.</p>
+          <h3 class="modal-title">Konfirmasi Keluar</h3>
+          <p class="modal-desc">Jika anda memilih Keluar, progress permainan ini akan hilang.</p>
           <div class="actions-row">
             <button @click="cancelExit" class="btn-glass">Lanjut Main</button>
             <button @click="confirmExit" class="btn-glass btn-danger">Keluar</button>
@@ -1038,7 +1038,6 @@ export default {
       }
     },
     backToSource() {
-      this.confirmedExit = true; // Avoid exit modal
       if (this.mode === 'tier') {
         this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
       } else if (this.mode === 'level') {
@@ -1130,7 +1129,9 @@ export default {
       return {
         mode: this.mode,
         surahIdx: this.surah_idx,
+        tierId: this.tierId,
         tierLabel: this.tierLabel,
+        levelId: this.levelId,
         levelLabel: this.levelLabel,
         playerWon: this.playerWon,
         score: this.score,
