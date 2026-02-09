@@ -116,6 +116,21 @@ export default new Vuex.Store({
       });
       return won;
     },
+    perfectLevelIds(state) {
+      const perfect = new Set();
+      state.game_logs.forEach(log => {
+        if (
+          log.mode === 'level' &&
+          log.playerWon &&
+          log.levelId &&
+          log.score === log.maxScore &&
+          log.maxScore > 0
+        ) {
+          perfect.add(log.levelId);
+        }
+      });
+      return perfect;
+    },
     wonSurahIds(state) {
       const won = new Set();
       state.game_logs.forEach(log => {
@@ -125,6 +140,22 @@ export default new Vuex.Store({
         }
       });
       return won;
+    },
+    perfectSurahIds(state) {
+      const perfect = new Set();
+      state.game_logs.forEach(log => {
+        const sIdx = log.surahIdx || log.suraIdx;
+        if (
+          log.mode === 'surah' &&
+          log.playerWon &&
+          sIdx &&
+          log.score === log.maxScore &&
+          log.maxScore > 0
+        ) {
+          perfect.add(parseInt(sIdx));
+        }
+      });
+      return perfect;
     },
     isLevelUnlocked: (state, getters) => (levelId) => {
       if (levelId === 1) return true;

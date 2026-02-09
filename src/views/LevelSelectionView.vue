@@ -19,10 +19,12 @@
             v-if="isLevelUnlocked(level)"
             :to="'/level/' + level"
             class="level-card"
-            :class="{ 'is-won': isLevelWon(level) }"
+            :class="{ 'is-won': isLevelWon(level), 'is-perfect': isLevelPerfect(level) }"
           >
             <span class="level-number">{{ level }}</span>
-            <div v-if="isLevelWon(level)" class="completion-badge">✓</div>
+            <div v-if="isLevelWon(level)" class="completion-badge" :class="{ 'perfect': isLevelPerfect(level) }">
+              {{ isLevelPerfect(level) ? '🌸' : '✓' }}
+            </div>
           </router-link>
           
           <div v-else class="level-card is-locked">
@@ -68,7 +70,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['wonLevelIds', 'isLevelUnlocked']),
+    ...mapGetters(['wonLevelIds', 'perfectLevelIds', 'isLevelUnlocked']),
     totalLevels() {
       return Math.ceil(this.totalWords / this.wordsPerLevel);
     },
@@ -88,6 +90,9 @@ export default {
   methods: {
     isLevelWon(levelId) {
       return this.wonLevelIds.has(levelId);
+    },
+    isLevelPerfect(levelId) {
+      return this.perfectLevelIds.has(levelId);
     },
     async fetchWordFrequency() {
       try {
@@ -160,8 +165,17 @@ export default {
   background: rgba(76, 175, 80, 0.05);
 }
 
+.level-card.is-perfect {
+  border-color: #FFC107;
+  background: rgba(255, 193, 7, 0.08);
+}
+
 .level-card.is-won:hover {
   border-color: #4CAF50;
+}
+
+.level-card.is-perfect:hover {
+  border-color: #FFC107;
 }
 
 .lock-icon {
@@ -179,13 +193,20 @@ export default {
   right: 8px;
   background: #4CAF50;
   color: white;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.completion-badge.perfect {
+  background: #FFC107;
+  font-size: 0.8rem;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
 }
 
 .level-number {

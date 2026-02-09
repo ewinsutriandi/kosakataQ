@@ -38,7 +38,7 @@
         :to="'/surah/' + surah.idx"
         class="surah-link"
       >
-        <button class="surah-card" :class="{ 'is-won': isSurahWon(surah.idx) }">
+        <button class="surah-card" :class="{ 'is-won': isSurahWon(surah.idx), 'is-perfect': isSurahPerfect(surah.idx) }">
           <div class="card-left">
             <span class="surah-index">{{ formatIndex(surah.idx) }}</span>
             <span class="english-name">{{
@@ -47,7 +47,9 @@
           </div>
           <div class="card-right">
             <h2 class="arabic-name">{{ surah.name }}</h2>
-            <div v-if="isSurahWon(surah.idx)" class="completion-badge">✓</div>
+            <div v-if="isSurahWon(surah.idx)" class="completion-badge" :class="{ 'perfect': isSurahPerfect(surah.idx) }">
+              {{ isSurahPerfect(surah.idx) ? '🌸' : '✓' }}
+            </div>
           </div>
         </button>
       </router-link>
@@ -72,7 +74,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['wonSurahIds']),
+    ...mapGetters(['wonSurahIds', 'perfectSurahIds']),
     filteredList() {
       if (!this.searchQuery) return this.surah_list;
 
@@ -92,7 +94,10 @@ export default {
   },
   methods: {
     isSurahWon(idx) {
-      return this.wonSurahIds.has(idx);
+      return this.wonSurahIds.has(parseInt(idx));
+    },
+    isSurahPerfect(idx) {
+      return this.perfectSurahIds.has(parseInt(idx));
     },
     formatIndex(idx) {
       return idx.toString().padStart(2, "0");
@@ -305,23 +310,39 @@ export default {
   background: rgba(76, 175, 80, 0.05);
 }
 
+.surah-card.is-perfect {
+  border-color: #FFC107;
+  background: rgba(255, 193, 7, 0.08);
+}
+
 .surah-card.is-won:hover {
   border-color: #4CAF50;
   background: rgba(76, 175, 80, 0.08);
 }
 
+.surah-card.is-perfect:hover {
+  border-color: #FFC107;
+  background: rgba(255, 193, 7, 0.12);
+}
+
 .completion-badge {
   background: #4CAF50;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 800;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.completion-badge.perfect {
+  background: #FFC107;
+  font-size: 1rem;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
 }
 
 .surah-index {
