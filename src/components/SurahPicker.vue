@@ -35,7 +35,7 @@
         <router-link
         v-for="surah in filteredList"
         :key="surah.idx"
-        :to="'/play/' + surah.idx"
+        :to="'/surah/' + surah.idx"
         class="surah-link"
       >
         <button class="surah-card" :class="{ 'is-won': isSurahWon(surah.idx) }">

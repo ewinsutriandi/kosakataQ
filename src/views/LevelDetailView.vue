@@ -14,8 +14,27 @@
 
     <div v-else class="picker-container">
       <div class="level-info-header">
+        <div v-if="levelStats.totalPlays > 0" class="level-stats-row">
+          <div class="stat-item">
+            <span class="stat-label">Main</span>
+            <span class="stat-value">{{ levelStats.totalPlays }}x</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Menang</span>
+            <span class="stat-value success">{{ levelStats.wins }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Kalah</span>
+            <span class="stat-value failure">{{ levelStats.losses }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">High Score</span>
+            <span class="stat-value highlight">{{ levelStats.highScore }} <small>/ {{ levelStats.maxScore }}</small></span>
+          </div>
+        </div>
+
         <button @click="startLevel" class="start-play-btn">
-          Mulai Latihan
+          {{ levelStats.totalPlays > 0 ? 'Main Lagi' : 'Mulai Latihan' }}
         </button>
       </div>
 
@@ -54,6 +73,30 @@ export default {
     ...mapGetters(['isLevelUnlocked']),
     isLocked() {
       return !this.isLevelUnlocked(this.levelId);
+    },
+    levelStats() {
+      let logs = this.$store.state.game_logs || [];
+      let levelLogs = logs.filter(log => log.mode === 'level' && log.levelId === this.levelId);
+      
+      let stats = {
+        totalPlays: levelLogs.length,
+        wins: 0,
+        losses: 0,
+        highScore: 0,
+        maxScore: 0
+      };
+
+      levelLogs.forEach(log => {
+        if (log.playerWon) stats.wins++;
+        else stats.losses++;
+
+        if (log.score > stats.highScore) {
+          stats.highScore = log.score;
+          stats.maxScore = log.maxScore;
+        }
+      });
+
+      return stats;
     }
   },
   methods: {
@@ -91,6 +134,54 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 24px;
+}
+
+.level-stats-row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--surface-glass-border);
+  padding: 15px 25px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.stat-item:not(:last-child) {
+  border-right: 1px solid var(--warm-stone);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.stat-value.success { color: #4CAF50; }
+.stat-value.failure { color: #DC2626; }
+.stat-value.highlight { color: var(--coffee); }
+
+.stat-value small {
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
 
 .start-play-btn {

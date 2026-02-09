@@ -32,6 +32,11 @@ const routes = [
     meta: { hideNavigation: true }
   },
   {
+    path: "/surah/:idx",
+    name: "surah-detail",
+    component: () => import("../views/SurahDetailView.vue"),
+  },
+  {
     path: "/play/tier/:tierId",
     name: "gamescreen-tier",
     component: GameScreenView,

@@ -1038,12 +1038,14 @@ export default {
       }
     },
     backToSource() {
+      this.confirmedExit = true; // Avoid exit modal
       if (this.mode === 'tier') {
         this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
       } else if (this.mode === 'level') {
         this.$router.push({ path: `/level/${this.levelId}` }).catch(() => {});
       } else {
-        this.$router.push("/picksurah/j30").catch(() => {});
+        // Return to surah detail instead of picker
+        this.$router.push(`/surah/${this.surah_idx}`).catch(() => {});
       }
     },
     normalizeArabic(text) {
@@ -1159,6 +1161,11 @@ export default {
         //console.log("loading quiz");
         this.load_quiz();
         this.loading_quiz = false;
+
+        // Auto-start if difficulty is provided in query
+        const diff = this.$route.query.difficulty;
+        if (diff === 'normal') this.startNormal();
+        else if (diff === 'hard') this.startHard();
       }, 0);
     }
   },
