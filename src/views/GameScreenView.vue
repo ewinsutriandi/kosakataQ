@@ -165,7 +165,7 @@
             Main Lagi
           </button>
           <button @click="backToSource" class="btn-glass full-width">
-            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : (mode === 'level' ? 'Kembali ke Level' : 'Kembali ke Daftar Surat') }}
+            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : (mode === 'level' ? 'Kembali ke Daftar Level' : 'Kembali ke Daftar Surat') }}
           </button>
         </div>
 
@@ -1042,10 +1042,9 @@ export default {
       if (this.mode === 'tier') {
         this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
       } else if (this.mode === 'level') {
-        this.$router.push({ path: `/level/${this.levelId}` }).catch(() => {});
+        this.$router.push("/levels").catch(() => {});
       } else {
-        // Return to surah detail instead of picker
-        this.$router.push(`/surah/${this.surah_idx}`).catch(() => {});
+        this.$router.push("/picksurah/j30").catch(() => {});
       }
     },
     normalizeArabic(text) {
