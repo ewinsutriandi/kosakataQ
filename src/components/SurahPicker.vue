@@ -48,7 +48,7 @@
           <div class="card-right">
             <h2 class="arabic-name">{{ surah.name }}</h2>
             <div v-if="isSurahWon(surah.idx)" class="completion-badge" :class="{ 'perfect': isSurahPerfect(surah.idx) }">
-              {{ isSurahPerfect(surah.idx) ? '🌸' : '✓' }}
+              ✓
             </div>
           </div>
         </button>
@@ -340,10 +340,9 @@ export default {
 }
 
 .completion-badge.perfect {
-  background: white;
-  border: 1.5px solid white;
-  font-size: 1.1rem;
-  box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+  background: #FFC107;
+  font-size: 0.85rem;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
   z-index: 2;
 }
 

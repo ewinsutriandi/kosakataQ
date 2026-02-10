@@ -23,7 +23,7 @@
           >
             <span class="level-number">{{ level }}</span>
             <div v-if="isLevelWon(level)" class="completion-badge" :class="{ 'perfect': isLevelPerfect(level) }">
-              {{ isLevelPerfect(level) ? '🌸' : '✓' }}
+              ✓
             </div>
           </router-link>
           
@@ -204,10 +204,9 @@ export default {
 }
 
 .completion-badge.perfect {
-  background: white;
-  border: 1.5px solid white;
-  font-size: 0.9rem;
-  box-shadow: 0 0 8px rgba(255, 193, 7, 0.3);
+  background: #FFC107;
+  font-size: 0.7rem;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
 }
 
 .level-number {
