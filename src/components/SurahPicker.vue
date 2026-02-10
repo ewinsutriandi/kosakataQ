@@ -340,9 +340,11 @@ export default {
 }
 
 .completion-badge.perfect {
-  background: #FFC107;
-  font-size: 1rem;
-  box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+  background: white;
+  border: 1.5px solid white;
+  font-size: 1.1rem;
+  box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+  z-index: 2;
 }
 
 .surah-index {
