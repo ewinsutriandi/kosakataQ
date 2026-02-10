@@ -1038,7 +1038,6 @@ export default {
       }
     },
     backToSource() {
-      this.confirmedExit = true; // Avoid exit modal
       if (this.mode === 'tier') {
         this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
       } else if (this.mode === 'level') {
