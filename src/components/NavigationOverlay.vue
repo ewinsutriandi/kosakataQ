@@ -33,6 +33,14 @@
             Mode level
           </router-link>
           <router-link
+            to="/special-modes"
+            @click.native="$emit('close')"
+            class="drawer-link primary"
+            active-class="active"
+          >
+            Mode khusus
+          </router-link>
+          <router-link
             to="/stats/j30"
             @click.native="$emit('close')"
             class="drawer-link primary"

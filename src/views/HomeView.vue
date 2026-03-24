@@ -24,6 +24,11 @@
         <h2 class="card-title">Mode Level</h2>
         <p class="card-description">Belajar bertahap 50 kata per level</p>
       </router-link>
+
+      <router-link to="/special-modes" class="mode-card special-mode-card">
+        <h2 class="card-title">Mode Khusus</h2>
+        <p class="card-description">Koleksi tantangan dan permainan ekstra</p>
+      </router-link>
     </div>
 
     <div class="secondary-links">
@@ -100,10 +105,15 @@ export default {
   margin-bottom: var(--spacing-xl);
 }
 
-@media (min-width: 600px) {
+@media (min-width: 900px) {
   .mode-cards {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
+}
+
+.special-mode-card {
+  border-color: var(--coffee);
+  background: rgba(109, 76, 65, 0.05);
 }
 
 .mode-card {

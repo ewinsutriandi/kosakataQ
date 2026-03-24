@@ -37,6 +37,7 @@ export default new Vuex.Store({
       words: {},
       words_tr_id: {},
       game_logs: [],
+      mistake_logs: [],
     };
   },
   getters: {
@@ -175,10 +176,29 @@ export default new Vuex.Store({
       if (localStorage.getItem("game_logs")) {
         state.game_logs = JSON.parse(localStorage.game_logs);
       }
+      if (localStorage.getItem("mistake_logs")) {
+        state.mistake_logs = JSON.parse(localStorage.mistake_logs);
+      }
     },
     add_game_log(state, log) {
       state.game_logs.push(log);
       localStorage.setItem("game_logs", JSON.stringify(state.game_logs));
+    },
+    add_mistake_log(state, mistake) {
+      state.mistake_logs.push(mistake);
+      localStorage.setItem("mistake_logs", JSON.stringify(state.mistake_logs));
+    },
+    remove_mistake_log(state, target) {
+      // Find the first matching mistake (most recent typically, or an exact match)
+      const idx = state.mistake_logs.findIndex(m =>
+        m.word === target.word &&
+        m.surahIdx === target.surahIdx &&
+        m.ayahIdx === target.ayahIdx
+      );
+      if (idx !== -1) {
+        state.mistake_logs.splice(idx, 1);
+        localStorage.setItem("mistake_logs", JSON.stringify(state.mistake_logs));
+      }
     },
   },
   actions: {

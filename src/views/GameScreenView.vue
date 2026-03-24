@@ -71,6 +71,7 @@
         <div class="hud-row">
           <h2 v-if="mode === 'surah'" class="surah-tag-large">{{ selected.tr_id.nama }}</h2>
           <h2 v-else-if="mode === 'tier'" class="surah-tag-large">{{ tierLabel }}</h2>
+          <h2 v-else-if="mode === 'mistakes'" class="surah-tag-large">Latihan Khusus</h2>
           <h2 v-else class="surah-tag-large">{{ levelLabel }}</h2>
         </div>
 
@@ -101,8 +102,11 @@
             <span class="context-label">Pada ayat berikut:</span>
             <h2 class="ayah-text" v-html="highlightAyahText(cur_quiz)"></h2>
             <div class="verse-meta" v-if="cur_quiz">
-              <span class="surah-label">
-                {{ cur_quiz.surahName }} : {{ cur_quiz.ayahIdx }}
+              <span class="surah-label" v-if="cur_quiz.surahName !== 'Surat ?'">
+                {{ cur_quiz.surahName }} : {{ cur_quiz.ayahIdx || '-' }}
+              </span>
+              <span class="surah-label" v-else>
+                Informasi surah tidak direkam
               </span>
             </div>
 
@@ -879,6 +883,59 @@ export default {
       }
       this.loading_quiz = false;
     },
+    load_mistakes_quiz() {
+      this.loading_quiz = true;
+      let logs = [...(this.$store.state.mistake_logs || [])];
+      // Sort descending (newest first)
+      logs.sort((a, b) => b.timestamp - a.timestamp);
+      
+      let uniqueWords = new Set();
+      let selectedMistakes = [];
+      for (let log of logs) {
+        if (!uniqueWords.has(log.word)) {
+          uniqueWords.add(log.word);
+          selectedMistakes.push(log);
+          if (selectedMistakes.length === 25) break; 
+        }
+      }
+
+      let allTranslations = Object.values(this.$store.state.words_tr_id || {});
+      let quiz_arr = [];
+      
+      for (let m of selectedMistakes) {
+        // Construct choices
+        let choices = [{ translation: m.correctAnswer }];
+        while (choices.length < 3 && allTranslations.length > 3) {
+          let randTranslation = allTranslations[Math.floor(Math.random() * allTranslations.length)];
+          if (randTranslation && !choices.some(c => c.translation === randTranslation)) {
+            choices.push({ translation: randTranslation });
+          }
+        }
+        choices = this.randomize(choices);
+
+        let surahMeta = this.$store.state.surahs_translit_id[m.surahIdx];
+        let surahName = surahMeta ? surahMeta.nama : (m.surahName || `Surat ${m.surahIdx || '?'}`);
+
+        quiz_arr.push({
+          word_to_translate: m.word,
+          answer: m.correctAnswer,
+          choices: choices,
+          surahIdx: m.surahIdx,
+          surahName: surahName,
+          ayahIdx: m.ayahIdx,
+          wordIndex: m.wordIndex,
+          ayah_text: m.ayah_text || "Teks ayat tidak tersedia"
+        });
+      }
+
+      this.surah_quiz = this.randomize(quiz_arr);
+      this.max_score = 0;
+      for (let q of this.surah_quiz) {
+        this.max_score += q.word_to_translate.length;
+      }
+      this.loading_quiz = false;
+      this.game_on = true; // Auto-start the game
+    },
     load_quiz() {
       this.$options.quiz_by_aya = this.generate_quiz_fr_surah(this.surah_idx);
       this.max_score = 0;
@@ -922,9 +979,32 @@ export default {
         this.score += quiz.word_to_translate.length;
         this.correct++;
         this.showCorrectAnswerToast(quiz.word_to_translate, quiz.answer);
+        
+        if (this.mode === 'mistakes') {
+          this.$store.commit('remove_mistake_log', {
+            word: quiz.word_to_translate,
+            surahIdx: quiz.surahIdx || quiz.surah_idx,
+            ayahIdx: quiz.ayahIdx || quiz.ayah_idx
+          });
+        }
+        
         this.advanceGame();
       } else {
         this.fail++;
+        
+        let mistake = {
+          word: quiz.word_to_translate,
+          correctAnswer: quiz.answer,
+          userAnswer: ans,
+          surahIdx: quiz.surahIdx || quiz.surah_idx || null,
+          ayahIdx: quiz.ayahIdx || quiz.ayah_idx || null,
+          wordIndex: quiz.wordIndex || quiz.index || null,
+          ayah_text: quiz.ayah_text || "",
+          mode: this.mode,
+          timestamp: Date.now()
+        };
+        this.$store.commit("add_mistake_log", mistake);
+
         // Show blocking modal instead of toast
         this.wrongModalData = {
           word: quiz.word_to_translate,
@@ -1033,6 +1113,8 @@ export default {
         this.load_tier_quiz();
       } else if (this.mode === 'level') {
         this.load_level_quiz();
+      } else if (this.mode === 'mistakes') {
+        this.load_mistakes_quiz();
       } else {
         this.load_quiz();
       }
@@ -1042,6 +1124,8 @@ export default {
         this.$router.push({ path: "/word-frequency", query: { group: this.tierId } }).catch(() => {});
       } else if (this.mode === 'level') {
         this.$router.push("/levels").catch(() => {});
+      } else if (this.mode === 'mistakes') {
+        this.$router.push("/special-modes").catch(() => {});
       } else {
         this.$router.push("/picksurah/j30").catch(() => {});
       }
@@ -1142,7 +1226,10 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.params.tierId) {
+    if (this.$route.name === 'play-mistakes') {
+      this.mode = 'mistakes';
+      this.load_mistakes_quiz();
+    } else if (this.$route.params.tierId) {
       this.mode = 'tier';
       this.tierId = this.$route.params.tierId;
       this.load_tier_quiz();

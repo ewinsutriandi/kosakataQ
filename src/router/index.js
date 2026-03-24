@@ -10,6 +10,7 @@ import GameStatisticsView from "../views/GameStatisticsView.vue";
 import WordFrequencyGroupsView from "../views/WordFrequencyGroupsView.vue";
 import WordOccurrencesView from "../views/WordOccurrencesView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
+import SpecialModeSelectionView from "../views/SpecialModeSelectionView.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,12 @@ const routes = [
     path: "/picksurah/:tipe",
     name: "picksurah",
     component: SurahPickerView,
+  },
+  {
+    path: "/play/mistakes",
+    name: "play-mistakes",
+    component: () => import("../views/GameScreenView.vue"),
+    meta: { hideNavigation: true }
   },
   {
     path: "/play/:idx",
@@ -89,6 +96,11 @@ const routes = [
     component: CreditView,
   },
   {
+    path: "/special-modes",
+    name: "special-modes",
+    component: SpecialModeSelectionView,
+  },
+  {
     path: "*",
     component: NotFoundView,
   },
@@ -119,6 +131,12 @@ router.beforeEach((to, from, next) => {
       break;
     case 'level-detail':
       pageTitle = `Level ${to.params.levelId}`;
+      break;
+    case 'special-modes':
+      pageTitle = "Mode Khusus";
+      break;
+    case 'play-mistakes':
+      pageTitle = "Bermain - Latihan Kesalahan";
       break;
     case 'gamestats':
       pageTitle = "Statistik Permainan";
