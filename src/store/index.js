@@ -38,6 +38,7 @@ export default new Vuex.Store({
       words_tr_id: {},
       game_logs: [],
       mistake_logs: [],
+      saved_sessions: {},
     };
   },
   getters: {
@@ -179,6 +180,9 @@ export default new Vuex.Store({
       if (localStorage.getItem("mistake_logs")) {
         state.mistake_logs = JSON.parse(localStorage.mistake_logs);
       }
+      if (localStorage.getItem("saved_sessions")) {
+        state.saved_sessions = JSON.parse(localStorage.saved_sessions);
+      }
     },
     add_game_log(state, log) {
       state.game_logs.push(log);
@@ -198,6 +202,18 @@ export default new Vuex.Store({
       if (idx !== -1) {
         state.mistake_logs.splice(idx, 1);
         localStorage.setItem("mistake_logs", JSON.stringify(state.mistake_logs));
+      }
+    },
+    save_session(state, { sessionId, data }) {
+      state.saved_sessions = { ...state.saved_sessions, [sessionId]: data };
+      localStorage.setItem("saved_sessions", JSON.stringify(state.saved_sessions));
+    },
+    clear_session(state, sessionId) {
+      if (state.saved_sessions[sessionId]) {
+        const newSessions = { ...state.saved_sessions };
+        delete newSessions[sessionId];
+        state.saved_sessions = newSessions;
+        localStorage.setItem("saved_sessions", JSON.stringify(state.saved_sessions));
       }
     },
   },

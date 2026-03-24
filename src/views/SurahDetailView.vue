@@ -44,9 +44,17 @@
         </div>
 
         <div class="difficulty-actions" style="margin-top: 40px;">
-          <p class="label">Pilih tingkat kesulitan untuk memulai</p>
+          <!-- Resume section -->
+          <div v-if="hasSavedSession" class="actions-column" style="margin-bottom: 20px;">
+            <button @click="resumeGame" class="btn-glass btn-primary" style="width: 100%;">
+              Lanjutkan Permainan (Sisa {{ savedSessionData.surah_quiz.length - savedSessionData.cur_quiz_idx }} soal)
+            </button>
+            <p class="label" style="margin-top: 15px; margin-bottom: 5px; font-size: 0.85rem;">Atau mulai dari awal:</p>
+          </div>
+          <p v-else class="label">Pilih tingkat kesulitan untuk memulai</p>
+
           <div class="actions-row">
-            <button @click="startGame('normal')" class="btn-glass btn-primary">
+            <button @click="startGame('normal')" :class="hasSavedSession ? 'btn-glass btn-secondary' : 'btn-glass btn-primary'">
               Latihan Normal
             </button>
             <button @click="startGame('hard')" class="btn-glass btn-secondary">
@@ -96,6 +104,13 @@ export default {
       });
 
       return stats;
+    },
+    hasSavedSession() {
+      const sessionId = `surah_${this.surahIdx}`;
+      return !!this.$store.state.saved_sessions[sessionId];
+    },
+    savedSessionData() {
+      return this.$store.state.saved_sessions[`surah_${this.surahIdx}`];
     }
   },
   methods: {
@@ -104,9 +119,18 @@ export default {
       this.loading = false;
     },
     startGame(difficulty) {
+      if (this.hasSavedSession) {
+        this.$store.commit("clear_session", `surah_${this.surahIdx}`);
+      }
       this.$router.push({
         path: `/play/${this.surahIdx}`,
         query: { difficulty }
+      });
+    },
+    resumeGame() {
+      this.$router.push({
+        path: `/play/${this.surahIdx}`,
+        query: { resume: 'true' }
       });
     }
   },

@@ -8,7 +8,7 @@
 
     <!-- Prepare Screen (Glass Card) -->
     <div
-      v-if="!loading_quiz && !game_on && ((mode === 'surah' && $options.quiz_by_aya.length > 0) || ((mode === 'tier' || mode === 'level') && surah_quiz.length > 0))"
+      v-if="!loading_quiz && !game_on && ((mode === 'surah' && $options.quiz_by_aya.length > 0) || ((mode === 'tier' || mode === 'level' || mode === 'mistakes') && surah_quiz.length > 0))"
       class="center-container"
     >
       <div class="glass-card prepare-card">
@@ -43,16 +43,25 @@
         </div>
 
         <div class="difficulty-actions">
-          <p v-if="mode === 'surah'" class="label">Pilih tingkat kesulitan</p>
+          
+          <!-- Resume section -->
+          <div v-if="savedSession" class="actions-column resume-section" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+            <button @click="resumeGame" class="btn-glass btn-primary" style="width: 100%;">
+              Lanjutkan Permainan (Sisa {{ savedSession.surah_quiz.length - savedSession.cur_quiz_idx }} soal)
+            </button>
+            <p class="label" style="margin-top: 10px; margin-bottom: 4px; font-size: 0.8rem;">Atau mulai dari awal:</p>
+          </div>
+
+          <p v-if="mode === 'surah' && !savedSession" class="label">Pilih tingkat kesulitan</p>
           <div class="actions-row">
-            <button v-if="mode === 'surah'" @click="startNormal" class="btn-glass btn-primary">
+            <button v-if="mode === 'surah'" @click="startNormal" :class="savedSession ? 'btn-glass btn-secondary' : 'btn-glass btn-primary'">
               Normal
             </button>
             <button v-if="mode === 'surah'" @click="startHard" class="btn-glass btn-secondary">
               Menantang
             </button>
-            <button v-if="mode === 'tier' || mode === 'level'" @click="mode === 'tier' ? startTier() : startLevel()" class="btn-glass btn-primary">
-              Mulai Latihan
+            <button v-if="mode === 'tier' || mode === 'level' || mode === 'mistakes'" @click="mode === 'tier' ? startTier() : (mode === 'level' ? startLevel() : startMistakes())" :class="savedSession ? 'btn-glass btn-secondary' : 'btn-glass btn-primary'">
+              Mulai Baru
             </button>
           </div>
         </div>
@@ -210,7 +219,7 @@
       <div v-if="showExitModal" class="modal-overlay">
         <div class="glass-card modal-card">
           <h3 class="modal-title">Konfirmasi Keluar</h3>
-          <p class="modal-desc">Jika anda memilih Keluar, progress permainan ini akan hilang.</p>
+          <p class="modal-desc">Progress permainan anda akan disimpan dan dapat dilanjutkan nanti.</p>
           <div class="actions-row">
             <button @click="cancelExit" class="btn-glass">Lanjut Main</button>
             <button @click="confirmExit" class="btn-glass btn-danger">Keluar</button>
@@ -934,7 +943,7 @@ export default {
         this.max_score += q.word_to_translate.length;
       }
       this.loading_quiz = false;
-      this.game_on = true; // Auto-start the game
+      // Note: Removed auto-start here to allow resume functionality interface to render.
     },
     load_quiz() {
       this.$options.quiz_by_aya = this.generate_quiz_fr_surah(this.surah_idx);
@@ -948,6 +957,7 @@ export default {
       }
     },
     startNormal() {
+      this.$store.commit("clear_session", this.sessionId);
       let all_quiz = [];
       for (let key in Object.keys(this.$options.quiz_by_aya)) {
         let aya_quiz = this.$options.quiz_by_aya[key];
@@ -958,12 +968,19 @@ export default {
       this.game_on = true;
     },
     startTier() {
+      this.$store.commit("clear_session", this.sessionId);
       this.game_on = true;
     },
     startLevel() {
+      this.$store.commit("clear_session", this.sessionId);
+      this.game_on = true;
+    },
+    startMistakes() {
+      this.$store.commit("clear_session", this.sessionId);
       this.game_on = true;
     },
     startHard() {
+      this.$store.commit("clear_session", this.sessionId);
       let all_quiz = [];
       for (let key in Object.keys(this.$options.quiz_by_aya)) {
         let aya_quiz = this.$options.quiz_by_aya[key];
@@ -972,6 +989,18 @@ export default {
       all_quiz = this.randomize(all_quiz);
       this.surah_quiz = all_quiz;
       this.game_on = true;
+    },
+    resumeGame() {
+      let session = this.savedSession;
+      if (session) {
+        this.surah_quiz = session.surah_quiz;
+        this.cur_quiz_idx = session.cur_quiz_idx;
+        this.score = session.score;
+        this.max_score = session.max_score;
+        this.correct = session.correct;
+        this.fail = session.fail;
+        this.game_on = true;
+      }
     },
     answer(ans) {
       let quiz = this.surah_quiz[this.cur_quiz_idx];
@@ -1037,6 +1066,7 @@ export default {
     },
     endGame() {
       this.gameEnded = true;
+      this.$store.commit("clear_session", this.sessionId);
       let log = {
         mode: this.mode,
         playerWon: this.playerWon,
@@ -1090,6 +1120,19 @@ export default {
     confirmExit() {
       this.confirmedExit = true;
       this.showExitModal = false;
+
+      if (this.game_on && !this.gameEnded) {
+        let snapshot = {
+          surah_quiz: this.surah_quiz,
+          cur_quiz_idx: this.cur_quiz_idx,
+          score: this.score,
+          max_score: this.max_score,
+          correct: this.correct,
+          fail: this.fail
+        };
+        this.$store.commit("save_session", { sessionId: this.sessionId, data: snapshot });
+      }
+
       if (this.pendingTarget) {
         this.$router.push(this.pendingTarget).catch(() => {});
       } else {
@@ -1201,6 +1244,16 @@ export default {
     },
   },
   computed: {
+    sessionId() {
+      if (this.mode === 'surah') return `surah_${this.surah_idx}`;
+      if (this.mode === 'tier') return `tier_${this.tierId}`;
+      if (this.mode === 'level') return `level_${this.levelId}`;
+      if (this.mode === 'mistakes') return `mistakes`;
+      return 'unknown';
+    },
+    savedSession() {
+      return this.$store.state.saved_sessions[this.sessionId];
+    },
     cur_quiz() {
       let cur_quiz = this.surah_quiz[this.cur_quiz_idx];
       //console.log(this.surah_quiz, cur_quiz, this.cur_quiz_idx);
@@ -1236,7 +1289,15 @@ export default {
     } else if (this.$route.params.levelId) {
       this.mode = 'level';
       this.levelId = parseInt(this.$route.params.levelId);
-      this.load_level_quiz();
+      this.load_level_quiz().then(() => {
+        const resume = this.$route.query.resume;
+        const auto = this.$route.query.auto;
+        if (resume === 'true') {
+          this.resumeGame();
+        } else if (auto === 'true') {
+          this.startLevel();
+        }
+      });
     } else {
       this.mode = 'surah';
       this.surah_idx = this.$route.params.idx;
@@ -1249,8 +1310,14 @@ export default {
 
         // Auto-start if difficulty is provided in query
         const diff = this.$route.query.difficulty;
-        if (diff === 'normal') this.startNormal();
-        else if (diff === 'hard') this.startHard();
+        const resume = this.$route.query.resume;
+        if (resume === 'true') {
+          this.resumeGame();
+        } else if (diff === 'normal') {
+          this.startNormal();
+        } else if (diff === 'hard') {
+          this.startHard();
+        }
       }, 0);
     }
   },

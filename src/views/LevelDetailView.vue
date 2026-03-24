@@ -33,7 +33,16 @@
           </div>
         </div>
 
-        <button @click="startLevel" class="start-play-btn">
+        <div v-if="hasSavedSession" class="actions-column" style="width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+          <button @click="resumeGame" class="start-play-btn" style="width: 100%; padding: 10px 20px;">
+            Lanjutkan Permainan
+            <span style="display:block; font-size: 0.8rem; font-weight: normal; margin-top: 4px;">(Sisa {{ savedSessionData.surah_quiz.length - savedSessionData.cur_quiz_idx }} soal)</span>
+          </button>
+          <button @click="startLevel" class="start-play-btn start-play-btn-secondary" style="width: 100%;">
+            Mulai dari awal
+          </button>
+        </div>
+        <button v-else @click="startLevel" class="start-play-btn" style="margin-top: 10px;">
           {{ levelStats.totalPlays > 0 ? 'Main Lagi' : 'Mulai Latihan' }}
         </button>
       </div>
@@ -97,6 +106,13 @@ export default {
       });
 
       return stats;
+    },
+    hasSavedSession() {
+      const sessionId = `level_${this.levelId}`;
+      return !!this.$store.state.saved_sessions[sessionId];
+    },
+    savedSessionData() {
+      return this.$store.state.saved_sessions[`level_${this.levelId}`];
     }
   },
   methods: {
@@ -118,7 +134,19 @@ export default {
       }
     },
     startLevel() {
-      this.$router.push(`/play/level/${this.levelId}`);
+      if (this.hasSavedSession) {
+        this.$store.commit("clear_session", `level_${this.levelId}`);
+      }
+      this.$router.push({
+        path: `/play/level/${this.levelId}`,
+        query: { auto: 'true' }
+      });
+    },
+    resumeGame() {
+      this.$router.push({
+        path: `/play/level/${this.levelId}`,
+        query: { resume: 'true' }
+      });
     }
   },
   mounted() {
@@ -187,7 +215,7 @@ export default {
 .start-play-btn {
   background: var(--coffee);
   color: white;
-  border: none;
+  border: 2px solid var(--coffee);
   padding: 12px 40px;
   border-radius: 30px;
   font-weight: 700;
@@ -200,6 +228,18 @@ export default {
 .start-play-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(109, 76, 65, 0.4);
+}
+
+.start-play-btn-secondary {
+  background: transparent !important;
+  color: var(--coffee) !important;
+  border: 2px solid rgba(109, 76, 65, 0.4);
+  box-shadow: none !important;
+}
+
+.start-play-btn-secondary:hover {
+  background: rgba(109, 76, 65, 0.05) !important;
+  border-color: var(--coffee);
 }
 
 .picker-container {
