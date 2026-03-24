@@ -23,7 +23,10 @@
           >
             <span class="level-number">{{ level }}</span>
             <div v-if="hasSavedSession('level_' + level)" class="resume-badge-level">
-              ⏸
+              <svg viewBox="0 0 24 24" width="8" height="8" fill="currentColor">
+                <rect x="5" y="4" width="4" height="16" rx="1"></rect>
+                <rect x="15" y="4" width="4" height="16" rx="1"></rect>
+              </svg>
             </div>
             <div v-if="isLevelWon(level)" class="completion-badge" :class="{ 'perfect': isLevelPerfect(level) }">
               ✓
