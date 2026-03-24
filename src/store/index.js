@@ -42,6 +42,9 @@ export default new Vuex.Store({
     };
   },
   getters: {
+    hasSavedSession: (state) => (sessionId) => {
+      return !!state.saved_sessions[sessionId];
+    },
     isDataReady(state) {
       return !state.isLoading;
     },

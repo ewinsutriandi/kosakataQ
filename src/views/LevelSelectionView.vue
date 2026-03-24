@@ -19,9 +19,12 @@
             v-if="isLevelUnlocked(level)"
             :to="'/level/' + level"
             class="level-card"
-            :class="{ 'is-won': isLevelWon(level), 'is-perfect': isLevelPerfect(level) }"
+            :class="{ 'is-won': isLevelWon(level), 'is-perfect': isLevelPerfect(level), 'has-session': hasSavedSession('level_' + level) }"
           >
             <span class="level-number">{{ level }}</span>
+            <div v-if="hasSavedSession('level_' + level)" class="resume-badge-level">
+              ⏸
+            </div>
             <div v-if="isLevelWon(level)" class="completion-badge" :class="{ 'perfect': isLevelPerfect(level) }">
               ✓
             </div>
@@ -70,7 +73,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['wonLevelIds', 'perfectLevelIds', 'isLevelUnlocked']),
+    ...mapGetters(['wonLevelIds', 'perfectLevelIds', 'isLevelUnlocked', 'hasSavedSession']),
     totalLevels() {
       return Math.ceil(this.totalWords / this.wordsPerLevel);
     },
@@ -184,6 +187,22 @@ export default {
   bottom: 8px;
   right: 8px;
   opacity: 0.6;
+}
+
+.resume-badge-level {
+  position: absolute;
+  font-size: 0.65rem;
+  top: 6px;
+  left: 6px;
+  background: rgba(109, 76, 65, 0.15);
+  color: var(--coffee);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .completion-badge {

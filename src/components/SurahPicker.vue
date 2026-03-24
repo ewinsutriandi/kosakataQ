@@ -41,9 +41,12 @@
         <button class="surah-card" :class="{ 'is-won': isSurahWon(surah.idx), 'is-perfect': isSurahPerfect(surah.idx) }">
           <div class="card-left">
             <span class="surah-index">{{ formatIndex(surah.idx) }}</span>
-            <span class="english-name">{{
-              surah.tr_id ? surah.tr_id.nama : surah.name
-            }}</span>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <span class="english-name">{{
+                surah.tr_id ? surah.tr_id.nama : surah.name
+              }}</span>
+              <span v-if="hasSavedSession('surah_' + surah.idx)" class="resume-text">Ada Sesi Tersimpan</span>
+            </div>
           </div>
           <div class="card-right">
             <h2 class="arabic-name">{{ surah.name }}</h2>
@@ -74,7 +77,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['wonSurahIds', 'perfectSurahIds']),
+    ...mapGetters(['wonSurahIds', 'perfectSurahIds', 'hasSavedSession']),
     filteredList() {
       if (!this.searchQuery) return this.surah_list;
 
@@ -353,9 +356,20 @@ export default {
 }
 
 .english-name {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
   color: var(--text-primary);
+  font-weight: 600;
+}
+
+.resume-text {
+  font-size: 0.65rem;
+  color: var(--coffee);
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(109, 76, 65, 0.1);
+  padding: 2px 6px;
+  border-radius: 10px;
+  width: max-content;
 }
 
 .arabic-name {
