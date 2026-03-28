@@ -158,13 +158,13 @@ router.beforeEach((to, from, next) => {
       pageTitle = "Statistik Permainan";
       break;
     case 'custom-mode-hub':
-      pageTitle = "Mode Kustom";
+      pageTitle = "Koleksi Ayat Pilihan";
       break;
     case 'custom-mode-create':
-      pageTitle = "Tambah Level Kustom";
+      pageTitle = "Tambah Koleksi Pilihan";
       break;
     case 'gamescreen-custom':
-      pageTitle = "Bermain - Level Kustom";
+      pageTitle = "Bermain - Koleksi Pilihan";
       break;
     case 'wordfrequency':
       pageTitle = "Frekuensi Kata";

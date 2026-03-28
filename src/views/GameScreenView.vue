@@ -181,7 +181,7 @@
           <button @click="backToSource" class="btn-glass full-width">
             {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : 
                (mode === 'level' ? 'Kembali ke Daftar Level' : 
-               (mode === 'custom' ? 'Kembali ke Mode Kustom' : 
+               (mode === 'custom' ? 'Kembali ke Koleksi Pilihan' : 
                (mode === 'mistakes' ? 'Kembali ke Mode Khusus' : 'Kembali ke Daftar Surat'))) }}
           </button>
         </div>

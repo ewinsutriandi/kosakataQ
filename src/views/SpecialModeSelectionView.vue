@@ -37,8 +37,8 @@
           >
             <div class="card-icon">⚡</div>
             <div class="card-content">
-              <h3>Mode Kustom</h3>
-              <p>Buat level permainanmu sendiri! Pilih surat dan rentang ayat spesifik untuk dipelajari (misal: Ayat Kursi).</p>
+              <h3>Koleksi Ayat Pilihan</h3>
+              <p>Simpan dan pelajari ayat-ayat favoritmu. Buat kustomisasi rentang ayat spesifik (misal: Ayat Kursi atau Doa-Doa Pilihan).</p>
             </div>
             <div class="card-status">
               {{ totalCustomLevels }} level

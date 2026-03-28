@@ -4,13 +4,13 @@
       ← Kembali
     </button>
     
-    <h2 class="view-title">Mode Kustom</h2>
-    <p class="view-description">Mainkan level hafalan pilihanmu sendiri atau buat yang baru.</p>
+    <h2 class="view-title">Koleksi Ayat Pilihan</h2>
+    <p class="view-description">Kumpulan ayat-ayat favorit yang kamu pilih sendiri untuk dipelajari.</p>
 
     <div class="picker-container">
       <div class="actions-header">
         <button @click="$router.push('/special-modes/custom/create')" class="add-btn">
-          <span class="icon">+</span> Tambah Level Baru
+          <span class="icon">+</span> Tambah Koleksi
         </button>
       </div>
 
@@ -33,7 +33,7 @@
         </div>
 
         <div v-if="customLevels.length === 0" class="empty-state">
-          <p>Belum ada level kustom. Klik tombol di atas untuk membuat!</p>
+          <p>Belum ada koleksi ayat. Klik tombol di atas untuk membuat!</p>
         </div>
       </div>
     </div>

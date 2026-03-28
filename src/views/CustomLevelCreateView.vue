@@ -4,8 +4,8 @@
       ← Batal
     </button>
     
-    <h2 class="view-title">Tambah Level Baru</h2>
-    <p class="view-description">Tentukan nama dan cakupan ayat untuk level kustom Anda.</p>
+    <h2 class="view-title">Tambah Koleksi Pilihan</h2>
+    <p class="view-description">Tentukan nama dan cakupan ayat untuk koleksi hafalan Anda.</p>
 
     <div class="picker-container">
       <div class="glass-card create-card">
@@ -59,7 +59,7 @@
 
           <div class="form-actions">
             <button type="submit" class="save-btn" :disabled="!isFormValid">
-              Simpan Level
+              Simpan Koleksi
             </button>
           </div>
         </form>
