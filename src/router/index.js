@@ -101,6 +101,22 @@ const routes = [
     component: SpecialModeSelectionView,
   },
   {
+    path: "/special-modes/custom",
+    name: "custom-mode-hub",
+    component: () => import("../views/CustomModeHubView.vue"),
+  },
+  {
+    path: "/special-modes/custom/create",
+    name: "custom-mode-create",
+    component: () => import("../views/CustomLevelCreateView.vue"),
+  },
+  {
+    path: "/play/custom/:id",
+    name: "gamescreen-custom",
+    component: () => import("../views/GameScreenView.vue"),
+    meta: { hideNavigation: true }
+  },
+  {
     path: "*",
     component: NotFoundView,
   },
@@ -140,6 +156,15 @@ router.beforeEach((to, from, next) => {
       break;
     case 'gamestats':
       pageTitle = "Statistik Permainan";
+      break;
+    case 'custom-mode-hub':
+      pageTitle = "Mode Kustom";
+      break;
+    case 'custom-mode-create':
+      pageTitle = "Tambah Level Kustom";
+      break;
+    case 'gamescreen-custom':
+      pageTitle = "Bermain - Level Kustom";
       break;
     case 'wordfrequency':
       pageTitle = "Frekuensi Kata";

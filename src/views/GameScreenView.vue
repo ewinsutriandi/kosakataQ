@@ -81,6 +81,7 @@
           <h2 v-if="mode === 'surah'" class="surah-tag-large">{{ selected.tr_id.nama }}</h2>
           <h2 v-else-if="mode === 'tier'" class="surah-tag-large">{{ tierLabel }}</h2>
           <h2 v-else-if="mode === 'mistakes'" class="surah-tag-large">Latihan Khusus</h2>
+          <h2 v-else-if="mode === 'custom'" class="surah-tag-large">{{ customLevelName }}</h2>
           <h2 v-else class="surah-tag-large">{{ levelLabel }}</h2>
         </div>
 
@@ -178,7 +179,10 @@
             Main Lagi
           </button>
           <button @click="backToSource" class="btn-glass full-width">
-            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : (mode === 'level' ? 'Kembali ke Daftar Level' : 'Kembali ke Daftar Surat') }}
+            {{ mode === 'tier' ? 'Kembali ke Daftar Kata' : 
+               (mode === 'level' ? 'Kembali ke Daftar Level' : 
+               (mode === 'custom' ? 'Kembali ke Mode Kustom' : 
+               (mode === 'mistakes' ? 'Kembali ke Mode Khusus' : 'Kembali ke Daftar Surat'))) }}
           </button>
         </div>
 
@@ -857,11 +861,13 @@ export default {
       confirmedExit: false,
       pendingTarget: null,
       showExitModal: false,
-      mode: 'surah', // 'surah', 'tier', or 'level'
+      mode: 'surah', // 'surah', 'tier', 'level', or 'custom'
       tierId: null,
       tierLabel: '',
       levelId: null,
       levelLabel: '',
+      customLevelId: null,
+      customLevelName: '',
     };
   },
   quiz_by_aya: [],
@@ -945,6 +951,30 @@ export default {
       this.loading_quiz = false;
       // Note: Removed auto-start here to allow resume functionality interface to render.
     },
+    load_custom_quiz(id) {
+      this.loading_quiz = true;
+      const level = this.$store.state.custom_levels.find(l => l.id === id);
+      if (!level) {
+        this.$router.push('/special-modes/custom');
+        return;
+      }
+      this.customLevelId = id;
+      this.customLevelName = level.name;
+      
+      const quizByAyah = this.generate_quiz_fr_custom(level.surahIdx, level.startAyah, level.endAyah);
+      let allQuiz = [];
+      for (let ayaQuiz of quizByAyah) {
+        allQuiz = allQuiz.concat(ayaQuiz);
+      }
+      this.surah_quiz = this.randomize(allQuiz);
+      
+      this.max_score = 0;
+      for (let q of this.surah_quiz) {
+        this.max_score += q.word_to_translate.length;
+      }
+      this.loading_quiz = false;
+      this.game_on = true; // Auto-start for custom mode
+    },
     load_quiz() {
       this.$options.quiz_by_aya = this.generate_quiz_fr_surah(this.surah_idx);
       this.max_score = 0;
@@ -972,6 +1002,10 @@ export default {
       this.game_on = true;
     },
     startLevel() {
+      this.$store.commit("clear_session", this.sessionId);
+      this.game_on = true;
+    },
+    startCustom() {
       this.$store.commit("clear_session", this.sessionId);
       this.game_on = true;
     },
@@ -1084,6 +1118,9 @@ export default {
       } else if (this.mode === 'level') {
         log.levelId = this.levelId;
         log.levelLabel = this.levelLabel;
+      } else if (this.mode === 'custom') {
+        log.customLevelId = this.customLevelId;
+        log.customLevelName = this.customLevelName;
       }
       this.$store.commit("add_game_log", log);
     },
@@ -1158,6 +1195,8 @@ export default {
         this.load_level_quiz();
       } else if (this.mode === 'mistakes') {
         this.load_mistakes_quiz();
+      } else if (this.mode === 'custom') {
+        this.load_custom_quiz(this.customLevelId);
       } else {
         this.load_quiz();
       }
@@ -1169,6 +1208,8 @@ export default {
         this.$router.push("/levels").catch(() => {});
       } else if (this.mode === 'mistakes') {
         this.$router.push("/special-modes").catch(() => {});
+      } else if (this.mode === 'custom') {
+        this.$router.push("/special-modes/custom").catch(() => {});
       } else {
         this.$router.push("/picksurah/j30").catch(() => {});
       }
@@ -1249,6 +1290,7 @@ export default {
       if (this.mode === 'tier') return `tier_${this.tierId}`;
       if (this.mode === 'level') return `level_${this.levelId}`;
       if (this.mode === 'mistakes') return `mistakes`;
+      if (this.mode === 'custom') return `custom_${this.customLevelId}`;
       return 'unknown';
     },
     savedSession() {
@@ -1275,6 +1317,8 @@ export default {
         maxScore: this.max_score,
         correct: this.correct,
         fail: this.fail,
+        customLevelId: this.customLevelId,
+        customLevelName: this.customLevelName,
       };
     },
   },
@@ -1296,9 +1340,15 @@ export default {
           this.resumeGame();
         } else if (auto === 'true') {
           this.startLevel();
+          }
+        });
+      } else if (this.$route.name === 'gamescreen-custom') {
+        this.mode = 'custom';
+        this.load_custom_quiz(this.$route.params.id);
+        if (this.$route.query.resume === 'true') {
+          this.resumeGame();
         }
-      });
-    } else {
+      } else {
       this.mode = 'surah';
       this.surah_idx = this.$route.params.idx;
       this.selected = this.$store.getters.surahs_all[this.surah_idx];

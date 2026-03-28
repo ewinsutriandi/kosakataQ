@@ -205,6 +205,11 @@ export default {
     },
     generate_quiz_choices_tier(gan, words, word) {
       return this.generate_quiz_choices(gan, words, word);
+    },
+    generate_quiz_fr_custom(surahIdx, startAyah, endAyah) {
+      const fullSurahQuiz = this.generate_quiz_fr_surah(surahIdx);
+      // startAyah and endAyah are 1-based indices relative to the surah
+      return fullSurahQuiz.slice(startAyah - 1, endAyah);
     }
   },
 };

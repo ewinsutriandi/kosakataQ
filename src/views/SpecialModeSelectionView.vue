@@ -29,6 +29,23 @@
           </button>
         </div>
 
+        <!-- Mode Kustom -->
+        <div class="mode-card-wrapper">
+          <button 
+            @click="$router.push('/special-modes/custom')"
+            class="mode-card large-card kustom-card"
+          >
+            <div class="card-icon">⚡</div>
+            <div class="card-content">
+              <h3>Mode Kustom</h3>
+              <p>Buat level permainanmu sendiri! Pilih surat dan rentang ayat spesifik untuk dipelajari (misal: Ayat Kursi).</p>
+            </div>
+            <div class="card-status">
+              {{ totalCustomLevels }} level
+            </div>
+          </button>
+        </div>
+
         <!-- Dummy Mode 1 -->
         <div class="mode-card-wrapper">
           <div class="mode-card large-card locked-card">
@@ -36,18 +53,6 @@
             <div class="card-content">
               <h3>Mode Tantangan Waktu</h3>
               <p>Jawab sebanyak mungkin kata dalam waktu 60 detik. Uji kecepatan ingatanmu!</p>
-            </div>
-            <div class="card-badge">Segera Hadir</div>
-          </div>
-        </div>
-
-        <!-- Dummy Mode 2 -->
-        <div class="mode-card-wrapper">
-          <div class="mode-card large-card locked-card">
-            <div class="card-icon">🎲</div>
-            <div class="card-content">
-              <h3>Mode Acak (Random)</h3>
-              <p>Tebak terjemahan kata yang dipilih secara acak dari semua surat di Al-Qur'an.</p>
             </div>
             <div class="card-badge">Segera Hadir</div>
           </div>
@@ -70,6 +75,9 @@ export default {
     },
     disabledMistakes() {
       return this.totalMistakes === 0;
+    },
+    totalCustomLevels() {
+      return (this.$store.state.custom_levels || []).length;
     }
   },
   methods: {

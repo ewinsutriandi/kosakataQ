@@ -39,6 +39,7 @@ export default new Vuex.Store({
       game_logs: [],
       mistake_logs: [],
       saved_sessions: {},
+      custom_levels: [],
     };
   },
   getters: {
@@ -186,6 +187,24 @@ export default new Vuex.Store({
       if (localStorage.getItem("saved_sessions")) {
         state.saved_sessions = JSON.parse(localStorage.saved_sessions);
       }
+      if (localStorage.getItem("custom_levels")) {
+        state.custom_levels = JSON.parse(localStorage.custom_levels);
+      } else {
+        // Prepopulated Levels
+        state.custom_levels = [
+          { id: '1', name: 'Ayat Kursi', surahIdx: 2, startAyah: 255, endAyah: 255 },
+          { id: '2', name: 'Asmaul Husna', surahIdx: 59, startAyah: 22, endAyah: 24 },
+          { id: '3', name: 'Doa Nabi Musa', surahIdx: 20, startAyah: 25, endAyah: 27 },
+          { id: '4', name: 'Doa Istiqomah Bersyukur', surahIdx: 27, startAyah: 19, endAyah: 19 },
+          { id: '5', name: 'Doa Kebaikan Dunia Akhirat', surahIdx: 2, startAyah: 201, endAyah: 201 },
+          { id: '6', name: 'Doa Penyerahan Diri', surahIdx: 9, startAyah: 129, endAyah: 129 },
+          { id: '7', name: 'Akhir Al-Baqarah', surahIdx: 2, startAyah: 285, endAyah: 286 },
+          { id: '8', name: 'Pesan Luqman', surahIdx: 31, startAyah: 13, endAyah: 19 },
+          { id: '9', name: 'Doa Nabi Yunus', surahIdx: 21, startAyah: 87, endAyah: 87 },
+          { id: '10', name: 'Awal Al-Kahf', surahIdx: 18, startAyah: 1, endAyah: 10 }
+        ];
+        localStorage.setItem("custom_levels", JSON.stringify(state.custom_levels));
+      }
     },
     add_game_log(state, log) {
       state.game_logs.push(log);
@@ -218,6 +237,14 @@ export default new Vuex.Store({
         state.saved_sessions = newSessions;
         localStorage.setItem("saved_sessions", JSON.stringify(state.saved_sessions));
       }
+    },
+    add_custom_level(state, level) {
+      state.custom_levels.push(level);
+      localStorage.setItem("custom_levels", JSON.stringify(state.custom_levels));
+    },
+    delete_custom_level(state, id) {
+      state.custom_levels = state.custom_levels.filter(l => l.id !== id);
+      localStorage.setItem("custom_levels", JSON.stringify(state.custom_levels));
     },
   },
   actions: {
