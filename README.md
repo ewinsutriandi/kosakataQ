@@ -10,7 +10,7 @@ Sebuah web interaktif yang dirancang untuk membantu mempelajari dan menghafal ko
 
 ### Mode Khusus
 - **Koleksi Ayat Pilihan**: Berisi "playlist" yang dapat dibuat sendiri untuk mempelajari arti kata dari ayat tertentu, misalnya Ayat Kursi atau Doa Nabi Musa
-- **Belajar dari Kesalahan**: Aplikasi merekam kesalahan ada jawaban yang salah, memudahkan untuk mengulang kembali kata-kata yang beum dihafal artinya.
+- **Belajar dari Kesalahan**: Aplikasi merekam kesalahan ada jawaban yang salah, memudahkan untuk mengulang kembali kata-kata yang belum dihafal artinya.
 
 
 ### Kemudahan Akses
