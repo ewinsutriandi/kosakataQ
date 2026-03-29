@@ -964,9 +964,10 @@ export default {
       const quizByAyah = this.generate_quiz_fr_custom(level.surahIdx, level.startAyah, level.endAyah);
       let allQuiz = [];
       for (let ayaQuiz of quizByAyah) {
-        allQuiz = allQuiz.concat(ayaQuiz);
+        // Randomize words within each ayah, but keep ayahs in order
+        allQuiz = allQuiz.concat(this.randomize(ayaQuiz));
       }
-      this.surah_quiz = this.randomize(allQuiz);
+      this.surah_quiz = allQuiz;
       
       this.max_score = 0;
       for (let q of this.surah_quiz) {
