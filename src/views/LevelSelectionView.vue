@@ -109,7 +109,21 @@ export default {
         console.error("Error fetching word frequency:", error);
       } finally {
         this.loading = false;
+        this.scrollToNextLevel();
       }
+    },
+    scrollToNextLevel() {
+      let nextLevel = 1;
+      let found = false;
+      for (let i = 1; i <= this.totalLevels; i++) {
+        if (!this.isLevelWon(i)) {
+          nextLevel = i;
+          found = true;
+          break;
+        }
+      }
+      if (!found && this.totalLevels > 0) nextLevel = this.totalLevels;
+      this.currentPage = Math.ceil(nextLevel / this.levelsPerPage) || 1;
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
